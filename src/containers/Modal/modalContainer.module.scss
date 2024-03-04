@@ -1,0 +1,55 @@
+.modal {
+    @apply fixed overflow-hidden top-0 right-0 bottom-0 left-0;
+    @apply w-full h-full flex z-50 bg-[#00000033];
+}
+
+.center {
+    @apply content-center items-center justify-center;
+}
+
+.right {
+    @apply justify-end;
+}
+
+.modalFade {
+    animation: fade-in 0.3s linear;
+    animation-fill-mode: forwards;
+    opacity: 0;
+
+    .modalBody {
+        animation: slide-in 0.3s linear;
+        animation-fill-mode: forwards;
+    }
+}
+
+.modalOverlay {
+    @apply w-full h-full absolute top-0 left-0;
+}
+
+.modalBody {
+    @apply shadow-xl bg-white relative overflow-x-hidden overflow-y-auto max-h-full;
+}
+
+.modalBodyCentered {
+    @apply border rounded-xl shadow-xl sm:my-8 sm:align-middle sm:max-w-5xl sm:w-full;
+}
+
+@keyframes fade-in {
+    from {
+        @apply opacity-0 ease-in-out;
+    }
+
+    to {
+        @apply opacity-100;
+    }
+}
+
+@keyframes slide-in {
+    from {
+        @apply -right-[100vh];
+    }
+
+    to {
+        @apply right-0;
+    }
+}

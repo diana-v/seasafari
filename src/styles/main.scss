@@ -1,0 +1,74 @@
+@import './variables';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+
+@layer base {
+    :root {
+        --sans-font-family: #{$sansFontFamily};
+        --serif-font-family: #{$serifFontFamily};
+        --display-font-family: #{$displayFontFamily};
+
+        // System colours
+        --error-color: #{$error};
+        --warning-color: #{$warning};
+        --success-color: #{$success};
+        --info-color: #{$info};
+
+        // Shades
+        // Grey
+        --grey-color-900: #{$grey900};
+        --grey-color-800: #{$grey800};
+        --grey-color-700: #{$grey700};
+        --grey-color-600: #{$grey600};
+        --grey-color-500: #{$grey500};
+        --grey-color-400: #{$grey400};
+        --grey-color-300: #{$grey300};
+        --grey-color-200: #{$grey200};
+        --grey-color-100: #{$grey100};
+        --grey-color-50: #{$grey50};
+
+        // Utility colours
+        --white-color: #{$white};
+        --black-color: #{$black};
+    }
+
+    html {
+        box-sizing: border-box;
+        @apply scroll-smooth scroll-pt-20;
+    }
+
+    h1 {
+        @apply text-2xl md:text-3xl lg:text-5xl mb-2 md:mb-4 lg:mb-6 font-bold;
+    }
+
+    h2 {
+        @apply text-xl md:text-2xl lg:text-3xl mb-2 md:mb-3 lg:mb-4 font-bold;
+    }
+
+    h3 {
+        @apply text-lg md:text-xl lg:text-2xl mb-2 md:mb-3 lg:mb-4 font-bold;
+    }
+
+    h4 {
+        @apply text-lg lg:text-xl mb-2 md:mb-3 lg:mb-4 font-bold;
+    }
+
+    p {
+        @apply text-sm md:text-base mb-2 md:mb-3 lg:mb-4;
+
+        em {
+            @apply text-sm md:text-base mb-2 md:mb-4 italic text-red-900;
+        }
+    }
+
+    ul {
+        @apply list-disc text-sm md:text-base ml-8 mb-2 md:mb-3 lg:mb-4;
+    }
+
+    span {
+        @apply text-sm md:text-base mb-2 md:mb-4 italic text-red-900;
+    }
+}

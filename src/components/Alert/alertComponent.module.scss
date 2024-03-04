@@ -1,0 +1,14 @@
+@mixin root {
+    @apply px-4 py-2 w-full rounded-md;
+    @apply text-sm md:text-base;
+}
+
+.success {
+    @include root;
+    @apply border border-green-700 bg-green-100;
+}
+
+.error {
+    @include root;
+    @apply border border-red-700 bg-red-100;
+}

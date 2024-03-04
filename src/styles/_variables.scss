@@ -1,0 +1,32 @@
+/* Fonts */
+$sansFontFamily: 'Roboto', sans-serif !default;
+$serifFontFamily: 'Helvetica', serif !default;
+$displayFontFamily: 'Homemade Apple', cursive !default;
+
+/* System colours */
+$error: #e50303 !default;
+$warning: #ffd100 !default;
+$success: #00e686 !default;
+$info: #0067c5 !default;
+
+/* Shades */
+
+/* Grey */
+$grey900: #212932 !default;
+$grey800: #353f4a !default;
+$grey700: #414c58 !default;
+$grey600: #55606c !default;
+$grey500: #636e7b !default;
+$grey400: #7d8793 !default;
+$grey300: #9ca5b0 !default;
+$grey200: #ccd2d8 !default;
+$grey100: #e4e7eb !default;
+$grey50: #f8f9fa !default;
+
+/* Utility colours */
+$white: #fff !default;
+$black: #000 !default;
+
+/* react-image-gallery var overrides */
+$ig-white: rgb(255 255 255 / 60%);
+$ig-blue: $white;

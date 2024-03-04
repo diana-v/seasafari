@@ -1,0 +1,173 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "jsx-a11y", "import", "react", "prettier"],
+  "extends": [
+    "airbnb-typescript",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:promise/recommended",
+    "plugin:unicorn/recommended",
+    "plugin:import/typescript",
+    "plugin:react/recommended",
+    "plugin:@next/next/recommended",
+    "prettier"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "project": "./tsconfig.json"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "./tsconfig.json"
+      }
+    }
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "prettier/prettier": "error",
+    "import/no-unresolved": "error",
+    // Typescript will handle undefined variables
+    "no-undef": "off",
+    "no-unused-vars": "off",
+    // Too restrictive, writing ugly code to defend against a very unlikely scenario: https://eslint.org/docs/rules/no-prototype-builtins
+    "no-prototype-builtins": "off",
+    "no-console": "warn",
+    // same as @typescript-eslint/naming-convention
+    "no-underscore-dangle": "off",
+    // https://basarat.gitbooks.io/typescript/docs/tips/defaultIsBad.html
+    "import/prefer-default-export": "off",
+    "import/no-default-export": "off",
+    "import/export": "off",
+    "import/no-cycle": "error",
+    "import/order": [
+      "warn",
+      {
+        "newlines-between": "always",
+        "groups": [
+          ["builtin", "external"],
+          ["internal", "sibling", "parent", "index"]
+        ]
+      }
+    ],
+    // No jsx extension: https://github.com/facebook/create-react-app/issues/87#issuecomment-234627904
+    "react/jsx-filename-extension": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/require-default-props": "off",
+    // Special case to handle nextjs <Link> component
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        "components": ["Link"],
+        "specialLink": ["hrefLeft", "hrefRight"],
+        "aspects": ["invalidHref", "preferButton"]
+      }
+    ],
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "assert": "either"
+      }
+    ],
+    // We need to have a onClick event on a div
+    "jsx-a11y/no-static-element-interactions": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    // Use function hoisting to improve code readability
+    "no-use-before-define": "off",
+    // Types are handled by typescript
+    "react/prop-types": "off",
+    // Suppress errors for missing 'import React' in files
+    "react/react-in-jsx-scope": "off",
+    "react/no-array-index-key": "off",
+    // Too restrictive: https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/destructuring-assignment.md
+    "react/destructuring-assignment": [
+      "warn",
+      "always",
+      {
+        "ignoreClassFields": true
+      }
+    ],
+    // Using arrow functions or binding in JSX  props is a bad practice that hurts performance
+    "react/jsx-no-bind": [
+      "error",
+      {
+        "allowArrowFunctions": false
+      }
+    ],
+    "react/static-property-placement": [
+      "warn",
+      "property assignment",
+      {
+        "defaultProps": "static public field",
+        "childContextTypes": "static public field",
+        "contextTypes": "static public field",
+        "contextType": "static public field",
+        "displayName": "static public field"
+      }
+    ],
+    "react/no-unescaped-entities": "off",
+    // Makes no sense - typescript is very good at predicting a return type
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-use-before-define": [
+      "error",
+      {
+        "functions": false,
+        "classes": true,
+        "variables": true,
+        "typedefs": true
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    // Common abbreviations are known and readable
+    "unicorn/prevent-abbreviations": "off",
+    "unicorn/no-null": "off",
+    "unicorn/empty-brace-spaces": "error",
+    "unicorn/filename-case": "off",
+    "unicorn/no-array-callback-reference": "off",
+    "padding-line-between-statements": [
+      "error",
+      {
+        "blankLine": "always",
+        "prev": ["const", "let", "var"],
+        "next": "*"
+      },
+      {
+        "blankLine": "any",
+        "prev": ["const", "let", "var"],
+        "next": ["const", "let", "var"]
+      },
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": ["class", "return", "export"]
+      }
+    ],
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "ForInStatement",
+        "message": "for..in loops iterate over the entire prototype chain, which is virtually never what you want. Use Object.{keys,values,entries}, and iterate over the resulting array."
+      },
+      {
+        "selector": "LabeledStatement",
+        "message": "Labels are a form of GOTO; using them makes code confusing and hard to maintain and understand."
+      },
+      {
+        "selector": "WithStatement",
+        "message": "`with` is disallowed in strict mode because it makes code impossible to predict and optimize."
+      }
+    ]
+  }
+}

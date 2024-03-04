@@ -1,0 +1,29 @@
+{
+  "short_name": "Sea-Safari",
+  "name": "Sea-Safari Lietuva",
+  "theme_color": "#FFFFFF",
+  "background_color": "#FFFFFF",
+  "display": "standalone",
+  "description": "Plaukdami su „Sea Safari“ jūs priartėsite prie gamtos ir patirsite nepamirštamus įspūdžius. Mes siūlome du R.I.B. laivus, varomus 300 AG ir 600 AG varikliais, kurių maksimalus greitis siekia net iki 60 mazgų. Patirkite naujus pojūčius su Sea Safari Lietuva!",
+  "orientation": "portrait",
+  "lang": "en-GB",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/icons/maskable_icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/android-icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/android-icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

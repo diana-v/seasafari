@@ -1,0 +1,55 @@
+export type LocaleType = 'en' | 'lt' | 'ru';
+
+export const languages = {
+    en: {
+        nameLabel: 'Name:',
+        emailLabel: 'Email:',
+        enquiryLabel: 'Enquiry:',
+        namePlaceholder: 'John Johnson',
+        emailPlaceholder: 'email@email.com',
+        enquiryPlaceholder: 'Please write your enquiry here...',
+        submitButton: 'Submit',
+        successMessage: 'Your enquiry has been sent!',
+        errorMessage: 'Ooops, something went wrong... Please try again later',
+        yup: {
+            required: 'Required',
+            email: 'Invalid email',
+            minLength: 'Too Short!',
+            maxLength: 'Too Long!',
+        },
+    },
+    lt: {
+        nameLabel: 'Vardas:',
+        emailLabel: 'El. Paštas:',
+        enquiryLabel: 'Žinutė:',
+        namePlaceholder: 'Jonas Jonaitis',
+        emailPlaceholder: 'pastas@pastas.lt',
+        enquiryPlaceholder: 'Prašome parašyti savo užklausą čia...',
+        submitButton: 'Pateikti',
+        successMessage: 'Jūsų užklausa išsiųsta!',
+        errorMessage: 'Oi, kažkas nutiko... Bandykite vėliau',
+        yup: {
+            required: 'Privaloma',
+            email: 'Neteisingas el. paštas',
+            minLength: 'Per trumpa!',
+            maxLength: 'Per ilga!',
+        },
+    },
+    ru: {
+        nameLabel: 'Имя:',
+        emailLabel: 'Эл. почта:',
+        enquiryLabel: 'Вопрос:',
+        namePlaceholder: 'Иван Иванов',
+        emailPlaceholder: 'email@email.com',
+        enquiryPlaceholder: 'Пожалуйста, напишите свой вопрос здесь...',
+        submitButton: 'Отправить',
+        successMessage: 'Ваш запрос отправлен!',
+        errorMessage: 'Упс, что-то пошло не так... Пожалуйста, попробуйте позже',
+        yup: {
+            required: 'Обязательно',
+            email: 'Неверный адрес эл. почты',
+            minLength: 'Слишком коротко!',
+            maxLength: 'Слишком длинно!',
+        },
+    },
+};
