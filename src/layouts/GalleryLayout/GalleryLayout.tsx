@@ -4,11 +4,10 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Grid, Navigation } from 'swiper/modules';
 import Link from 'next/link';
 
-import { RichTextComponent } from '@/components/RichText/RichTextComponent';
-
 import 'swiper/css';
 import 'swiper/css/grid';
 import 'swiper/css/navigation';
+import { RichTextComponent } from '@/components/RichText/RichTextComponent';
 import { IconComponent } from '@/components/Icon/IconComponent';
 import { ImageContainer } from '@/containers/Image/ImageContainer';
 
@@ -70,7 +69,7 @@ export const GalleryLayout: React.FC<GalleryProps> = ({ sectionTitle, title, des
                             {cards.map((card, index) => (
                                 <SwiperSlide key={index} className="!h-96 shadow-md">
                                     {card.url ? (
-                                        <Link href={card.url}>
+                                        <Link href={card.url} target="_blank">
                                             {card.image && (
                                                 <ImageContainer
                                                     src={card.image}
