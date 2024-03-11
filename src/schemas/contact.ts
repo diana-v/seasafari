@@ -6,8 +6,8 @@ export const fetchContactSectionData = (client: SanityClient, locale?: string, d
     *[_type == "contact"]{
         "sectionTitle": coalesce(sectionTitle.[$locale], sectionTitle.[$defaultLocale], "Missing translation"),
         "backgroundImage": backgroundImage.asset->url,
-        "title": coalesce(title.[$locale], title.[$defaultLocale], "Missing translation"),
-        "description": coalesce(description.[$locale], description.[$defaultLocale], "Missing translation"),
+        "title": coalesce(title.[$locale], title.[$defaultLocale]),
+        "description": coalesce(description.[$locale], description.[$defaultLocale]),
         "socialLinks": socialLinks[] {
             "platform": coalesce(platform.[$locale], platform.[$defaultLocale], "Missing translation"),
             "link": coalesce(link.[$locale], link.[$defaultLocale], "Missing translation"),

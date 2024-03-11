@@ -64,7 +64,7 @@ export const NavigationContainer: React.FC<NavigationProps> = ({ logo, sections 
                             <button
                                 key={index}
                                 onClick={switchToLocale(item)}
-                                className={cn('uppercase', { 'font-bold': item === locale })}
+                                className={cn('uppercase', { 'font-bold text-red-800': item === locale })}
                             >
                                 {item}
                             </button>
