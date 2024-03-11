@@ -15,13 +15,13 @@ export default defineType({
         defineField({ name: 'title', title: 'Title', type: 'localeString' }),
         defineField({ name: 'description', title: 'Description', type: 'localeBlock' }),
         defineField({
-            name: 'faq',
-            title: 'FAQ',
+            name: 'frequentlyAskedQuestions',
+            title: 'Frequently Asked Questions',
             type: 'array',
             of: [
                 {
-                    name: 'faq',
-                    title: 'faq',
+                    name: 'questions',
+                    title: 'Questions',
                     type: 'object',
                     fields: [
                         defineField({ name: 'title', title: 'Question', type: 'localeString' }),

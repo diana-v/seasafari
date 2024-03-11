@@ -1,5 +1,5 @@
 import { defineConfig } from 'sanity';
-import { deskTool } from 'sanity/desk';
+import { structureTool } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
 import {documentInternationalization} from '@sanity/document-internationalization'
 
@@ -15,7 +15,7 @@ export default defineConfig({
     dataset: isProduction ? process.env.NEXT_PUBLIC_SANITY_DATASET : import.meta.env.SANITY_STUDIO_DATASET,
 
     plugins: [
-        deskTool(),
+        structureTool(),
         visionTool(),
         documentInternationalization({
             supportedLanguages: [
@@ -23,7 +23,7 @@ export default defineConfig({
                 {id: 'en', title: 'English'},
                 {id: 'ru', title: 'Russian'}
             ],
-            schemaTypes: ['home', 'about', 'contact', 'offer', 'offers', 'reviews', 'safety'],
+            schemaTypes: ['home', 'about', 'contact', 'offer', 'offers', 'gallery', 'faq', 'reviews', 'navigation', 'safety', 'blockContent', 'localeBlock', 'localeString'],
         })
     ],
 
