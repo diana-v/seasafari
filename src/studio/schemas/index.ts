@@ -7,6 +7,7 @@ import about from './about';
 import offers from './offers';
 import safety from './safety';
 import faq from './faq';
+import gallery from './gallery';
 import reviews from './reviews';
 import contact from './contact';
 import offer from './offer';
@@ -21,6 +22,7 @@ export const schemaTypes = [
     offers,
     safety,
     faq,
+    gallery,
     reviews,
     contact,
     offer,

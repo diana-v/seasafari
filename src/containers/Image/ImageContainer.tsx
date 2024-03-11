@@ -13,7 +13,7 @@ export const ImageContainer: React.FC<Partial<ImageProps>> = ({ src, alt, ...res
     }
 
     return (
-        <div className="flex relative">
+        <div className="select-none h-full flex relative">
             <Image
                 src={src}
                 alt={alt ?? ''}
