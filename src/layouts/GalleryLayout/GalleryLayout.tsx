@@ -69,7 +69,7 @@ export const GalleryLayout: React.FC<GalleryProps> = ({ sectionTitle, title, des
                             {cards.map((card, index) => (
                                 <SwiperSlide key={index} className="!h-96 shadow-md">
                                     {card.url ? (
-                                        <Link href={card.url}>
+                                        <Link href={card.url} target="_blank">
                                             {card.image && (
                                                 <ImageContainer
                                                     src={card.image}
