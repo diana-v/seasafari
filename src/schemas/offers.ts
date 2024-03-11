@@ -5,8 +5,8 @@ export const fetchOffersSectionData = (client: SanityClient, locale?: string, de
         `
     *[_type == "offers"] {
         "sectionTitle": coalesce(sectionTitle.[$locale], sectionTitle.[$defaultLocale], "Missing translation"),
-        "title": coalesce(title.[$locale], title.[$defaultLocale], "Missing translation"),
-        "description": coalesce(description.[$locale], description.[$defaultLocale], "Missing translation"),
+        "title": coalesce(title.[$locale], title.[$defaultLocale]),
+        "description": coalesce(description.[$locale], description.[$defaultLocale]),
         "cards": *[_type == "offer"] {
             "id": _id,
             "imageCompressed": imageCompressed.asset->url,

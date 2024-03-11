@@ -7,7 +7,7 @@ export const fetchHomeSectionData = (client: SanityClient, locale?: string, defa
         "sectionTitle": coalesce(sectionTitle.[$locale], sectionTitle.[$defaultLocale], "Missing translation"),
         "videoWebm": videoWebm.asset->url,
         "videoMp4": videoMp4.asset->url,
-        "title": coalesce(title.[$locale], title.[$defaultLocale], "Missing translation"),
+        "title": coalesce(title.[$locale], title.[$defaultLocale]),
     }[0]
 `,
         { locale, defaultLocale }
