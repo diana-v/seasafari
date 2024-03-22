@@ -18,7 +18,7 @@ module.exports = withPWA({
         return [
             {
                 source: '/studio',
-                destination: '/studio/structure',
+                destination: `/studio/${process.env.NEXT_PUBLIC_SANITY_DATASET}/structure`,
                 permanent: true
             }
         ];
