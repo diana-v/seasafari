@@ -7,7 +7,7 @@ import { CardComponent, CardType } from '@/components/Card/CardComponent';
 import { RichTextComponent } from '@/components/RichText/RichTextComponent';
 
 type OffersCardType = {
-    id?: string;
+    slug?: string;
     title?: string;
     imageCompressed?: string;
     description?: string;
@@ -43,7 +43,7 @@ export const OffersLayout: React.FC<OffersProps> = ({ sectionTitle, title, descr
                             key={index}
                             href={{
                                 pathname: '/[locale]/[offerId]',
-                                query: { offerId: card.id, locale },
+                                query: { offerId: card.slug, locale },
                             }}
                             className="flex-grow basis-1 md:basis-1/3 lg:basis-1/4"
                         >

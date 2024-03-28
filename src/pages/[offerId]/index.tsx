@@ -16,6 +16,7 @@ type CardsType = {
 };
 
 export interface OfferProps {
+    slug?: string;
     image?: string;
     title?: string;
     description?: string;
@@ -31,7 +32,7 @@ interface PageProps {
 }
 
 const Offer: NextPage<PageProps> = ({ navigation, offer }) => (
-    <div className="flex-grow bg-grey-50 min-h-screen">
+    <div id={offer.slug} className="flex-grow bg-grey-50 min-h-screen">
         <Head>
             <title>{`${offer.title} | SeaSafari`}</title>
             <meta name="description" content={offer.description} />
