@@ -10,6 +10,12 @@ export default defineType({
         defineField({ name: 'image', title: 'Image', type: 'image' }),
         defineField({ name: 'imageCompressed', title: 'Image Compressed', type: 'image' }),
         defineField({ name: 'title', title: 'Title', type: 'localeString' }),
+        defineField({
+            name: 'slug',
+            title: 'Slug',
+            type: 'slug',
+            options: { source: `title.${baseLanguage?.id}`, maxLength: 96 },
+        }),
         defineField({ name: 'longDescription', title: 'Long Description', type: 'localeBlock' }),
         defineField({ name: 'description', title: 'Description', type: 'localeString' }),
         defineField({

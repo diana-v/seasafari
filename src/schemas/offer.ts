@@ -8,7 +8,8 @@ export const fetchOfferSectionData = (
 ) =>
     client.fetch(
         `
-    *[_type == "offer" && _id == $offerId]{
+    *[_type == "offer" && slug.current == $offerId]{
+        "slug": slug.current,
         "image": image.asset->url,
         "imageCompressed": imageCompressed.asset->url,
         "title": coalesce(title.[$locale], title.[$defaultLocale]),
