@@ -22,10 +22,7 @@ export const FooterContainer: React.FC<FooterProps> = ({ items }) => {
             <div className="flex flex-wrap divide-x gap-y-4">
                 {items?.map(
                     (item, index) =>
-                        Array.isArray(item.content) &&
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore-next-line
-                        item.content.find((contentItem) => !!contentItem.children.text) && (
+                        item.content && (
                             <Link
                                 key={index}
                                 href={{
