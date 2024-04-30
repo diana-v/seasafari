@@ -21,6 +21,7 @@ export const FooterContainer: React.FC<FooterProps> = ({ items }) => {
             <div className="font-bold">© Copyright {new Date().getFullYear()} SeaSafari</div>
             <div className="flex flex-wrap divide-x gap-y-4">
                 {items?.map((item, index) =>
+                    // @eslint-ignore-next-line
                     // @ts-ignore-next-line
                     Array.isArray(item.content) && item.content.find(contentItem => !!contentItem.children.text) && (
                         <Link
