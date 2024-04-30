@@ -4,8 +4,9 @@ import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
+import { CSSProperties } from 'styled-components';
+
 import { CardComponent, CardType } from '@/components/Card/CardComponent';
-import {CSSProperties} from "styled-components";
 
 type CardsType = {
     name?: string;
@@ -41,10 +42,12 @@ export const ReviewsLayout: React.FC<ReviewsProps> = ({ sectionTitle, title, car
                         dynamicBullets: true,
                     }}
                     modules={[Autoplay, Pagination]}
-                    style={{
-                        '--swiper-pagination-color': '#7f1d1d',
-                        '--swiper-pagination-bullet-size': '12px',
-                    } as CSSProperties}
+                    style={
+                        {
+                            '--swiper-pagination-color': '#7f1d1d',
+                            '--swiper-pagination-bullet-size': '12px',
+                        } as CSSProperties
+                    }
                 >
                     {cards?.map((card, index) => (
                         <SwiperSlide key={index}>
