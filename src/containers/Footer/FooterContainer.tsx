@@ -21,7 +21,8 @@ export const FooterContainer: React.FC<FooterProps> = ({ items }) => {
             <div className="font-bold">© Copyright {new Date().getFullYear()} SeaSafari</div>
             <div className="flex flex-wrap divide-x gap-y-4">
                 {items?.map((item, index) =>
-                    item.content ? (
+                    // @ts-ignore-next-line
+                    Array.isArray(item.content) && item.content.find(contentItem => !!contentItem.children.text) && (
                         <Link
                             key={index}
                             href={{
@@ -30,10 +31,6 @@ export const FooterContainer: React.FC<FooterProps> = ({ items }) => {
                             }}
                             className="px-4 underline underline-offset-4"
                         >
-                            {item.label}
-                        </Link>
-                    ) : (
-                        <Link key={index} href={item.slug} className="px-4 underline underline-offset-4">
                             {item.label}
                         </Link>
                     )
