@@ -24,7 +24,7 @@ interface PageProps {
 }
 
 const Content: NextPage<PageProps> = ({ navigation, content, footer }) => (
-    <div id={content.slug} className="flex-grow bg-grey-50 min-h-screen">
+    <div id={content.slug} className="bg-grey-50 min-h-screen">
         <Head>
             <title>{`${content.label} | SeaSafari`}</title>
         </Head>
@@ -32,7 +32,6 @@ const Content: NextPage<PageProps> = ({ navigation, content, footer }) => (
         <div className="container mx-auto px-4 py-8 md:py-16 lg:py-24 flex flex-wrap flex-col lg:flex-row gap-6 md:gap-10 lg:gap-16">
             {content.content && <RichTextComponent content={content.content} />}
         </div>
-        <FooterContainer items={footer.items} />
     </div>
 );
 
