@@ -20,21 +20,23 @@ export const FooterContainer: React.FC<FooterProps> = ({ items }) => {
         <div className="w-full bg-black text-white flex flex-wrap justify-between items-center p-4 gap-4">
             <div className="font-bold">© Copyright {new Date().getFullYear()} SeaSafari</div>
             <div className="flex flex-wrap divide-x gap-y-4">
-                {items?.map((item, index) =>
-                    // @eslint-ignore-next-line
-                    // @ts-ignore-next-line
-                    Array.isArray(item.content) && item.content.find(contentItem => !!contentItem.children.text) && (
-                        <Link
-                            key={index}
-                            href={{
-                                pathname: '/[locale]/c/[contentId]',
-                                query: { contentId: item.slug, locale },
-                            }}
-                            className="px-4 underline underline-offset-4"
-                        >
-                            {item.label}
-                        </Link>
-                    )
+                {items?.map(
+                    (item, index) =>
+                        Array.isArray(item.content) &&
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore-next-line
+                        item.content.find((contentItem) => !!contentItem.children.text) && (
+                            <Link
+                                key={index}
+                                href={{
+                                    pathname: '/[locale]/c/[contentId]',
+                                    query: { contentId: item.slug, locale },
+                                }}
+                                className="px-4 underline underline-offset-4"
+                            >
+                                {item.label}
+                            </Link>
+                        )
                 )}
             </div>
         </div>

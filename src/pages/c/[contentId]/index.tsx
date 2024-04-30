@@ -8,8 +8,8 @@ import { RichTextComponent } from '@/components/RichText/RichTextComponent';
 import { NavigationContainer, NavigationProps } from '@/containers/Navigation/NavigationContainer';
 import { fetchHeaderData } from '@/schemas/navigation';
 import { fetchContentSectionData } from '@/schemas/content';
-import {fetchFooterSectionData} from "@/schemas/footer";
-import {FooterContainer, FooterProps} from "@/containers/Footer/FooterContainer";
+import { fetchFooterSectionData } from '@/schemas/footer';
+import { FooterContainer, FooterProps } from '@/containers/Footer/FooterContainer';
 
 export interface ContentProps {
     label?: string;
