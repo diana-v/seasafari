@@ -5,6 +5,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 import { CardComponent, CardType } from '@/components/Card/CardComponent';
+import {CSSProperties} from "styled-components";
 
 type CardsType = {
     name?: string;
@@ -43,7 +44,7 @@ export const ReviewsLayout: React.FC<ReviewsProps> = ({ sectionTitle, title, car
                     style={{
                         '--swiper-pagination-color': '#7f1d1d',
                         '--swiper-pagination-bullet-size': '12px',
-                    }}
+                    } as CSSProperties}
                 >
                     {cards?.map((card, index) => (
                         <SwiperSlide key={index}>
