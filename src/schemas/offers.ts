@@ -12,7 +12,7 @@ export const fetchOffersSectionData = (client: SanityClient, locale?: string, de
             "imageCompressed": imageCompressed.asset->url,
             "title": coalesce(title.[$locale], title.[$defaultLocale], "Missing translation"),
             "description": coalesce(description.[$locale], description.[$defaultLocale], "Missing translation")
-        }
+        } | order(orderRank)
     }[0]
 `,
         { locale, defaultLocale }

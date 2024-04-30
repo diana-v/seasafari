@@ -40,6 +40,7 @@ export default defineType({
         }),
         defineField({ name: 'phoneReservationLink', title: 'Phone Reservation Link', type: 'localeString' }),
         defineField({ name: 'phoneReservationLabel', title: 'Phone Reservation Label', type: 'localeString' }),
+        defineField({ name: 'orderRank', title: 'Order rank', type: 'string', hidden: true }),
     ],
     preview: {
         select: {
