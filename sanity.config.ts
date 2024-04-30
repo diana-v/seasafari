@@ -24,10 +24,10 @@ export default defineConfig([
                         return S.list()
                             .title('Content')
                             .items([
-                                orderableDocumentListDeskItem({ type: 'offer', title: 'Offer', S, context }),
                                 S.documentTypeListItem('home'),
                                 S.documentTypeListItem('about'),
                                 S.documentTypeListItem('contact'),
+                                orderableDocumentListDeskItem({ type: 'offer', title: 'Offer', S, context }),
                                 S.documentTypeListItem('offers'),
                                 S.documentTypeListItem('gallery'),
                                 S.documentTypeListItem('faq'),
@@ -67,10 +67,10 @@ export default defineConfig([
                         return S.list()
                             .title('Content')
                             .items([
-                                orderableDocumentListDeskItem({ type: 'offer', title: 'Offer', S, context }),
                                 S.documentTypeListItem('home'),
                                 S.documentTypeListItem('about'),
                                 S.documentTypeListItem('contact'),
+                                orderableDocumentListDeskItem({ type: 'offer', title: 'Offer', S, context }),
                                 S.documentTypeListItem('offers'),
                                 S.documentTypeListItem('gallery'),
                                 S.documentTypeListItem('faq'),
