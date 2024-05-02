@@ -40,7 +40,7 @@
         @apply scroll-smooth scroll-pt-20;
     }
 
-    body > div:where(:not([data-portal]), :not(#sanity), :not([data-ui="MenuButton__popover"])) {
+    body > div:not([data-portal]):not([data-ui="MenuButton__popover"]) > div:not(#sanity) {
         h1 {
             @apply text-2xl md:text-3xl lg:text-5xl mb-2 md:mb-4 lg:mb-6 font-bold;
         }
