@@ -1,7 +1,8 @@
 import { defineConfig } from 'sanity';
 import { structureTool } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
-import {documentInternationalization} from '@sanity/document-internationalization'
+import { documentInternationalization } from '@sanity/document-internationalization'
+import { orderableDocumentListDeskItem } from '@sanity/orderable-document-list'
 
 import { schemaTypes } from './src/studio/schemas';
 
@@ -17,7 +18,27 @@ export default defineConfig([
         basePath: '/studio/production',
 
         plugins: [
-            structureTool(),
+            structureTool(
+                {
+                    structure: (S, context) => {
+                        return S.list()
+                            .title('Content')
+                            .items([
+                                S.documentTypeListItem('home'),
+                                S.documentTypeListItem('about'),
+                                S.documentTypeListItem('contact'),
+                                orderableDocumentListDeskItem({ type: 'offer', title: 'Offer', S, context }),
+                                S.documentTypeListItem('offers'),
+                                S.documentTypeListItem('gallery'),
+                                S.documentTypeListItem('faq'),
+                                S.documentTypeListItem('reviews'),
+                                S.documentTypeListItem('navigation'),
+                                S.documentTypeListItem('safety'),
+                                S.documentTypeListItem('footer'),
+                            ]);
+                    },
+                }
+            ),
             visionTool(),
             documentInternationalization({
                 supportedLanguages: [
@@ -25,7 +46,7 @@ export default defineConfig([
                     {id: 'en', title: 'English'},
                     {id: 'ru', title: 'Russian'}
                 ],
-                schemaTypes: ['home', 'about', 'contact', 'offer', 'offers', 'gallery', 'faq', 'reviews', 'navigation', 'safety', 'blockContent', 'localeBlock', 'localeString'],
+                schemaTypes: ['home', 'about', 'contact', 'offer', 'offers', 'gallery', 'faq', 'reviews', 'navigation', 'safety', 'blockContent', 'localeBlock', 'localeString', 'footer'],
             })
         ],
 
@@ -40,7 +61,27 @@ export default defineConfig([
         dataset: isProduction ? process.env.NEXT_PUBLIC_SANITY_DATASET : import.meta.env.SANITY_STUDIO_DATASET,
         basePath: '/studio/staging',
         plugins: [
-            structureTool(),
+            structureTool(
+                {
+                    structure: (S, context) => {
+                        return S.list()
+                            .title('Content')
+                            .items([
+                                S.documentTypeListItem('home'),
+                                S.documentTypeListItem('about'),
+                                S.documentTypeListItem('contact'),
+                                orderableDocumentListDeskItem({ type: 'offer', title: 'Offer', S, context }),
+                                S.documentTypeListItem('offers'),
+                                S.documentTypeListItem('gallery'),
+                                S.documentTypeListItem('faq'),
+                                S.documentTypeListItem('reviews'),
+                                S.documentTypeListItem('navigation'),
+                                S.documentTypeListItem('safety'),
+                                S.documentTypeListItem('footer'),
+                            ]);
+                    },
+                }
+            ),
             visionTool(),
             documentInternationalization({
                 supportedLanguages: [
@@ -48,7 +89,7 @@ export default defineConfig([
                     {id: 'en', title: 'English'},
                     {id: 'ru', title: 'Russian'}
                 ],
-                schemaTypes: ['home', 'about', 'contact', 'offer', 'offers', 'gallery', 'faq', 'reviews', 'navigation', 'safety', 'blockContent', 'localeBlock', 'localeString'],
+                schemaTypes: ['home', 'about', 'contact', 'offer', 'offers', 'gallery', 'faq', 'reviews', 'navigation', 'safety', 'blockContent', 'localeBlock', 'localeString', 'footer'],
             })
         ],
         schema: {

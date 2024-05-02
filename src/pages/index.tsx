@@ -20,6 +20,8 @@ import { FAQLayout, FAQProps } from '@/layouts/FAQLayout/FAQLayout';
 import { fetchFAQSectionData } from '@/schemas/faq';
 import { fetchGallerySectionData } from '@/schemas/gallery';
 import { GalleryLayout, GalleryProps } from '@/layouts/GalleryLayout/GalleryLayout';
+import { FooterContainer, FooterProps } from '@/containers/Footer/FooterContainer';
+import { fetchFooterSectionData } from '@/schemas/footer';
 
 interface PageProps {
     navigation: NavigationProps;
@@ -31,9 +33,21 @@ interface PageProps {
     faq: FAQProps;
     reviews: ReviewsProps;
     contact: ContactProps;
+    footer: FooterProps;
 }
 
-const Home: NextPage<PageProps> = ({ navigation, home, about, offers, safety, faq, gallery, reviews, contact }) => {
+const Home: NextPage<PageProps> = ({
+    navigation,
+    home,
+    about,
+    offers,
+    safety,
+    faq,
+    gallery,
+    reviews,
+    contact,
+    footer,
+}) => {
     return (
         <>
             <Head>
@@ -106,6 +120,7 @@ const Home: NextPage<PageProps> = ({ navigation, home, about, offers, safety, fa
                 phone={contact.phone}
                 backgroundImage={contact.backgroundImage}
             />
+            <FooterContainer items={footer?.items} />
         </>
     );
 };
@@ -127,6 +142,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, defaultLo
     const gallery = await fetchGallerySectionData(client, locale, defaultLocale);
     const reviews = await fetchReviewsSectionData(client, locale, defaultLocale);
     const contact = await fetchContactSectionData(client, locale, defaultLocale);
+    const footer = await fetchFooterSectionData(client, locale, defaultLocale);
 
     return {
         props: {
@@ -139,6 +155,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, defaultLo
             gallery,
             reviews,
             contact,
+            footer,
         },
     };
 };

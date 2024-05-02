@@ -11,6 +11,7 @@ import gallery from './gallery';
 import reviews from './reviews';
 import contact from './contact';
 import offer from './offer';
+import footer from './footer';
 
 export const schemaTypes = [
     blockContent,
@@ -26,4 +27,5 @@ export const schemaTypes = [
     reviews,
     contact,
     offer,
+    footer,
 ];

@@ -9,6 +9,8 @@ import { RichTextComponent } from '@/components/RichText/RichTextComponent';
 import { ImageContainer } from '@/containers/Image/ImageContainer';
 import { NavigationContainer, NavigationProps } from '@/containers/Navigation/NavigationContainer';
 import { fetchHeaderData } from '@/schemas/navigation';
+import { FooterContainer, FooterProps } from '@/containers/Footer/FooterContainer';
+import { fetchFooterSectionData } from '@/schemas/footer';
 
 type CardsType = {
     title?: string;
@@ -29,9 +31,10 @@ export interface OfferProps {
 interface PageProps {
     navigation: NavigationProps;
     offer: OfferProps;
+    footer: FooterProps;
 }
 
-const Offer: NextPage<PageProps> = ({ navigation, offer }) => (
+const Offer: NextPage<PageProps> = ({ navigation, offer, footer }) => (
     <div id={offer.slug} className="flex-grow bg-grey-50 min-h-screen">
         <Head>
             <title>{`${offer.title} | SeaSafari`}</title>
@@ -76,6 +79,7 @@ const Offer: NextPage<PageProps> = ({ navigation, offer }) => (
                 </div>
             </div>
         </div>
+        <FooterContainer items={footer.items} />
     </div>
 );
 
@@ -90,11 +94,13 @@ export const getServerSideProps: GetServerSideProps = async ({ params, locale, d
     const offerId = params?.offerId;
     const navigation = await fetchHeaderData(client, locale, defaultLocale);
     const offer = await fetchOfferSectionData(client, offerId, locale, defaultLocale);
+    const footer = await fetchFooterSectionData(client, locale, defaultLocale);
 
     return {
         props: {
             navigation,
             offer,
+            footer,
         },
     };
 };
