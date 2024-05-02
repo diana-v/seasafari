@@ -29,7 +29,7 @@ const Content: NextPage<PageProps> = ({ navigation, content, footer }) => (
             <title>{`${content.label} | SeaSafari`}</title>
         </Head>
         <NavigationContainer logo={navigation.logo} sections={navigation.sections} />
-        <div className="container mx-auto px-4 py-8 md:py-16 lg:py-24 flex flex-wrap flex-col lg:flex-row gap-6 md:gap-10 lg:gap-16">
+        <div className="container min-h-[calc(100vh-130px)] mx-auto px-4 py-8 md:py-16 lg:py-24 flex flex-wrap flex-col lg:flex-row gap-6 md:gap-10 lg:gap-16">
             {content.content && <RichTextComponent content={content.content} />}
         </div>
         <FooterContainer items={footer.items} />
