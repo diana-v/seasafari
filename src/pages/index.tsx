@@ -120,7 +120,7 @@ const Home: NextPage<PageProps> = ({
                 phone={contact.phone}
                 backgroundImage={contact.backgroundImage}
             />
-            <FooterContainer items={footer.items} />
+            <FooterContainer items={footer?.items} />
         </>
     );
 };

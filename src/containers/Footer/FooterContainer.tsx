@@ -16,16 +16,17 @@ export interface FooterProps {
 export const FooterContainer: React.FC<FooterProps> = ({ items }) => {
     const { locale } = useRouter();
 
+    if (!items) {
+        return null;
+    }
+
     return (
         <div className="w-full bg-black text-white flex flex-wrap justify-between items-center p-4 gap-4">
             <div className="font-bold">© Copyright {new Date().getFullYear()} SeaSafari</div>
             <div className="flex flex-wrap divide-x gap-y-4">
                 {items?.map(
                     (item, index) =>
-                        Array.isArray(item.content) &&
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore-next-line
-                        item.content.find((contentItem) => !!contentItem.children.text) && (
+                        item.content && (
                             <Link
                                 key={index}
                                 href={{
