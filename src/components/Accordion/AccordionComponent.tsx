@@ -5,14 +5,14 @@ import { TypedObject } from '@portabletext/types';
 import { RichTextComponent } from '@/components/RichText/RichTextComponent';
 import { IconComponent } from '@/components/Icon/IconComponent';
 
-interface AccordionProps {
+interface ComponentProps {
     items: {
         title: string;
         content: TypedObject | TypedObject[];
     }[];
 }
 
-export const AccordionComponent: React.FC<AccordionProps> = ({ items }) => {
+export const AccordionComponent: React.FC<ComponentProps> = ({ items }) => {
     const [activeIndexes, setActiveIndexes] = useState<number[]>([]);
 
     const handleClick = React.useCallback(
