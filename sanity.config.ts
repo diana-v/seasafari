@@ -14,7 +14,7 @@ export default defineConfig([
         title: 'production',
 
         projectId: isProduction ? process.env.NEXT_PUBLIC_SANITY_PROJECT_ID : import.meta.env.SANITY_STUDIO_PROJECT_ID,
-        dataset: isProduction ? process.env.NEXT_PUBLIC_SANITY_DATASET : import.meta.env.SANITY_STUDIO_DATASET,
+        dataset: 'production',
         basePath: '/studio/production',
 
         plugins: [
@@ -58,7 +58,7 @@ export default defineConfig([
         name: 'staging-workspace',
         title: 'staging',
         projectId: isProduction ? process.env.NEXT_PUBLIC_SANITY_PROJECT_ID : import.meta.env.SANITY_STUDIO_PROJECT_ID,
-        dataset: isProduction ? process.env.NEXT_PUBLIC_SANITY_DATASET : import.meta.env.SANITY_STUDIO_DATASET,
+        dataset: 'staging',
         basePath: '/studio/staging',
         plugins: [
             structureTool(
