@@ -5,10 +5,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
         const credentials = Buffer.from(
-            `${process.env.NEXT_PUBLIC_MAKECOMMERCE_SHOP_ID}:${process.env.NEXT_PUBLIC_MAKECOMMERCE_SECRET_KEY}`
+            `${process.env.MAKECOMMERCE_SHOP_ID}:${process.env.MAKECOMMERCE_SECRET_KEY}`
         ).toString('base64');
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_MAKECOMMERCE_API_URL}/v1/transactions`, {
+        const response = await fetch(`${process.env.MAKECOMMERCE_API_URL}/v1/transactions`, {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
