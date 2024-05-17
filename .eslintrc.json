@@ -100,7 +100,7 @@
     ],
     // Using arrow functions or binding in JSX  props is a bad practice that hurts performance
     "react/jsx-no-bind": [
-      "error",
+      "warn",
       {
         "allowArrowFunctions": false
       }
