@@ -121,7 +121,7 @@ const ContactForm = () => {
                                     disabled={isSubmitting}
                                 />
                                 {errors.message && touched.message && (
-                                    <p className="m-0 text-red-700 text-xs">{errors.message}</p>
+                                    <p className="m-0 text-red-900 text-xs">{errors.message}</p>
                                 )}
                             </div>
                         </div>

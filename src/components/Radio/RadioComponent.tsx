@@ -14,13 +14,15 @@ interface ComponentProps {
 }
 
 export const RadioComponent: React.FC<ComponentProps> = ({ item, onChange, checked, classNames }) => {
+    const handleChange = React.useCallback(() => onChange(item.value), []);
+
     return (
         <div
             className={cn(
-                'relative rounded bg-white p-3 text-center uppercase border-2',
+                'relative rounded bg-white p-3 text-center border',
                 {
                     'border-red-900': checked,
-                    'border-grey-100': !checked,
+                    'border-grey-300': !checked,
                 },
                 classNames?.root
             )}
@@ -30,10 +32,18 @@ export const RadioComponent: React.FC<ComponentProps> = ({ item, onChange, check
                 id={item.value.toString()}
                 value={item.value}
                 checked={checked}
-                onChange={() => onChange(item.value)}
+                onChange={handleChange}
                 className="appearance-none opacity-0 absolute top-0 left-0 w-full h-full"
             />
-            <label htmlFor={item.value.toString()}>{item.label}</label>
+            <label
+                className={cn({
+                    'text-red-900': checked,
+                    'text-grey-300': !checked,
+                })}
+                htmlFor={item.value.toString()}
+            >
+                {item.label}
+            </label>
         </div>
     );
 };

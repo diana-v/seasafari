@@ -5,7 +5,9 @@ import * as React from 'react';
  */
 export enum Icons {
     arrow = 'arrow',
+    check = 'check',
     cross = 'cross',
+    print = 'print',
     hamburger = 'hamburger',
 }
 

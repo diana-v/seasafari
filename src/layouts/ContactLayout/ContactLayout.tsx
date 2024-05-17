@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { TypedObject } from '@portabletext/types';
+import Link from 'next/link';
 
 import { ImageContainer } from '@/containers/Image/ImageContainer';
 import { RichTextComponent } from '@/components/RichText/RichTextComponent';
@@ -56,13 +57,15 @@ export const ContactLayout: React.FC<ContactProps> = ({
                     {email?.title && email.value && (
                         <div>
                             <p className="m-0 font-bold">{email?.title}</p>
-                            <p>{email?.value}</p>
+                            <Link className="underline underline-offset-4" href={`mailto:${email.value}`}>
+                                {email?.value}
+                            </Link>
                         </div>
                     )}
                     {phone?.title && phone.value && (
                         <div>
                             <p className="m-0 font-bold">{phone?.title}</p>
-                            <p>{phone?.value}</p>
+                            <Link href={`tel:${phone.value}`}>{phone?.value}</Link>
                         </div>
                     )}
                     <div className="flex flex-wrap w-full md:justify-around gap-4">
