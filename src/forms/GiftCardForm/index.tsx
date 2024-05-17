@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 import styles from './giftCard.module.scss';
 import { AlertComponent, AlertType } from '@/components/Alert/AlertComponent';
-import { languages, LocaleType } from '@/forms/GiftCardForm/translations';
+import { languages, LocaleType } from '@/translations/giftCardForm';
 import { RadioComponent } from '@/components/Radio/RadioComponent';
 
 interface Values {

@@ -10,7 +10,7 @@ import { FooterContainer, FooterProps } from '@/containers/Footer/FooterContaine
 import { fetchHeaderData } from '@/schemas/navigation';
 import { fetchFooterSectionData } from '@/schemas/footer';
 import { IconComponent } from '@/components/Icon/IconComponent';
-import { languages, LocaleType } from '@/pages/success/translations';
+import { languages, LocaleType } from '@/translations/success';
 
 interface PageProps {
     navigation: NavigationProps;

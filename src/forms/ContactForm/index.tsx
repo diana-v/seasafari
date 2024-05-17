@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 
 import styles from './contact.module.scss';
 import { AlertComponent, AlertType } from '@/components/Alert/AlertComponent';
-import { languages, LocaleType } from '@/forms/ContactForm/translations';
+import { languages, LocaleType } from '@/translations/contactForm';
 
 interface Values {
     name: string;
