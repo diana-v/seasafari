@@ -6,7 +6,10 @@ import * as React from 'react';
 export enum Icons {
     arrow = 'arrow',
     cross = 'cross',
+    email = 'email',
     hamburger = 'hamburger',
+    phone = 'phone',
+    pin = 'pin',
 }
 
 interface ComponentProps {

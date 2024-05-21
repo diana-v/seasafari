@@ -60,6 +60,16 @@ export default defineType({
                 defineField({ name: 'value', title: 'Value', type: 'localeString' }),
             ],
         }),
+        defineField({
+            name: 'companyDetails',
+            type: 'object',
+            fields: [
+                defineField({ name: 'title', title: 'Title', type: 'localeString' }),
+                defineField({ name: 'name', title: 'Name', type: 'localeString' }),
+                defineField({ name: 'companyCode', title: 'Company Code', type: 'localeString' }),
+                defineField({ name: 'address', title: 'Address', type: 'localeString' }),
+            ],
+        }),
         defineField({ name: 'backgroundImage', title: 'Background Image', type: 'image' }),
     ],
     preview: {
