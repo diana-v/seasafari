@@ -95,7 +95,7 @@ const Offer: NextPage<PageProps> = ({ navigation, offer, footer }) => (
                 </div>
             </div>
         </div>
-        <FooterContainer items={footer.items} />
+        <FooterContainer items={footer.items} contact={footer.contact} />
     </div>
 );
 

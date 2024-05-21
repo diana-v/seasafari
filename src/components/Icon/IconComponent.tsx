@@ -8,7 +8,10 @@ export enum Icons {
     check = 'check',
     cross = 'cross',
     print = 'print',
+    email = 'email',
     hamburger = 'hamburger',
+    phone = 'phone',
+    pin = 'pin',
 }
 
 interface ComponentProps {
