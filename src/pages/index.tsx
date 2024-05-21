@@ -114,13 +114,9 @@ const Home: NextPage<PageProps> = ({
                 sectionTitle={contact.sectionTitle}
                 title={contact.title}
                 description={contact.description}
-                socialLinks={contact.socialLinks}
-                address={contact.address}
-                email={contact.email}
-                phone={contact.phone}
                 backgroundImage={contact.backgroundImage}
             />
-            <FooterContainer items={footer?.items} />
+            <FooterContainer items={footer?.items} contact={footer.contact} />
         </>
     );
 };

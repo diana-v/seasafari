@@ -32,7 +32,7 @@ const Content: NextPage<PageProps> = ({ navigation, content, footer }) => (
         <div className="container min-h-[calc(100vh-130px)] mx-auto px-4 py-8 md:py-16 lg:py-24 flex flex-wrap flex-col lg:flex-row gap-6 md:gap-10 lg:gap-16">
             {content.content && <RichTextComponent content={content.content} />}
         </div>
-        <FooterContainer items={footer.items} />
+        <FooterContainer items={footer.items} contact={footer.contact} />
     </div>
 );
 
