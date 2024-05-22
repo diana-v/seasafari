@@ -61,7 +61,7 @@ const PaymentSuccessPage: NextPage<PageProps> = ({ navigation, footer, paymentRe
                     </p>
                 </div>
             </div>
-            <FooterContainer items={footer.items} />
+            <FooterContainer items={footer.items} contact={footer.contact} />
         </>
     );
 };
@@ -73,29 +73,13 @@ const client = createClient({
     useCdn: false,
 });
 
-export const getServerSideProps: GetServerSideProps = async ({ query, res, req, locale, defaultLocale }) => {
+export const getServerSideProps: GetServerSideProps = async ({  res, req, locale, defaultLocale }) => {
     const cookies = new Cookies(req, res);
-    const paymentRef = query.ref
-        ? cookies.set('paymentRef', query.ref as string, { sameSite: 'none', secureProxy: true })
-        : cookies.get('paymentRef');
-    const paymentEmail = query.email
-        ? cookies.set('paymentEmail', query.email as string, { sameSite: 'none', secureProxy: true })
-        : cookies.get('paymentEmail');
+    const paymentRef = cookies.get('paymentRef');
+    const paymentEmail =  cookies.get('paymentEmail');
 
     const navigation = await fetchHeaderData(client, locale, defaultLocale);
     const footer = await fetchFooterSectionData(client, locale, defaultLocale);
-
-    if (query.ref && query.email) {
-        return {
-            redirect: { destination: '/success', permanent: false },
-            props: {
-                navigation,
-                footer,
-                paymentRef,
-                paymentEmail,
-            },
-        };
-    }
 
     return {
         props: {

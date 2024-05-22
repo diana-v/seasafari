@@ -22,7 +22,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
                     transaction_url: {
                         return_url: {
-                            url: `${process.env.NEXT_PUBLIC_DOMAIN}/${body.locale}/success?ref=${body.reference}&email=${body.email}`,
+                            url: `${process.env.NEXT_PUBLIC_DOMAIN}/${body.locale}/api/payment-success?ref=${body.reference}&email=${body.email}&locale=${body.locale}`,
                             method: 'POST',
                         },
                         cancel_url: {

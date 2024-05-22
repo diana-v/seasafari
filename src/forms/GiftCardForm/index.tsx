@@ -9,6 +9,7 @@ import styles from './giftCard.module.scss';
 import { AlertComponent, AlertType } from '@/components/Alert/AlertComponent';
 import { languages, LocaleType } from '@/translations/giftCardForm';
 import { RadioComponent } from '@/components/Radio/RadioComponent';
+import { nanoid } from "nanoid";
 
 interface Values {
     value?: number;
@@ -50,7 +51,7 @@ export const GiftCardForm: React.FC<GiftCardFormProps> = ({ chips }) => {
         await fetch('/api/make-payment', {
             body: JSON.stringify({
                 amount: value?.toString(),
-                reference: `SEA-${Date.now()}${Math.random().toString(36).slice(7)}`,
+                reference: `SEA-${nanoid(8)}`,
                 email: email,
                 locale: locale,
             }),
@@ -122,14 +123,6 @@ export const GiftCardForm: React.FC<GiftCardFormProps> = ({ chips }) => {
                             {localisedString.agreeWith}{' '}
                             <Link target="_blank" className="underline underline-offset-4" href="/c/privatumo-politika">
                                 {localisedString.privacyPolicy}{' '}
-                            </Link>
-                            {localisedString.and}{' '}
-                            <Link
-                                className="underline underline-offset-4"
-                                target="_blank"
-                                href="/c/naudojimo-taisykles"
-                            >
-                                {localisedString.termsAndConditions}{' '}
                             </Link>
                         </label>
                         <button

@@ -7,8 +7,6 @@ export const languages = {
         emailPlaceholder: 'email@email.com',
         agreeWith: 'I agree with',
         privacyPolicy: 'Privacy Policy',
-        and: 'and',
-        termsAndConditions: 'Terms and Conditions',
         purchaseDisclaimer:
             'The gift card will be sent to the email address provided in the form, so please ensure that you have provided the correct email address. You can save or print the e-coupon immediately after purchase.',
         submitButton: 'Pay',
@@ -24,8 +22,6 @@ export const languages = {
         emailPlaceholder: 'pastas@pastas.lt',
         agreeWith: 'Sutinku su',
         privacyPolicy: 'Privatumo Politika',
-        and: 'ir',
-        termsAndConditions: 'Naudojimo Taisyklėmis',
         purchaseDisclaimer:
             'Dovanų kuponas bus išsiųstas formoje nurodytu el. pašto adresu, tad įsitikinkite, kad el. pašto adresą nurodėte teisingai. E.kuponą galite išsaugoti arba atsispausdinti iškart po pirkimo.',
         submitButton: 'Mokėti',
@@ -41,8 +37,6 @@ export const languages = {
         emailPlaceholder: 'email@email.com',
         agreeWith: 'Я согласен с',
         privacyPolicy: 'Политикой конфиденциальности',
-        and: 'и',
-        termsAndConditions: 'Условиями и положениями',
         purchaseDisclaimer:
             'Подарочный купон будет отправлен на указанный в форме регистрации адрес электронной почты, поэтому убедитесь, что вы указали правильный адрес электронной почты. Вы можете сохранить электронный купон или распечатать его сразу после покупки.',
         submitButton: 'Платить',
