@@ -73,10 +73,10 @@ const client = createClient({
     useCdn: false,
 });
 
-export const getServerSideProps: GetServerSideProps = async ({  res, req, locale, defaultLocale }) => {
+export const getServerSideProps: GetServerSideProps = async ({ res, req, locale, defaultLocale }) => {
     const cookies = new Cookies(req, res);
     const paymentRef = cookies.get('paymentRef');
-    const paymentEmail =  cookies.get('paymentEmail');
+    const paymentEmail = cookies.get('paymentEmail');
 
     const navigation = await fetchHeaderData(client, locale, defaultLocale);
     const footer = await fetchFooterSectionData(client, locale, defaultLocale);

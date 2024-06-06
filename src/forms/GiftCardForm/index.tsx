@@ -4,12 +4,12 @@ import { Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
 import cn from 'clsx';
 import Link from 'next/link';
+import { nanoid } from 'nanoid';
 
 import styles from './giftCard.module.scss';
 import { AlertComponent, AlertType } from '@/components/Alert/AlertComponent';
 import { languages, LocaleType } from '@/translations/giftCardForm';
 import { RadioComponent } from '@/components/Radio/RadioComponent';
-import { nanoid } from "nanoid";
 
 interface Values {
     value?: number;
