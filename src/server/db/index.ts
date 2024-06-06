@@ -4,8 +4,7 @@ import dotenv from 'dotenv';
 
 import * as schema from './schema';
 
-const isProduction = process.env.NODE_ENV === 'production';
-const { parsed } = dotenv.config({ path: isProduction ? '.env' : '.env.local' });
+const { parsed } = dotenv.config({ path: '.env' });
 
 const connectionString = [
     'postgresql://',
