@@ -50,7 +50,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         const responseData = await response.json();
 
-        return res.status(200).send(`https://payment.test.maksekeskus.ee/pay.html?trx=${responseData.id}`);
+        return res.status(200).send(`${process.env.MAKECOMMERCE_GATEWAY_URL}/pay.html?trx=${responseData.id}`);
     } catch {
         return res.status(500).send('Error setting up payment');
     }
