@@ -7,7 +7,7 @@ import styles from './navigationContainer.module.scss';
 import { IconComponent } from '@/components/Icon/IconComponent';
 import { ImageContainer } from '@/containers/Image/ImageContainer';
 import { useClickOutside } from '@/hooks/useClickOutside';
-import { languages, LocaleType } from "@/translations/admin";
+import { languages, LocaleType } from '@/translations/admin';
 
 export interface NavigationProps {
     logo?: string;
