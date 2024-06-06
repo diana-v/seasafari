@@ -3,6 +3,7 @@ import { createClient } from '@sanity/client';
 import { GetServerSideProps, NextPage } from 'next';
 import { TypedObject } from '@portabletext/types';
 import Head from 'next/head';
+import cn from 'clsx';
 
 import { fetchOfferSectionData } from '@/schemas/offer';
 import { RichTextComponent } from '@/components/RichText/RichTextComponent';
@@ -11,6 +12,7 @@ import { NavigationContainer, NavigationProps } from '@/containers/Navigation/Na
 import { fetchHeaderData } from '@/schemas/navigation';
 import { FooterContainer, FooterProps } from '@/containers/Footer/FooterContainer';
 import { fetchFooterSectionData } from '@/schemas/footer';
+import GiftCardForm, { ChipType } from '@/forms/GiftCardForm';
 
 type CardsType = {
     title?: string;
@@ -24,6 +26,9 @@ export interface OfferProps {
     description?: string;
     longDescription?: TypedObject | TypedObject[];
     cards?: CardsType[];
+    isGiftcard?: boolean;
+    chips?: ChipType[];
+    giftcardInfo?: TypedObject | TypedObject[];
     phoneReservationLink?: string;
     phoneReservationLabel?: string;
 }
@@ -41,7 +46,7 @@ const Offer: NextPage<PageProps> = ({ navigation, offer, footer }) => (
             <meta name="description" content={offer.description} />
         </Head>
         <NavigationContainer logo={navigation.logo} sections={navigation.sections} />
-        <div className="container mx-auto px-4 py-8 md:py-16 lg:py-24 flex flex-wrap flex-col lg:flex-row gap-6 md:gap-10 lg:gap-16">
+        <div className="container min-h-[calc(100vh-130px)] mx-auto px-4 py-8 md:py-16 lg:py-24 flex flex-wrap flex-col lg:flex-row gap-6 md:gap-10 lg:gap-16">
             <div className="basis-1 flex-grow w-full">
                 {offer.image && (
                     <ImageContainer
@@ -49,7 +54,10 @@ const Offer: NextPage<PageProps> = ({ navigation, offer, footer }) => (
                         src={offer.image}
                         width={750}
                         height={550}
-                        className="rounded object-cover flex-grow h-96 lg:h-auto"
+                        className={cn('rounded flex-grow h-96 lg:h-auto', {
+                            'object-cover': !offer.isGiftcard,
+                            'object-contain': offer.isGiftcard,
+                        })}
                     />
                 )}
             </div>
@@ -59,13 +67,21 @@ const Offer: NextPage<PageProps> = ({ navigation, offer, footer }) => (
                         {offer.title && <h1>{offer.title}</h1>}
                         {offer.longDescription && <RichTextComponent content={offer.longDescription} />}
                     </div>
-                    {offer.phoneReservationLink && offer.phoneReservationLabel && (
-                        <a
-                            href={`tel:${offer.phoneReservationLink}`}
-                            className="bg-red-900 text-white text-center uppercase p-3 rounded shadow-md"
-                        >
-                            {offer.phoneReservationLabel}
-                        </a>
+                    {offer.isGiftcard ? (
+                        <>
+                            {offer.giftcardInfo && <RichTextComponent content={offer.giftcardInfo} />}
+                            {offer.chips && <GiftCardForm chips={offer.chips} />}
+                        </>
+                    ) : (
+                        offer.phoneReservationLink &&
+                        offer.phoneReservationLabel && (
+                            <a
+                                href={`tel:${offer.phoneReservationLink}`}
+                                className="bg-red-900 text-white text-center uppercase p-3 rounded shadow-md"
+                            >
+                                {offer.phoneReservationLabel}
+                            </a>
+                        )
                     )}
                 </div>
 

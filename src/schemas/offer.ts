@@ -19,6 +19,12 @@ export const fetchOfferSectionData = (
             "title": coalesce(title.[$locale], title.[$defaultLocale], "Missing translation"),
             "icon": icon.asset->url,
         },
+        isGiftcard,
+        "chips": chips[] {
+            "label": coalesce(label.[$locale], label.[$defaultLocale]),
+            value,
+        },
+        "giftcardInfo": coalesce(giftcardInfo.[$locale], giftcardInfo.[$defaultLocale]),
         "phoneReservationLink": coalesce(phoneReservationLink.[$locale], phoneReservationLink.[$defaultLocale], "Missing translation"),
         "phoneReservationLabel": coalesce(phoneReservationLabel.[$locale], phoneReservationLabel.[$defaultLocale], "Missing translation"),
     }[0]

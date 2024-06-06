@@ -7,16 +7,20 @@ import styles from './navigationContainer.module.scss';
 import { IconComponent } from '@/components/Icon/IconComponent';
 import { ImageContainer } from '@/containers/Image/ImageContainer';
 import { useClickOutside } from '@/hooks/useClickOutside';
+import { languages, LocaleType } from '@/translations/admin';
 
 export interface NavigationProps {
     logo?: string;
     sections?: {
         title?: string;
     }[];
+    showLocales?: boolean;
+    isAuthenticated?: boolean;
 }
 
-export const NavigationContainer: React.FC<NavigationProps> = ({ logo, sections }) => {
-    const { locales, locale, asPath, push } = useRouter();
+export const NavigationContainer: React.FC<NavigationProps> = ({ logo, sections, isAuthenticated = false }) => {
+    const { locales, locale, defaultLocale, asPath, push } = useRouter();
+    const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
     const [showMenu, setShowMenu] = React.useState(false);
     const menuRef = React.useRef(null);
 
@@ -35,18 +39,30 @@ export const NavigationContainer: React.FC<NavigationProps> = ({ logo, sections 
         []
     );
 
+    const handleLogout = React.useCallback(() => {
+        fetch('/api/admin-logout', { method: 'POST' })
+            .then(() => {
+                return push('/');
+            })
+            .catch((error) => {
+                console.error('Logout failed', error);
+            });
+    }, []);
+
     return (
         <nav className={styles.root} ref={menuRef}>
-            <Link href={'/'} className="font-display text-3xl leading-[3.5rem]" aria-label="SeaSafari">
+            <Link href={'/'} className="flex gap-8" aria-label="SeaSafari">
                 {logo ? <ImageContainer src={logo} width={120} height={50} /> : 'SeaSafari'}
             </Link>
-            <button
-                className="block lg:hidden w-6 h-6 text-grey-600 hover:text-black"
-                onClick={toggleMenu}
-                aria-label="Navigation"
-            >
-                <IconComponent name="hamburger" />
-            </button>
+            {sections?.length && (
+                <button
+                    className="block lg:hidden w-6 h-6 text-grey-600 hover:text-black"
+                    onClick={toggleMenu}
+                    aria-label="Navigation"
+                >
+                    <IconComponent name="hamburger" />
+                </button>
+            )}
             <div className={`${showMenu ? 'max-h-[300px]' : 'max-h-[0px]'} ${styles.linkContainer}`}>
                 {sections &&
                     sections.map((section, index) => (
@@ -58,6 +74,11 @@ export const NavigationContainer: React.FC<NavigationProps> = ({ logo, sections 
                             {section.title}
                         </Link>
                     ))}
+                {isAuthenticated && (
+                    <button onClick={handleLogout} className="uppercase">
+                        {localisedString.logout}
+                    </button>
+                )}
                 {locales && locales.length > 1 && (
                     <div className="border-t lg:border-t-0 pt-2 lg:pt-0 lg:border-l lg:pl-5 flex gap-2 md:gap-5 justify-center">
                         {locales.map((item, index) => (

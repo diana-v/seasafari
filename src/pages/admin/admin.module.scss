@@ -1,0 +1,27 @@
+.search {
+    @apply text-left text-gray-600 uppercase cursor-pointer;
+}
+
+.table {
+    @apply min-w-full divide-y divide-gray-200;
+}
+
+.tableHead {
+    @apply px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider cursor-pointer flex gap-2 items-center;
+}
+
+.tableDetail {
+    @apply px-6 py-4 whitespace-nowrap;
+}
+
+.checkmark {
+    @apply h-8 w-8 text-grey-800 focus:ring-grey-800 border-gray-300 rounded accent-[#15496b];
+}
+
+.arrow {
+    @apply w-2 h-2 rotate-90;
+
+    &.desc {
+        @apply -rotate-90;
+    }
+}

@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 
 import styles from './contact.module.scss';
 import { AlertComponent, AlertType } from '@/components/Alert/AlertComponent';
-import { languages, LocaleType } from '@/forms/ContactForm/translations';
+import { languages, LocaleType } from '@/translations/contactForm';
 
 interface Values {
     name: string;
@@ -121,7 +121,7 @@ const ContactForm = () => {
                                     disabled={isSubmitting}
                                 />
                                 {errors.message && touched.message && (
-                                    <p className="m-0 text-red-700 text-xs">{errors.message}</p>
+                                    <p className="m-0 text-red-900 text-xs">{errors.message}</p>
                                 )}
                             </div>
                         </div>
