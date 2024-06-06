@@ -5,17 +5,17 @@ import dotenv from 'dotenv';
 import * as schema from './schema';
 
 const isProduction = process.env.NODE_ENV === 'production';
-const { parsed } = dotenv.config({ path: isProduction ? '.env' : '.env.local' });
+const { parsed } = dotenv.config({ path: '.env.local' });
 
 const connectionString = [
     'postgresql://',
-    parsed?.PGUSER,
+    isProduction ? process.env.PGUSER : parsed?.PGUSER,
     ':',
-    parsed?.PGPASSWORD,
+    isProduction ? process.env.PGPASSWORD : parsed?.PGPASSWORD,
     '@',
-    parsed?.PGHOST,
+    isProduction ? process.env.PGHOST : parsed?.PGHOST,
     '/',
-    parsed?.PGDATABASE,
+    isProduction ? process.env.PGDATABASE : parsed?.PGDATABASE,
     '?sslmode=require',
 ].join('');
 
