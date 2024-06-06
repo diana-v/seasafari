@@ -1,12 +1,17 @@
+import dotenv from 'dotenv'
+
+const isProduction = process.env.NODE_ENV === 'production'
+const { parsed } = dotenv.config({ path: '.env.local' });
+
 const connectionString = [
   'postgresql://',
-  process.env.PGUSER,
+  isProduction ? process.env.PGUSER : parsed?.PGUSER,
   ':',
-  process.env.PGPASSWORD,
+  isProduction ? process.env.PGPASSWORD : parsed?.PGPASSWORD,
   '@',
-  process.env.PGHOST,
+  isProduction ? process.env.PGHOST : parsed?.PGHOST,
   '/',
-  process.env.PGDATABASE,
+  isProduction ? process.env.PGDATABASE : parsed?.PGDATABASE,
   '?sslmode=require',
 ].join('');
 
