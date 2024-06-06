@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 
 const { parsed } = dotenv.config({ path: '.env' });
-console.log({ parsed }, process.env);
+console.log({ parsed });
 
 const connectionString = [
   'postgresql://',

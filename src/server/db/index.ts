@@ -6,7 +6,7 @@ import * as schema from './schema';
 
 const { parsed } = dotenv.config({ path: '.env' });
 
-console.log({ parsed }, process.env);
+console.log({ parsed });
 
 const connectionString = [
     'postgresql://',
