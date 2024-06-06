@@ -7,6 +7,7 @@ import styles from './navigationContainer.module.scss';
 import { IconComponent } from '@/components/Icon/IconComponent';
 import { ImageContainer } from '@/containers/Image/ImageContainer';
 import { useClickOutside } from '@/hooks/useClickOutside';
+import { languages, LocaleType } from "@/translations/admin";
 
 export interface NavigationProps {
     logo?: string;
@@ -18,7 +19,8 @@ export interface NavigationProps {
 }
 
 export const NavigationContainer: React.FC<NavigationProps> = ({ logo, sections, isAuthenticated = false }) => {
-    const { locales, locale, asPath, push } = useRouter();
+    const { locales, locale, defaultLocale, asPath, push } = useRouter();
+    const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
     const [showMenu, setShowMenu] = React.useState(false);
     const menuRef = React.useRef(null);
 
@@ -74,7 +76,7 @@ export const NavigationContainer: React.FC<NavigationProps> = ({ logo, sections,
                     ))}
                 {isAuthenticated && (
                     <button onClick={handleLogout} className="uppercase">
-                        Logout
+                        {localisedString.logout}
                     </button>
                 )}
                 {locales && locales.length > 1 && (

@@ -2,6 +2,7 @@ export type LocaleType = 'en' | 'lt' | 'ru';
 
 export const languages = {
     en: {
+        logout: 'Logout',
         search: 'Search:',
         searchHelp: '*You can search by email or reference',
         reference: 'Reference',
@@ -15,6 +16,7 @@ export const languages = {
         updateError: 'Error updating order',
     },
     lt: {
+        logout: 'Atsijungti',
         search: 'Paieška:',
         searchHelp: '*Galite ieškoti pagal el. paštą arba kupono kodą',
         reference: 'Kodas',
@@ -28,6 +30,7 @@ export const languages = {
         updateError: 'Klaida atnaujinant užsakymą',
     },
     ru: {
+        logout: 'Выход',
         search: 'Поиск:',
         searchHelp: '*Вы можете искать по электронной почте или ссылке',
         reference: 'Ссылка',
