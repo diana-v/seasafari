@@ -1,17 +1,12 @@
-import dotenv from 'dotenv'
-
-const { parsed } = dotenv.config({ path: '.env' });
-console.log({ parsed });
-
 const connectionString = [
   'postgresql://',
-  parsed?.PGUSER,
+  process.env.PGUSER,
   ':',
-  parsed?.PGPASSWORD,
+  process.env.PGPASSWORD,
   '@',
-  parsed?.PGHOST,
+  process.env.PGHOST,
   '/',
-  parsed?.PGDATABASE,
+  process.env.PGDATABASE,
   '?sslmode=require',
 ].join('');
 

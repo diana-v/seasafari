@@ -1,22 +1,17 @@
 import { Pool } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-serverless';
-import dotenv from 'dotenv';
 
 import * as schema from './schema';
 
-const { parsed } = dotenv.config({ path: '.env' });
-
-console.log({ parsed });
-
 const connectionString = [
     'postgresql://',
-    parsed?.PGUSER,
+    process.env.PGUSER,
     ':',
-    parsed?.PGPASSWORD,
+    process.env.PGPASSWORD,
     '@',
-    parsed?.PGHOST,
+    process.env.PGHOST,
     '/',
-    parsed?.PGDATABASE,
+    process.env.PGDATABASE,
     '?sslmode=require',
 ].join('');
 
