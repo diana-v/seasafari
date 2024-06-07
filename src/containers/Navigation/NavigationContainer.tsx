@@ -52,12 +52,28 @@ export const NavigationContainer: React.FC<NavigationProps> = ({
             });
     }, []);
 
+    const handleHome = React.useCallback(() => {
+        if (isAuthenticated) {
+            fetch('/api/admin-logout', { method: 'POST' })
+                .then(() => {
+                    return push('/');
+                })
+                .catch((error) => {
+                    console.error('Logout failed', error);
+
+                    return push('/');
+                });
+        }
+
+        return push('/');
+    }, [isAuthenticated]);
+
     return (
         <nav className={styles.root} ref={menuRef}>
-            <Link href={'/'} className="flex gap-8" aria-label="SeaSafari">
+            <button onClick={handleHome} className="flex gap-8" aria-label="SeaSafari">
                 {logo ? <ImageContainer loading="eager" src={logo} width={120} height={50} /> : 'SeaSafari'}
-            </Link>
-            {sections?.length && (
+            </button>
+            {sections && (
                 <button
                     className="block lg:hidden w-6 h-6 text-grey-600 hover:text-black"
                     onClick={toggleMenu}
@@ -67,7 +83,7 @@ export const NavigationContainer: React.FC<NavigationProps> = ({
                 </button>
             )}
             <div className={`${showMenu ? 'max-h-[300px]' : 'max-h-[0px]'} ${styles.linkContainer}`}>
-                {sections?.length &&
+                {sections &&
                     sections.map((section, index) => (
                         <Link
                             key={index}
