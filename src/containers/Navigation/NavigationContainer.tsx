@@ -14,11 +14,14 @@ export interface NavigationProps {
     sections?: {
         title?: string;
     }[];
-    showLocales?: boolean;
     isAuthenticated?: boolean;
 }
 
-export const NavigationContainer: React.FC<NavigationProps> = ({ logo, sections, isAuthenticated = false }) => {
+export const NavigationContainer: React.FC<NavigationProps> = ({
+    logo = '',
+    sections = [],
+    isAuthenticated = false,
+}) => {
     const { locales, locale, defaultLocale, asPath, push } = useRouter();
     const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
     const [showMenu, setShowMenu] = React.useState(false);
@@ -52,7 +55,7 @@ export const NavigationContainer: React.FC<NavigationProps> = ({ logo, sections,
     return (
         <nav className={styles.root} ref={menuRef}>
             <Link href={'/'} className="flex gap-8" aria-label="SeaSafari">
-                {logo ? <ImageContainer src={logo} width={120} height={50} /> : 'SeaSafari'}
+                {logo ? <ImageContainer loading="eager" src={logo} width={120} height={50} /> : 'SeaSafari'}
             </Link>
             {sections?.length && (
                 <button
@@ -64,7 +67,7 @@ export const NavigationContainer: React.FC<NavigationProps> = ({ logo, sections,
                 </button>
             )}
             <div className={`${showMenu ? 'max-h-[300px]' : 'max-h-[0px]'} ${styles.linkContainer}`}>
-                {sections &&
+                {sections?.length &&
                     sections.map((section, index) => (
                         <Link
                             key={index}
