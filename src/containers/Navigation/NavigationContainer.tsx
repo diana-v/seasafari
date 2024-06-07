@@ -63,10 +63,10 @@ export const NavigationContainer: React.FC<NavigationProps> = ({
 
                     return push('/');
                 });
+        } else {
+            return push('/');
         }
-
-        return push('/');
-    }, [isAuthenticated]);
+    }, [isAuthenticated, push]);
 
     return (
         <nav className={styles.root} ref={menuRef}>
