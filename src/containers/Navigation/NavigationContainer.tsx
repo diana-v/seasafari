@@ -43,36 +43,21 @@ export const NavigationContainer: React.FC<NavigationProps> = ({
     );
 
     const handleLogout = React.useCallback(() => {
+        if (!isAuthenticated) {
+            return;
+        }
+
         fetch('/api/admin-logout', { method: 'POST' })
-            .then(() => {
-                return push('/');
-            })
             .catch((error) => {
                 console.error('Logout failed', error);
             });
     }, []);
 
-    const handleHome = React.useCallback(() => {
-        if (isAuthenticated) {
-            fetch('/api/admin-logout', { method: 'POST' })
-                .then(() => {
-                    return push('/');
-                })
-                .catch((error) => {
-                    console.error('Logout failed', error);
-
-                    return push('/');
-                });
-        } else {
-            return push('/');
-        }
-    }, [isAuthenticated, push]);
-
     return (
         <nav className={styles.root} ref={menuRef}>
-            <button onClick={handleHome} className="flex gap-8" aria-label="SeaSafari">
+            <Link href='/' onClick={handleLogout} className="flex gap-8" aria-label="SeaSafari">
                 {logo ? <ImageContainer loading="eager" src={logo} width={120} height={50} /> : 'SeaSafari'}
-            </button>
+            </Link>
             {sections && (
                 <button
                     className="block lg:hidden w-6 h-6 text-grey-600 hover:text-black"
@@ -94,9 +79,9 @@ export const NavigationContainer: React.FC<NavigationProps> = ({
                         </Link>
                     ))}
                 {isAuthenticated && (
-                    <button onClick={handleLogout} className="uppercase">
+                    <Link href="/" onClick={handleLogout} className="uppercase">
                         {localisedString.logout}
-                    </button>
+                    </Link>
                 )}
                 {locales && locales.length > 1 && (
                     <div className="border-t lg:border-t-0 pt-2 lg:pt-0 lg:border-l lg:pl-5 flex gap-2 md:gap-5 justify-center">
