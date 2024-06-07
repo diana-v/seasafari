@@ -47,15 +47,14 @@ export const NavigationContainer: React.FC<NavigationProps> = ({
             return;
         }
 
-        fetch('/api/admin-logout', { method: 'POST' })
-            .catch((error) => {
-                console.error('Logout failed', error);
-            });
+        fetch('/api/admin-logout', { method: 'POST' }).catch((error) => {
+            console.error('Logout failed', error);
+        });
     }, []);
 
     return (
         <nav className={styles.root} ref={menuRef}>
-            <Link href='/' onClick={handleLogout} className="flex gap-8" aria-label="SeaSafari">
+            <Link href="/" onClick={handleLogout} className="flex gap-8" aria-label="SeaSafari">
                 {logo ? <ImageContainer loading="eager" src={logo} width={120} height={50} /> : 'SeaSafari'}
             </Link>
             {sections && (
