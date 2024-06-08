@@ -13,8 +13,8 @@ import { IconComponent } from '@/components/Icon/IconComponent';
 import { languages, LocaleType } from '@/translations/success';
 
 interface PageProps {
-    navigation: NavigationProps;
-    footer: FooterProps;
+    navigation?: NavigationProps;
+    footer?: FooterProps;
     paymentRef: string;
     paymentEmail: string;
 }
@@ -26,7 +26,7 @@ const PaymentSuccessPage: NextPage<PageProps> = ({ navigation, footer, paymentRe
 
     return (
         <>
-            <NavigationContainer logo={navigation.logo} sections={navigation.sections} />
+            <NavigationContainer logo={navigation?.logo} sections={navigation?.sections} />
             <div className="container mx-auto min-h-[calc(100vh-130px)] flex flex-col bg-gray-50">
                 <button type="button" className="self-end m-8" onClick={handlePrint}>
                     <IconComponent name="print" className="w-8 h-8" />
@@ -61,7 +61,7 @@ const PaymentSuccessPage: NextPage<PageProps> = ({ navigation, footer, paymentRe
                     </p>
                 </div>
             </div>
-            <FooterContainer items={footer.items} contact={footer.contact} />
+            <FooterContainer items={footer?.items} contact={footer?.contact} />
         </>
     );
 };

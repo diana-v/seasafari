@@ -25,8 +25,8 @@ type CompanyContactType = {
 };
 
 export interface FooterProps {
-    items: ItemType[];
-    contact: {
+    items?: ItemType[];
+    contact?: {
         socialLinks?: {
             platform?: string;
             link?: string;

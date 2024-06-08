@@ -34,21 +34,22 @@ export interface OfferProps {
 }
 
 interface PageProps {
-    navigation: NavigationProps;
-    offer: OfferProps;
-    footer: FooterProps;
+    navigation?: NavigationProps;
+    offer?: OfferProps;
+    footer?: FooterProps;
+    isAuthenticated: boolean;
 }
 
-const Offer: NextPage<PageProps> = ({ navigation, offer, footer }) => (
-    <div id={offer.slug} className="flex-grow bg-grey-50 min-h-screen">
+const Offer: NextPage<PageProps> = ({ navigation, offer, footer, isAuthenticated }) => (
+    <div id={offer?.slug ?? ''} className="flex-grow bg-grey-50 min-h-screen">
         <Head>
-            <title>{`${offer.title} | SeaSafari`}</title>
-            <meta name="description" content={offer.description} />
+            <title>{`${offer?.title ?? ''} | SeaSafari`}</title>
+            <meta name="description" content={offer?.description} />
         </Head>
-        <NavigationContainer logo={navigation.logo} sections={navigation.sections} />
+        <NavigationContainer logo={navigation?.logo} sections={navigation?.sections} />
         <div className="container min-h-[calc(100vh-130px)] mx-auto px-4 py-8 md:py-16 lg:py-24 flex flex-wrap flex-col lg:flex-row gap-6 md:gap-10 lg:gap-16">
             <div className="basis-1 flex-grow w-full">
-                {offer.image && (
+                {offer && offer.image && (
                     <ImageContainer
                         loading="eager"
                         src={offer.image}
@@ -64,19 +65,19 @@ const Offer: NextPage<PageProps> = ({ navigation, offer, footer }) => (
             <div className="basis-1 flex-grow w-full flex flex-col gap-2">
                 <div className="flex flex-col gap-4 bg-white rounded p-8">
                     <div>
-                        {offer.title && <h1>{offer.title}</h1>}
-                        {offer.longDescription && <RichTextComponent content={offer.longDescription} />}
+                        {offer?.title && <h1>{offer.title}</h1>}
+                        {offer?.longDescription && <RichTextComponent content={offer.longDescription} />}
                     </div>
-                    {offer.isGiftcard ? (
+                    {offer?.isGiftcard ? (
                         <>
                             {offer.giftcardInfo && <RichTextComponent content={offer.giftcardInfo} />}
                             {offer.chips && <GiftCardForm chips={offer.chips} />}
                         </>
                     ) : (
-                        offer.phoneReservationLink &&
-                        offer.phoneReservationLabel && (
+                        offer?.phoneReservationLink &&
+                        offer?.phoneReservationLabel && (
                             <a
-                                href={`tel:${offer.phoneReservationLink}`}
+                                href={`tel:${offer?.phoneReservationLink}`}
                                 className="bg-red-900 text-white text-center uppercase p-3 rounded shadow-md"
                             >
                                 {offer.phoneReservationLabel}
@@ -86,7 +87,7 @@ const Offer: NextPage<PageProps> = ({ navigation, offer, footer }) => (
                 </div>
 
                 <div className="flex flex-col sm:flex-row flex-wrap bg-white rounded p-8 gap-y-2">
-                    {offer.cards?.map((card, index) => (
+                    {offer?.cards?.map((card, index) => (
                         <div key={index} className="flex gap-4 items-center sm:basis-1/2">
                             <ImageContainer src={card.icon} height={40} width={40} className="w-8 h-8" />
                             <p className="m-0">{card.title}</p>
@@ -95,7 +96,7 @@ const Offer: NextPage<PageProps> = ({ navigation, offer, footer }) => (
                 </div>
             </div>
         </div>
-        <FooterContainer items={footer.items} contact={footer.contact} />
+        <FooterContainer items={footer?.items} contact={footer?.contact} />
     </div>
 );
 

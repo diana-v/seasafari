@@ -24,16 +24,17 @@ import { FooterContainer, FooterProps } from '@/containers/Footer/FooterContaine
 import { fetchFooterSectionData } from '@/schemas/footer';
 
 interface PageProps {
-    navigation: NavigationProps;
-    home: HomeProps;
-    about: AboutProps;
-    offers: OffersProps;
-    safety: SafetyProps;
-    gallery: GalleryProps;
-    faq: FAQProps;
-    reviews: ReviewsProps;
-    contact: ContactProps;
-    footer: FooterProps;
+    navigation?: NavigationProps;
+    home?: HomeProps;
+    about?: AboutProps;
+    offers?: OffersProps;
+    safety?: SafetyProps;
+    gallery?: GalleryProps;
+    faq?: FAQProps;
+    reviews?: ReviewsProps;
+    contact?: ContactProps;
+    footer?: FooterProps;
+    isAuthenticated: boolean;
 }
 
 const Home: NextPage<PageProps> = ({
@@ -81,42 +82,47 @@ const Home: NextPage<PageProps> = ({
                     content="https://cdn.sanity.io/images/9s9wwf86/production/ffc3ca964587227a6969b43f96f6fa266cfecd97-1771x1257.jpg"
                 />
             </Head>
-            <NavigationContainer logo={navigation.logo} sections={navigation.sections} />
+            <NavigationContainer logo={navigation?.logo} sections={navigation?.sections} />
             <HomeLayout
-                sectionTitle={home.sectionTitle}
-                title={home.title}
-                videoMp4={home.videoMp4}
-                videoWebm={home.videoWebm}
+                sectionTitle={home?.sectionTitle}
+                title={home?.title}
+                videoMp4={home?.videoMp4}
+                videoWebm={home?.videoWebm}
             />
-            <AboutLayout sectionTitle={about.sectionTitle} description={about.description} image={about.image} />
+            <AboutLayout sectionTitle={about?.sectionTitle} description={about?.description} image={about?.image} />
             <OffersLayout
-                sectionTitle={offers.sectionTitle}
-                title={offers.title}
-                description={offers.description}
-                cards={offers.cards}
+                sectionTitle={offers?.sectionTitle}
+                title={offers?.title}
+                description={offers?.description}
+                cards={offers?.cards}
             />
             <SafetyLayout
-                sectionTitle={safety.sectionTitle}
-                title={safety.title}
-                description={safety.description}
-                cards={safety.cards}
-                disclaimer={safety.disclaimer}
+                sectionTitle={safety?.sectionTitle}
+                title={safety?.title}
+                description={safety?.description}
+                cards={safety?.cards}
+                disclaimer={safety?.disclaimer}
             />
             <GalleryLayout
-                sectionTitle={gallery.sectionTitle}
-                title={gallery.title}
-                description={gallery.description}
-                cards={gallery.cards}
+                sectionTitle={gallery?.sectionTitle}
+                title={gallery?.title}
+                description={gallery?.description}
+                cards={gallery?.cards}
             />
-            <FAQLayout sectionTitle={faq.sectionTitle} title={faq.title} description={faq.description} faq={faq.faq} />
-            <ReviewsLayout sectionTitle={reviews.sectionTitle} title={reviews.title} cards={reviews.cards} />
+            <FAQLayout
+                sectionTitle={faq?.sectionTitle}
+                title={faq?.title}
+                description={faq?.description}
+                faq={faq?.faq}
+            />
+            <ReviewsLayout sectionTitle={reviews?.sectionTitle} title={reviews?.title} cards={reviews?.cards} />
             <ContactLayout
-                sectionTitle={contact.sectionTitle}
-                title={contact.title}
-                description={contact.description}
-                backgroundImage={contact.backgroundImage}
+                sectionTitle={contact?.sectionTitle}
+                title={contact?.title}
+                description={contact?.description}
+                backgroundImage={contact?.backgroundImage}
             />
-            <FooterContainer items={footer?.items} contact={footer.contact} />
+            <FooterContainer items={footer?.items} contact={footer?.contact} />
         </>
     );
 };

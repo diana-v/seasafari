@@ -18,21 +18,22 @@ export interface ContentProps {
 }
 
 interface PageProps {
-    navigation: NavigationProps;
-    content: ContentProps;
-    footer: FooterProps;
+    navigation?: NavigationProps;
+    content?: ContentProps;
+    footer?: FooterProps;
+    isAuthenticated: boolean;
 }
 
-const Content: NextPage<PageProps> = ({ navigation, content, footer }) => (
-    <div id={content.slug} className="flex-grow bg-grey-50 min-h-screen">
+const Content: NextPage<PageProps> = ({ navigation, content, footer, isAuthenticated }) => (
+    <div id={content?.slug} className="flex-grow bg-grey-50 min-h-screen">
         <Head>
-            <title>{`${content.label} | SeaSafari`}</title>
+            <title>{`${content?.label} | SeaSafari`}</title>
         </Head>
-        <NavigationContainer logo={navigation.logo} sections={navigation.sections} />
+        <NavigationContainer logo={navigation?.logo} sections={navigation?.sections} />
         <div className="container min-h-[calc(100vh-130px)] mx-auto px-4 py-8 md:py-16 lg:py-24 flex flex-wrap flex-col lg:flex-row gap-6 md:gap-10 lg:gap-16">
-            {content.content && <RichTextComponent content={content.content} />}
+            {content?.content && <RichTextComponent content={content.content} />}
         </div>
-        <FooterContainer items={footer.items} contact={footer.contact} />
+        <FooterContainer items={footer?.items} contact={footer?.contact} />
     </div>
 );
 
