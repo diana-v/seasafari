@@ -5,7 +5,7 @@ import { db } from '@/server/db';
 import { Order, orders, Status } from '@/server/db/schema';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-    const { searchTerm, field, direction, showCompleted } = req.query;
+    const { searchTerm = '', field, direction, showCompleted } = req.query;
 
     try {
         const sortDirection = direction === 'asc' ? asc : desc;
