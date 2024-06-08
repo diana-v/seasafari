@@ -7,6 +7,11 @@ import { Order, orders } from '@/server/db/schema';
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { searchTerm, field, direction } = req.query;
 
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.setHeader('Surrogate-Control', 'no-store');
+
     try {
         const sortDirection = direction === 'asc' ? asc : desc;
 
