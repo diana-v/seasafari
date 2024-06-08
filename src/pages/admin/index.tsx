@@ -167,7 +167,7 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
                 <div className="container mx-auto p-4 flex flex-col gap-4">
                     {alert.message && <AlertComponent color={alert.type} message={alert.message} />}
 
-                    <div className="flex justify-between align-center">
+                    <div className="flex flex-wrap gap-4 justify-between align-center">
                         <div className="flex flex-wrap items-center gap-2">
                             <label className={styles.search} htmlFor="search">
                                 {localisedString.search}
