@@ -238,8 +238,8 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {updatedOrders.length > 0 ? (
-                                    updatedOrders.map((item) => (
-                                        <tr key={item.orderRef}>
+                                    updatedOrders.map((item, index) => (
+                                        <tr key={index}>
                                             <td className={styles.tableDetail}>{item.orderRef}</td>
                                             <td className={styles.tableDetail}>{item.orderAmount}</td>
                                             <td className={styles.tableDetail}>{item.orderEmail}</td>
