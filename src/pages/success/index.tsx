@@ -78,6 +78,18 @@ export const getServerSideProps: GetServerSideProps = async ({ res, req, locale,
     const paymentRef = cookies.get('paymentRef');
     const paymentEmail = cookies.get('paymentEmail');
 
+    if (!paymentRef || !paymentEmail) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        };
+    }
+
+    cookies.set('paymentRef', '', { httpOnly: true, maxAge: 0, sameSite: 'strict', path: '/' });
+    cookies.set('paymentEmail', '', { httpOnly: true, maxAge: 0, sameSite: 'strict', path: '/' });
+
     const navigation = await fetchHeaderData(client, locale, defaultLocale);
     const footer = await fetchFooterSectionData(client, locale, defaultLocale);
 
