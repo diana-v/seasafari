@@ -308,7 +308,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, defaultLo
     }
 
     const navigation = await fetchHeaderData(client, locale, defaultLocale);
-    const initialOrders = await db.query.orders.findMany({ orderBy: [asc(orders.orderRef)] });
+    const initialOrders = await db.query.orders.findMany({ orderBy: asc(orders.orderRef) });
     const formattedOrders = JSON.parse(JSON.stringify(initialOrders));
 
     return {
