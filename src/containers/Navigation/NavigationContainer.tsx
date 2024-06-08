@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Link from 'next/link';
 import cn from 'clsx';
 import { useRouter } from 'next/router';
 
@@ -18,8 +17,8 @@ export interface NavigationProps {
     isAuthenticated?: boolean;
 }
 
-export const NavigationContainer: React.FC<NavigationProps> = ({ logo, sections, isAuthenticated = false }) => {
-    const { locales, locale, defaultLocale, asPath, push } = useRouter();
+export const NavigationContainer: React.FC<NavigationProps> = ({ logo, sections, isAuthenticated }) => {
+    const { locales, locale, defaultLocale, asPath, push, reload } = useRouter();
     const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
     const [showMenu, setShowMenu] = React.useState(false);
     const menuRef = React.useRef(null);
@@ -41,19 +40,23 @@ export const NavigationContainer: React.FC<NavigationProps> = ({ logo, sections,
 
     const handleLogout = React.useCallback(() => {
         fetch('/api/admin-logout', { method: 'POST' })
-            .then(() => {
-                return push('/');
+            .then((res) => {
+                if (res.status === 200) {
+                    return reload();
+                }
+
+                return;
             })
             .catch((error) => {
-                console.error('Logout failed', error);
+                console.error(error);
             });
     }, []);
 
     return (
         <nav className={styles.root} ref={menuRef}>
-            <Link href={'/'} className="flex gap-8" aria-label="SeaSafari">
+            <a href="/" className="flex gap-8">
                 {logo ? <ImageContainer src={logo} width={120} height={50} /> : 'SeaSafari'}
-            </Link>
+            </a>
             {sections?.length && (
                 <button
                     className="block lg:hidden w-6 h-6 text-grey-600 hover:text-black"
@@ -66,13 +69,13 @@ export const NavigationContainer: React.FC<NavigationProps> = ({ logo, sections,
             <div className={`${showMenu ? 'max-h-[300px]' : 'max-h-[0px]'} ${styles.linkContainer}`}>
                 {sections &&
                     sections.map((section, index) => (
-                        <Link
+                        <a
                             key={index}
                             href={`/#${section.title?.toLowerCase()}`}
                             className={cn('hover:text-red-800 capitalise')}
                         >
                             {section.title}
-                        </Link>
+                        </a>
                     ))}
                 {isAuthenticated && (
                     <button onClick={handleLogout} className="uppercase">

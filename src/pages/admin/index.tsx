@@ -5,6 +5,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { asc } from 'drizzle-orm';
 import cn from 'clsx';
 import { useRouter } from 'next/router';
+import Cookies from 'cookies';
 
 import { NavigationContainer, NavigationProps } from '@/containers/Navigation/NavigationContainer';
 import { fetchHeaderData } from '@/schemas/navigation';
@@ -16,7 +17,7 @@ import { IconComponent } from '@/components/Icon/IconComponent';
 import { AlertComponent, AlertType } from '@/components/Alert/AlertComponent';
 
 interface PageProps {
-    navigation: NavigationProps;
+    navigation?: NavigationProps;
     initialOrders: Order[];
 }
 
@@ -137,7 +138,7 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
 
     return (
         <>
-            <NavigationContainer logo={navigation.logo} isAuthenticated />
+            <NavigationContainer logo={navigation?.logo} isAuthenticated />
             <div className="bg-grey-50 py-8 md:py-16 lg:py-24">
                 <div className="container mx-auto p-4 flex flex-col gap-4">
                     {alert.message && <AlertComponent color={alert.type} message={alert.message} />}
@@ -281,7 +282,31 @@ const client = createClient({
     useCdn: false,
 });
 
-export const getServerSideProps: GetServerSideProps = async ({ locale, defaultLocale }) => {
+export const getServerSideProps: GetServerSideProps = async ({ locale, defaultLocale, req, res }) => {
+    const cookies = new Cookies(req, res);
+    const authCookie = cookies.get('auth');
+
+    if (!authCookie) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false,
+            },
+        };
+    }
+
+    const decodedValue = Buffer.from(authCookie, 'base64').toString('utf8');
+    const [username, password] = decodedValue.split(':');
+
+    if (username !== process.env.BASIC_AUTH_USER || password !== process.env.BASIC_AUTH_PASSWORD) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false,
+            },
+        };
+    }
+
     const navigation = await fetchHeaderData(client, locale, defaultLocale);
     const initialOrders = await db.query.orders.findMany({ orderBy: [asc(orders.orderRef)] });
     const formattedOrders = JSON.parse(JSON.stringify(initialOrders));

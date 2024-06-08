@@ -1,0 +1,25 @@
+.field {
+    @apply rounded border w-full p-2 bg-transparent;
+    @apply text-sm md:text-base;
+
+    &:disabled {
+        @apply text-grey-300 border-grey-100 cursor-not-allowed;
+    }
+
+    &.error {
+        @apply text-red-900 border-red-900;
+    }
+
+    &:focus-visible {
+        @apply outline-none;
+    }
+}
+
+.submitButton {
+    @apply px-4 py-2 w-full rounded-md shadow-lg border border-red-900 bg-red-900 cursor-pointer;
+    @apply text-sm md:text-base text-white uppercase;
+
+    &:disabled {
+        @apply text-grey-300 bg-grey-50 border-grey-100 cursor-not-allowed;
+    }
+}
