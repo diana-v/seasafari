@@ -2,7 +2,7 @@ import * as React from 'react';
 import { GetServerSideProps } from 'next';
 import { createClient } from '@sanity/client';
 import { useDebouncedCallback } from 'use-debounce';
-import { asc } from 'drizzle-orm';
+import { asc, eq } from 'drizzle-orm';
 import cn from 'clsx';
 import { useRouter } from 'next/router';
 import Cookies from 'cookies';
@@ -31,6 +31,7 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
     const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
     const [alert, setAlert] = React.useState<IAlert>({ message: '', type: AlertType.Error });
     const [updatedOrders, setUpdatedOrders] = React.useState<Order[]>(initialOrders);
+    const [showCompleted, setShowCompleted] = React.useState(false);
     const [sortBy, setSortBy] = React.useState<{ field: keyof Order; direction: 'asc' | 'desc' }>({
         field: 'orderRef',
         direction: 'asc',
@@ -60,7 +61,7 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
                 }, 5000);
             });
         },
-        [searchTerm, sortBy]
+        [searchTerm, sortBy, showCompleted]
     );
 
     const handleSort = React.useCallback(
@@ -73,13 +74,14 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
                 field,
                 direction,
                 searchTerm,
+                showCompleted: showCompleted.toString(),
             };
 
             const queryParams = new URLSearchParams(params);
 
             await fetchData(queryParams);
         },
-        [sortBy, searchTerm, fetchData]
+        [sortBy, searchTerm, showCompleted, fetchData]
     );
 
     const handleSearch = useDebouncedCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,6 +93,7 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
             field: sortBy.field,
             direction: sortBy.direction,
             searchTerm: searchBy,
+            showCompleted: showCompleted.toString(),
         };
 
         const queryParams = new URLSearchParams(params);
@@ -98,12 +101,33 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
         await fetchData(queryParams);
     }, 500);
 
+    const handleFilter = React.useCallback(
+        async (e: React.MouseEvent<HTMLInputElement>) => {
+            const isChecked = e.currentTarget.checked;
+
+            setShowCompleted(isChecked);
+
+            const params = {
+                field: sortBy.field,
+                direction: sortBy.direction,
+                searchTerm: searchTerm,
+                showCompleted: isChecked.toString(),
+            };
+
+            const queryParams = new URLSearchParams(params);
+
+            await fetchData(queryParams);
+        },
+        [sortBy, searchTerm, showCompleted, fetchData]
+    );
+
     const handleUpdateStatus = React.useCallback(
         async (item: Order) => {
             const params = {
                 field: sortBy.field,
                 direction: sortBy.direction,
                 searchTerm,
+                showCompleted: showCompleted.toString(),
             };
             const queryParams = new URLSearchParams(params);
 
@@ -143,17 +167,30 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
                 <div className="container mx-auto p-4 flex flex-col gap-4">
                     {alert.message && <AlertComponent color={alert.type} message={alert.message} />}
 
-                    <div className="flex flex-wrap items-center gap-2">
-                        <label className={styles.search} htmlFor="search">
-                            {localisedString.search}
-                        </label>
-                        <input
-                            name="search"
-                            className="border border-grey-800 rounded focus:outline-none px-2 py-1"
-                            type="text"
-                            onChange={handleSearch}
-                        />
-                        <span className="w-full !text-gray-600">{localisedString.searchHelp}</span>
+                    <div className="flex flex-wrap gap-4 justify-between align-center">
+                        <div className="flex flex-wrap items-center gap-2">
+                            <label className={styles.search} htmlFor="search">
+                                {localisedString.search}
+                            </label>
+                            <input
+                                name="search"
+                                className="border border-grey-800 rounded focus:outline-none px-2 py-1"
+                                type="text"
+                                onChange={handleSearch}
+                            />
+                            <span className="w-full !text-gray-600">{localisedString.searchHelp}</span>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-2">
+                            <input
+                                type="checkbox"
+                                className={styles.checkmark}
+                                onClick={handleFilter}
+                                defaultChecked={showCompleted}
+                            />
+                            <label className={styles.search} htmlFor="filter">
+                                {localisedString.filter}
+                            </label>
+                        </div>
                     </div>
                 </div>
 
@@ -308,7 +345,10 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, defaultLo
     }
 
     const navigation = await fetchHeaderData(client, locale, defaultLocale);
-    const initialOrders = await db.query.orders.findMany({ orderBy: asc(orders.orderRef) });
+    const initialOrders = await db.query.orders.findMany({
+        where: (order) => eq(order.status, Status.CREATED),
+        orderBy: asc(orders.orderRef),
+    });
     const formattedOrders = JSON.parse(JSON.stringify(initialOrders));
 
     return {
