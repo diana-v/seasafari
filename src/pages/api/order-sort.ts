@@ -8,22 +8,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { searchTerm = '', field, direction } = req.query;
 
     try {
-        const testQuery = await db.query.orders.findMany({ limit: 1 });
-
-        console.log('Test query result:', testQuery);
-
         const sortDirection = direction === 'asc' ? asc : desc;
-
-        console.log('Search term:', searchTerm);
-        console.log('Search term:', field);
-        console.log('Sort direction:', sortDirection);
 
         const sortedOrders = await db.query.orders.findMany({
             where: (order) => or(ilike(order.orderRef, `%${searchTerm}%`), ilike(order.orderEmail, `%${searchTerm}%`)),
             orderBy: sortDirection(orders[field as keyof Order]),
         });
-
-        console.log('Raw sorted orders:', sortedOrders);
 
         return res.status(200).send(sortedOrders);
     } catch {
