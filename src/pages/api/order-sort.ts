@@ -5,7 +5,7 @@ import { db } from '@/server/db';
 import { Order, orders } from '@/server/db/schema';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-    const { searchTerm, field, direction } = req.query;
+    const { searchTerm = '', field, direction } = req.query;
 
     try {
         const testQuery = await db.query.orders.findMany({ limit: 1 });
@@ -20,7 +20,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         const sortedOrders = await db.query.orders.findMany({
             where: (order) => or(ilike(order.orderRef, `%${searchTerm}%`), ilike(order.orderEmail, `%${searchTerm}%`)),
-            orderBy: [sortDirection(orders[field as keyof Order])],
+            orderBy: sortDirection(orders[field as keyof Order]),
         });
 
         console.log('Raw sorted orders:', sortedOrders);
