@@ -11,23 +11,29 @@ import { fetchHeaderData } from '@/schemas/navigation';
 import { fetchFooterSectionData } from '@/schemas/footer';
 import { IconComponent } from '@/components/Icon/IconComponent';
 import { languages, LocaleType } from '@/translations/success';
+import { generatePdfDoc } from '@/templates/payment-success';
 
 interface PageProps {
     navigation?: NavigationProps;
     footer?: FooterProps;
     paymentRef: string;
     paymentEmail: string;
+    pdfBase64: string;
 }
-const PaymentSuccessPage: NextPage<PageProps> = ({ navigation, footer, paymentRef, paymentEmail }) => {
+const PaymentSuccessPage: NextPage<PageProps> = ({ navigation, footer, paymentRef, paymentEmail, pdfBase64 }) => {
     const { locale, defaultLocale } = useRouter();
     const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
 
-    const handlePrint = React.useCallback(() => window.print(), []);
+    const handlePrint = React.useCallback(() => {
+        const pdfBlob = new Blob([new Uint8Array(Buffer.from(pdfBase64, 'base64'))], { type: 'application/pdf' });
+
+        window.open(URL.createObjectURL(pdfBlob), '_blank');
+    }, []);
 
     return (
         <>
             <NavigationContainer logo={navigation?.logo} sections={navigation?.sections} />
-            <div className="container mx-auto min-h-[calc(100vh-130px)] flex flex-col bg-gray-50">
+            <div className="container mx-auto min-h-[calc(100vh-130px)] flex flex-col">
                 <button type="button" className="self-end m-8" onClick={handlePrint}>
                     <IconComponent name="print" className="w-8 h-8" />
                 </button>
@@ -77,8 +83,11 @@ export const getServerSideProps: GetServerSideProps = async ({ res, req, locale,
     const cookies = new Cookies(req, res);
     const paymentRef = cookies.get('paymentRef');
     const paymentEmail = cookies.get('paymentEmail');
+    const validFrom = cookies.get('validFrom');
+    const validTo = cookies.get('validTo');
+    const count = cookies.get('count');
 
-    if (!paymentRef || !paymentEmail) {
+    if (!paymentRef || !paymentEmail || !validTo || !validFrom || !count) {
         return {
             redirect: {
                 destination: '/',
@@ -89,9 +98,32 @@ export const getServerSideProps: GetServerSideProps = async ({ res, req, locale,
 
     cookies.set('paymentRef', '', { httpOnly: true, maxAge: 0, sameSite: 'strict', path: '/' });
     cookies.set('paymentEmail', '', { httpOnly: true, maxAge: 0, sameSite: 'strict', path: '/' });
+    cookies.set('pdfBase64', '', { httpOnly: true, maxAge: 0, sameSite: 'strict', path: '/' });
+    cookies.set('validTo', '', { httpOnly: true, maxAge: 0, sameSite: 'strict', path: '/' });
+    cookies.set('count', '', { httpOnly: true, maxAge: 0, sameSite: 'strict', path: '/' });
 
     const navigation = await fetchHeaderData(client, locale, defaultLocale);
     const footer = await fetchFooterSectionData(client, locale, defaultLocale);
+
+    const pdfStream = await generatePdfDoc({
+        orderRef: paymentRef,
+        validTo: validTo,
+        validFrom: validFrom,
+        locale: locale ?? '',
+        count: count,
+    });
+
+    const chunks: Buffer[] = [];
+
+    for await (const chunk of pdfStream) {
+        if (Buffer.isBuffer(chunk)) {
+            chunks.push(chunk);
+        } else {
+            chunks.push(Buffer.from(chunk));
+        }
+    }
+    const pdfBuffer = Buffer.concat(chunks);
+    const pdfBase64 = pdfBuffer.toString('base64');
 
     return {
         props: {
@@ -99,6 +131,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res, req, locale,
             footer,
             paymentRef,
             paymentEmail,
+            pdfBase64,
         },
     };
 };

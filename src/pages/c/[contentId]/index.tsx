@@ -21,10 +21,9 @@ interface PageProps {
     navigation?: NavigationProps;
     content?: ContentProps;
     footer?: FooterProps;
-    isAuthenticated: boolean;
 }
 
-const Content: NextPage<PageProps> = ({ navigation, content, footer, isAuthenticated }) => (
+const Content: NextPage<PageProps> = ({ navigation, content, footer }) => (
     <div id={content?.slug} className="flex-grow bg-grey-50 min-h-screen">
         <Head>
             <title>{`${content?.label} | SeaSafari`}</title>
