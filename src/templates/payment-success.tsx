@@ -116,7 +116,7 @@ const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({ orderRef, count, 
         <Document>
             <Page size="A4" style={styles.page}>
                 <View style={[styles.headerContainer, styles.marginBottom]}>
-                    <Image style={styles.logo} source={`/images/logo.png`} />
+                    <Image style={styles.logo} source={`/static/images/logo.png`} />
                 </View>
                 <View style={styles.container}>
                     <View style={styles.innerContainer}>
@@ -134,7 +134,7 @@ const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({ orderRef, count, 
 
                         <View style={styles.row}>
                             <View style={styles.column}>
-                                <Image style={styles.photo} source={`/images/baltijos-jura.jpg`} />
+                                <Image style={styles.photo} source={`/static/images/baltijos-jura.jpg`} />
                             </View>
                             <View style={styles.column}>
                                 <View style={styles.section}>
