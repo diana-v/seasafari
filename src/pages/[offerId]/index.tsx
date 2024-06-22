@@ -86,14 +86,16 @@ const Offer: NextPage<PageProps> = ({ navigation, offer, footer, isAuthenticated
                     )}
                 </div>
 
-                <div className="flex flex-col sm:flex-row flex-wrap bg-white rounded p-8 gap-y-2">
-                    {offer?.cards?.map((card, index) => (
-                        <div key={index} className="flex gap-4 items-center sm:basis-1/2">
-                            <ImageContainer src={card.icon} height={40} width={40} className="w-8 h-8" />
-                            <p className="m-0">{card.title}</p>
-                        </div>
-                    ))}
-                </div>
+                {offer?.cards && (
+                    <div className="flex flex-col sm:flex-row flex-wrap bg-white rounded p-8 gap-y-2">
+                        {offer?.cards?.map((card, index) => (
+                            <div key={index} className="flex gap-4 items-center sm:basis-1/2">
+                                <ImageContainer src={card.icon} height={40} width={40} className="w-8 h-8" />
+                                <p className="m-0">{card.title}</p>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
         <FooterContainer items={footer?.items} contact={footer?.contact} />

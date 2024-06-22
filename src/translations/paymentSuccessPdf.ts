@@ -13,7 +13,7 @@ export const languages = {
         registrationDescription: '+37067572133',
         locationTitle: 'Location:',
         locationDescription:
-            '"Sea Safari", Danė River, Klaipėda (the exact location will be specified by the organizer)',
+            '„Sea Safari“, Danė River, Klaipėda (the exact location will be specified by the organizer)',
         durationTitle: 'Service duration:',
         durationDescription: '30min',
         validityTitle: 'Validity period:',
@@ -41,7 +41,7 @@ export const languages = {
         registrationTitle: 'Registracija:',
         registrationDescription: '+37067572133',
         locationTitle: 'Vieta:',
-        locationDescription: '"Sea Safari", Danės upė, Klaipėda (tikslią vietą patikslins pramogos organizatorius)',
+        locationDescription: '„Sea Safari“, Danės upė, Klaipėda (tikslią vietą patikslins pramogos organizatorius)',
         durationTitle: 'Paslaugos trukmė:',
         durationDescription: '30min',
         validityTitle: 'Galiojimo trukmė:',

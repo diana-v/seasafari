@@ -33,7 +33,7 @@ const PaymentSuccessPage: NextPage<PageProps> = ({ navigation, footer, paymentRe
     return (
         <>
             <NavigationContainer logo={navigation?.logo} sections={navigation?.sections} />
-            <div className="container mx-auto min-h-[calc(100vh-130px)] flex flex-col bg-gray-50">
+            <div className="container mx-auto min-h-[calc(100vh-130px)] flex flex-col">
                 <button type="button" className="self-end m-8" onClick={handlePrint}>
                     <IconComponent name="print" className="w-8 h-8" />
                 </button>
