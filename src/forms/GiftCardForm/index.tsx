@@ -54,6 +54,7 @@ export const GiftCardForm: React.FC<GiftCardFormProps> = ({ chips }) => {
                 reference: `SEA-${nanoid(8)}`,
                 email: email,
                 locale: locale,
+                count: chips.find((chip) => chip.value === value)?.label.split('-')[0] ?? '',
             }),
             method: 'POST',
         }).then(async (res) => {
