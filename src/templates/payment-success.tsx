@@ -3,6 +3,9 @@ import { Page, Text, View, Document, Image, Font, StyleSheet, renderToStream } f
 
 import { languages, LocaleType } from '@/translations/paymentSuccessPdf';
 
+import logo from '@/public/images/logo.svg';
+import baltijosJura from '@/public/images/baltijos-jura.png';
+
 Font.register({
     family: 'Roboto',
     fonts: [
@@ -116,7 +119,7 @@ const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({ orderRef, count, 
         <Document>
             <Page size="A4" style={styles.page}>
                 <View style={[styles.headerContainer, styles.marginBottom]}>
-                    <Image style={styles.logo} source={`${process.env.NEXT_PUBLIC_DOMAIN}/static/images/logo.png`} />
+                    <Image style={styles.logo} source={logo} />
                 </View>
                 <View style={styles.container}>
                     <View style={styles.innerContainer}>
@@ -136,7 +139,8 @@ const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({ orderRef, count, 
                             <View style={styles.column}>
                                 <Image
                                     style={styles.photo}
-                                    source={`${process.env.NEXT_PUBLIC_DOMAIN}/static/images/baltijos-jura.jpg`}
+                                    //@ts-ignore-next-line
+                                    source={baltijosJura}
                                 />
                             </View>
                             <View style={styles.column}>
