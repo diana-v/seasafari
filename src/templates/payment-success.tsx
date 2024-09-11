@@ -8,19 +8,19 @@ Font.register({
     family: 'Roboto',
     fonts: [
         {
-            src:  path.resolve('public/fonts/Roboto-Regular.ttf'),
+            src: path.resolve('public/fonts/Roboto-Regular.ttf'),
             fontWeight: 400,
         },
         {
-            src:  path.resolve('public/fonts/Roboto-Medium.ttf'),
+            src: path.resolve('public/fonts/Roboto-Medium.ttf'),
             fontWeight: 500,
         },
         {
-            src:  path.resolve('public/fonts/Roboto-Bold.ttf'),
+            src: path.resolve('public/fonts/Roboto-Bold.ttf'),
             fontWeight: 700,
         },
         {
-            src:  path.resolve('public/fonts/Roboto-Black.ttf'),
+            src: path.resolve('public/fonts/Roboto-Black.ttf'),
             fontWeight: 900,
         },
     ],
@@ -47,11 +47,11 @@ const styles = StyleSheet.create({
         maxHeight: '100%',
     },
     backgroundImage: {
-      objectFit: 'cover',
-      height: '100%',
-      maxHeight: '100%',
-      transform: 'scale(1.3)',
-      transformOrigin: 'right bottom',
+        objectFit: 'cover',
+        height: '100%',
+        maxHeight: '100%',
+        transform: 'scale(1.3)',
+        transformOrigin: 'right bottom',
     },
     logo: {
         width: 172,
@@ -163,7 +163,10 @@ const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({ orderRef, count, 
             <Page size="A4">
                 <View style={styles.pageContainer}>
                     <View style={styles.pageImage}>
-                        <Image style={styles.backgroundImage} source={path.join(process.cwd(), 'public', 'images', 'background.jpg')} />
+                        <Image
+                            style={styles.backgroundImage}
+                            source={path.join(process.cwd(), 'public', 'images', 'background.jpg')}
+                        />
                     </View>
                     <Image style={styles.logo} source={path.join(process.cwd(), 'public', 'images', 'logo.png')} />
                     <View style={styles.container}>
@@ -192,7 +195,9 @@ const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({ orderRef, count, 
                                 </View>
                                 <View style={styles.section}>
                                     <Text style={styles.sectionTitle}>{localisedString.registrationTitle}</Text>
-                                    <Text style={styles.sectionDescription}>{localisedString.registrationDescription}</Text>
+                                    <Text style={styles.sectionDescription}>
+                                        {localisedString.registrationDescription}
+                                    </Text>
                                 </View>
                                 <View style={styles.section}>
                                     <Text style={styles.sectionTitle}>{localisedString.locationTitle}</Text>
@@ -251,6 +256,12 @@ export const generatePdfDoc = async ({ orderRef, validFrom, validTo, count, loca
     const decodedCount = decodeURIComponent(count);
 
     return renderToStream(
-        <PaymentSuccessPDF orderRef={orderRef} count={decodedCount} validFrom={validFrom} validTo={validTo} locale={locale}/>
+        <PaymentSuccessPDF
+            orderRef={orderRef}
+            count={decodedCount}
+            validFrom={validFrom}
+            validTo={validTo}
+            locale={locale}
+        />
     );
 };
