@@ -33,7 +33,7 @@ export const languages = {
     lt: {
         giftCard: 'Dovanų Kuponas',
         title: 'Ekstremalus plaukimas kateriu Baltijos jūroje',
-        about: 'Apie Jūsų dovaną:',
+        about: 'Apie jūsų dovaną:',
         description:
             'Greitaeigis R.I.B. kateris ir Baltijos jūros bangų mūša nenuvils net ir didžiausių adrenalino fanatikų. Tai neišdildomų įspūdžių ir juoko kupinas ekstremalus plaukimas. Kelionės metu turėsite galimybę praplaukti Danės upe, pamatyti Baltijos jūros vartus. Tad užsisekite liemenes ir įsipatoginkite ir mėgaukitės nerūpestingos dienos šėlsmu ir adrenalino potyriais!',
         intentTitle: 'Dovana skirta:',
