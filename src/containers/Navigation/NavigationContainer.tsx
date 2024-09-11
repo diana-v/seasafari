@@ -71,7 +71,7 @@ export const NavigationContainer: React.FC<NavigationProps> = ({ logo, sections,
                     sections.map((section, index) => (
                         <a
                             key={index}
-                            href={`/#${section.title?.toLowerCase()}`}
+                            href={`/${locale === 'lt' ? '' : locale}#${section.title?.toLowerCase()}`}
                             className={cn('hover:text-red-800 capitalise')}
                         >
                             {section.title}

@@ -96,8 +96,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         cookies.set('paymentEmail', email, { sameSite: 'none', secureProxy: true });
         cookies.set('validFrom', validFrom.toISOString().split('T')[0], { sameSite: 'none', secureProxy: true });
         cookies.set('validTo', validTo.toISOString().split('T')[0], { sameSite: 'none', secureProxy: true });
-        cookies.set('count', count, { sameSite: 'none', secureProxy: true });
-        res.redirect(302, `/success`);
+        cookies.set('count', encodeURIComponent(count), { sameSite: 'none', secureProxy: true });
+        res.redirect(302, `/${locale}/success`);
     } catch {
         return res.status(500).send('Error');
     }

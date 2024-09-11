@@ -8,97 +8,142 @@ Font.register({
     family: 'Roboto',
     fonts: [
         {
-            src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-regular-webfont.ttf',
+            src: path.resolve('public/fonts/Roboto-Regular.ttf'),
             fontWeight: 400,
         },
         {
-            src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-bold-webfont.ttf',
+            src: path.resolve('public/fonts/Roboto-Medium.ttf'),
+            fontWeight: 500,
+        },
+        {
+            src: path.resolve('public/fonts/Roboto-Bold.ttf'),
             fontWeight: 700,
+        },
+        {
+            src: path.resolve('public/fonts/Roboto-Black.ttf'),
+            fontWeight: 900,
         },
     ],
 });
 
 const styles = StyleSheet.create({
-    page: {
+    pageContainer: {
         fontFamily: 'Roboto',
-        padding: 40,
-        backgroundColor: '#f0f0f0',
-        fontSize: 10,
-        justifyContent: 'center',
+        letterSpacing: 0.5,
+        paddingTop: 20,
+        paddingRight: 50,
+        paddingLeft: 50,
+        paddingBottom: 60,
+        display: 'flex',
+        flex: 1,
+    },
+    pageImage: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        height: 1123,
+        width: 794,
+        maxWidth: '100%',
+        maxHeight: '100%',
+    },
+    backgroundImage: {
+        objectFit: 'cover',
+        height: '100%',
+        maxHeight: '100%',
+        transform: 'scale(1.3)',
+        transformOrigin: 'right bottom',
+    },
+    logo: {
+        width: 172,
+        height: 76,
+        alignSelf: 'center',
+        marginBottom: 20,
     },
     container: {
-        backgroundColor: '#FFFFFF',
-        padding: 20,
-        borderRadius: 8,
-    },
-    innerContainer: {
-        padding: 20,
-        border: '1px solid #15496b',
-        borderRadius: 8,
-        position: 'relative',
-    },
-    headerContainer: {
-        backgroundColor: '#f0f0f0', // Gray background area
-        padding: 20,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 20, // Adjust as needed
-        position: 'relative',
+        backgroundColor: '#ffffff',
+        paddingTop: 16,
+        paddingBottom: 40,
+        paddingRight: 16,
+        paddingLeft: 16,
     },
     header: {
-        fontSize: 20,
-        marginBottom: 10,
+        fontSize: 28,
+        fontWeight: 900,
+        marginBottom: 16,
         textTransform: 'uppercase',
         color: '#15496b',
         textAlign: 'center',
     },
-    logo: {
-        width: 120,
-        height: 50,
+    titleContainer: {
+        marginBottom: 16,
     },
     title: {
-        fontSize: 14,
-        marginBottom: 10,
+        fontSize: 16,
         textAlign: 'center',
+        color: '#15496b',
     },
     section: {
-        marginBottom: 10,
+        marginBottom: 8,
     },
-    bold: {
-        fontWeight: 'bold',
+    sectionTitle: {
+        fontSize: 12,
+        fontWeight: 700,
+        color: '#15496b',
+        marginBottom: 2,
+    },
+    sectionDescription: {
+        fontSize: 10,
+        lineHeight: 1.2,
+        fontWeight: 400,
+        color: '#15496b',
+        whiteSpace: 'pre-line',
+    },
+    details: {
+        color: '#15496b',
+        fontSize: 10,
+        fontWeight: 400,
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 4,
+        alignItems: 'center',
     },
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 10,
         gap: 16,
+        marginBottom: 12,
     },
     column: {
         flexDirection: 'column',
         flex: 1,
-        paddingRight: 10,
+    },
+    footerColumn: {
+        flexDirection: 'column',
+        flex: 1,
+        gap: 8,
     },
     footer: {
-        marginTop: 20,
-        borderTop: '1px solid #15496b',
         paddingTop: 10,
-        fontSize: 8,
+        borderTop: '2px solid #A8352E',
     },
     textCenter: {
         textAlign: 'center',
     },
-    marginBottom: {
-        marginBottom: 16,
+    detailsTitle: {
+        fontWeight: 'bold',
     },
     bullet: {
-        color: '#888',
-        marginLeft: 10,
+        color: '#a8b3bd',
+        textAlign: 'right',
+        fontSize: 8,
     },
     photo: {
         flex: 1,
-        marginTop: 10,
         objectFit: 'cover',
+    },
+    space: {
+        marginTop: 8,
+        marginBottom: 6,
     },
 });
 
@@ -115,79 +160,88 @@ const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({ orderRef, count, 
 
     return (
         <Document>
-            <Page size="A4" style={styles.page}>
-                <View style={[styles.headerContainer, styles.marginBottom]}>
+            <Page size="A4">
+                <View style={styles.pageContainer}>
+                    <View style={styles.pageImage}>
+                        <Image
+                            style={styles.backgroundImage}
+                            source={path.join(process.cwd(), 'public', 'images', 'background.jpg')}
+                        />
+                    </View>
                     <Image style={styles.logo} source={path.join(process.cwd(), 'public', 'images', 'logo.png')} />
-                </View>
-                <View style={styles.container}>
-                    <View style={styles.innerContainer}>
-                        <View>
-                            <Text style={styles.header}>{localisedString.giftCard}</Text>
-                            <Text style={styles.title}>
-                                {localisedString.title} ({count})
-                            </Text>
+                    <View style={styles.container}>
+                        <Text style={styles.header}>{localisedString.giftCard}</Text>
+                        <View style={styles.titleContainer}>
+                            <Text style={styles.title}>{localisedString.title}</Text>
+                            <Text style={styles.title}>({count})</Text>
                         </View>
 
                         <View style={[styles.section, styles.textCenter]}>
-                            <Text style={styles.bold}>{localisedString.about}</Text>
-                            <Text>{localisedString.description}</Text>
+                            <Text style={styles.sectionTitle}>{localisedString.about}</Text>
+                            <Text style={[styles.sectionDescription, styles.space]}>{localisedString.description}</Text>
                         </View>
 
                         <View style={styles.row}>
                             <View style={styles.column}>
                                 <Image
                                     style={styles.photo}
-                                    source={path.join(process.cwd(), 'public', 'images', 'baltijos-jura.jpg')}
+                                    source={path.join(process.cwd(), 'public', 'images', 'offer.png')}
                                 />
                             </View>
                             <View style={styles.column}>
                                 <View style={styles.section}>
-                                    <Text style={styles.bold}>{localisedString.intentTitle}</Text>
-                                    <Text>{localisedString.intentDescription}</Text>
+                                    <Text style={styles.sectionTitle}>{localisedString.intentTitle}</Text>
+                                    <Text style={styles.sectionDescription}>{localisedString.intentDescription}</Text>
                                 </View>
                                 <View style={styles.section}>
-                                    <Text style={styles.bold}>{localisedString.registrationTitle}</Text>
-                                    <Text>{localisedString.registrationDescription}</Text>
+                                    <Text style={styles.sectionTitle}>{localisedString.registrationTitle}</Text>
+                                    <Text style={styles.sectionDescription}>
+                                        {localisedString.registrationDescription}
+                                    </Text>
                                 </View>
                                 <View style={styles.section}>
-                                    <Text style={styles.bold}>{localisedString.locationTitle}</Text>
-                                    <Text>{localisedString.locationDescription}</Text>
+                                    <Text style={styles.sectionTitle}>{localisedString.locationTitle}</Text>
+                                    <Text style={styles.sectionDescription}>{localisedString.locationDescription}</Text>
                                 </View>
                                 <View style={styles.section}>
-                                    <Text style={styles.bold}>{localisedString.durationTitle}</Text>
-                                    <Text>{localisedString.durationDescription}</Text>
+                                    <Text style={styles.sectionTitle}>{localisedString.durationTitle}</Text>
+                                    <Text style={styles.sectionDescription}>{localisedString.durationDescription}</Text>
                                 </View>
                                 <View style={styles.section}>
-                                    <Text style={styles.bold}>{localisedString.validityTitle}</Text>
-                                    <Text>{localisedString.validityDescription}</Text>
+                                    <Text style={styles.sectionTitle}>{localisedString.validityTitle}</Text>
+                                    <Text style={styles.sectionDescription}>{localisedString.validityDescription}</Text>
                                 </View>
                             </View>
                         </View>
                         <View style={styles.row}>
                             <View style={styles.section}>
-                                <Text style={styles.bold}>{localisedString.otherInfoTitle}</Text>
-                                <Text>{localisedString.otherInfoDescription}</Text>
+                                <Text style={styles.sectionTitle}>{localisedString.otherInfoTitle}</Text>
+                                <Text style={styles.sectionDescription}>{localisedString.otherInfoDescription}</Text>
                             </View>
                         </View>
 
                         {/* Footer */}
                         <View style={styles.footer}>
                             <View style={styles.row}>
-                                <View style={styles.column}>
-                                    <Text style={styles.bold}>
-                                        {localisedString.giftCardRef} {orderRef}
-                                    </Text>
-                                    <Text style={styles.bold}>
-                                        {localisedString.validFrom} {validFrom}
-                                    </Text>
-                                    <Text style={styles.bold}>
-                                        {localisedString.validTo} {validTo}
-                                    </Text>
+                                <View style={styles.footerColumn}>
+                                    <View style={styles.details}>
+                                        <Text style={styles.detailsTitle}>{localisedString.giftCardRef}</Text>
+                                        <Text>{orderRef}</Text>
+                                    </View>
+
+                                    <View style={styles.details}>
+                                        <Text style={styles.detailsTitle}>{localisedString.validFrom}</Text>
+                                        <Text>{validFrom}</Text>
+                                    </View>
+                                    <View style={styles.details}>
+                                        <Text style={styles.detailsTitle}>{localisedString.validTo}</Text>
+                                        <Text>{validTo}</Text>
+                                    </View>
                                 </View>
-                                <View style={styles.column}>
-                                    <Text style={styles.bullet}>• {localisedString.disclaimer1}</Text>
-                                    <Text style={styles.bullet}>• {localisedString.disclaimer2}</Text>
-                                    <Text style={styles.bullet}>• {localisedString.disclaimer3}</Text>
+                                <View style={styles.footerColumn}>
+                                    <Text style={styles.bullet}>- {localisedString.disclaimer1}</Text>
+                                    <Text style={styles.bullet}>- {localisedString.disclaimer2}</Text>
+                                    <Text style={styles.bullet}>- {localisedString.disclaimer3}</Text>
                                 </View>
                             </View>
                         </View>
@@ -198,7 +252,16 @@ const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({ orderRef, count, 
     );
 };
 
-export const generatePdfDoc = async ({ orderRef, validFrom, validTo, count, locale }: PaymentSuccessPDFProps) =>
-    renderToStream(
-        <PaymentSuccessPDF orderRef={orderRef} count={count} validFrom={validFrom} validTo={validTo} locale={locale} />
+export const generatePdfDoc = async ({ orderRef, validFrom, validTo, count, locale }: PaymentSuccessPDFProps) => {
+    const decodedCount = decodeURIComponent(count);
+
+    return renderToStream(
+        <PaymentSuccessPDF
+            orderRef={orderRef}
+            count={decodedCount}
+            validFrom={validFrom}
+            validTo={validTo}
+            locale={locale}
+        />
     );
+};
