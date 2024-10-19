@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import sendgrid from '@sendgrid/mail';
 import { Buffer } from 'node:buffer';
+import { eq } from 'drizzle-orm';
 
 import { db } from '@/server/db';
 import { orders, Status } from '@/server/db/schema';
@@ -32,7 +33,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     sendgrid.setApiKey(process.env.NEXT_PUBLIC_SENDGRID_API_KEY ?? '');
 
     if (!isString(ref) || !isString(email) || !isString(count) || !isString(locale) || !isString(amount)) {
-        return res.status(400).send('Invalid query parameters');
+        res.status(400).redirect(`/${locale}/error?errorCode=400`);
+
+        return;
+    }
+
+    const existingOrder = await db.select().from(orders).where(eq(orders.orderRef, ref));
+
+    if (existingOrder.length > 0) {
+        res.status(400).redirect(`/${locale}/error?errorCode=400`);
+
+        return;
     }
 
     try {
@@ -99,6 +110,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         cookies.set('count', encodeURIComponent(count), { sameSite: 'none', secureProxy: true });
         res.redirect(302, `/${locale}/success`);
     } catch {
-        return res.status(500).send('Error');
+        res.status(500).redirect(`/${locale}/error?errorCode=500`);
+
+        return;
     }
 };

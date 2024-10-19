@@ -46,9 +46,9 @@ const PaymentSuccessPage: NextPage<PageProps> = ({ navigation, footer, paymentRe
                         <h1 className="!mb-0 text-green-600">{localisedString.thankYou}</h1>
                         <h4 className="text-gray-900 font-bold">{localisedString.paymentSuccess}</h4>
                         <p className="text-gray-900">
-                            {localisedString.giftCardRef}{' '}
+                            {localisedString.giftCardRef}
                             <span className="!text-black font-bold m-0">{paymentRef} </span>
-                            {localisedString.giftCardEmail}{' '}
+                            {localisedString.giftCardEmail}
                             <span className="!text-black font-bold m-0">{paymentEmail}</span>
                         </p>
                         <Link href="/" className="underline underline-offset-4">
@@ -56,9 +56,9 @@ const PaymentSuccessPage: NextPage<PageProps> = ({ navigation, footer, paymentRe
                         </Link>
                     </div>
                     <p className="text-gray-400">
-                        {localisedString.disclaimerQuestion}{' '}
+                        {localisedString.disclaimerQuestion}
                         <Link href="/#kontaktai" className="underline underline-offset-4">
-                            {localisedString.disclaimerSubmitForm}{' '}
+                            {localisedString.disclaimerSubmitForm}
                         </Link>
                         {localisedString.disclaimerOr}{' '}
                         <Link className="underline underline-offset-4" href="mailto:seasafari.lietuva@gmail.com">
