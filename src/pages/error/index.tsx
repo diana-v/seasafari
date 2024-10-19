@@ -60,7 +60,7 @@ const client = createClient({
 });
 
 export const getServerSideProps: GetServerSideProps = async ({ locale, defaultLocale, query }) => {
-    const errorCode = query.errorCode;
+    const errorCode = query.errorCode ?? null;
     const navigation = await fetchHeaderData(client, locale, defaultLocale);
     const footer = await fetchFooterSectionData(client, locale, defaultLocale);
 
