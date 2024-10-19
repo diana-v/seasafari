@@ -3,7 +3,7 @@ export type LocaleType = 'en' | 'lt' | 'ru';
 export const languages = {
     en: {
         errorMessage: 'There was an error processing your request. Please try again later.',
-        disclaimerQuestion: "Do you have any questions or need support? ",
+        disclaimerQuestion: 'Do you have any questions or need support? ',
         disclaimerSubmitForm: 'Submit a contact form ',
         disclaimerOr: 'or reach out at ',
         disclaimerSendEmail: 'seasafari.lietuva@gmail.com',

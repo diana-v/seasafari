@@ -1,10 +1,11 @@
 import { useRouter } from 'next/router';
-import { languages, LocaleType } from '@/translations/error';
 import { GetServerSideProps, NextPage } from 'next';
-import { NavigationContainer, NavigationProps } from '@/containers/Navigation/NavigationContainer';
-import { FooterContainer, FooterProps } from '@/containers/Footer/FooterContainer';
 import Link from 'next/link';
 import { createClient } from '@sanity/client';
+
+import { languages, LocaleType } from '@/translations/error';
+import { NavigationContainer, NavigationProps } from '@/containers/Navigation/NavigationContainer';
+import { FooterContainer, FooterProps } from '@/containers/Footer/FooterContainer';
 import { fetchHeaderData } from '@/schemas/navigation';
 import { fetchFooterSectionData } from '@/schemas/footer';
 
@@ -25,8 +26,7 @@ const PaymentErrorPage: NextPage<PageProps> = ({ navigation, footer, errorCode }
                 <div className="max-w-lg mx-auto text-center flex flex-grow flex-col gap-4 items-center justify-around">
                     <div className="flex flex-col flex-grow gap-4 items-center justify-center relative">
                         {errorCode && (
-                            <div
-                                className="absolute flex items-center justify-center text-gray-100 text-[12rem] md:text-[28rem] lg:text-[36rem] font-bold overflow-hidden">
+                            <div className="absolute flex items-center justify-center text-gray-100 text-[12rem] md:text-[28rem] lg:text-[36rem] font-bold overflow-hidden">
                                 {errorCode}
                             </div>
                         )}
@@ -47,7 +47,7 @@ const PaymentErrorPage: NextPage<PageProps> = ({ navigation, footer, errorCode }
                     </p>
                 </div>
             </div>
-            <FooterContainer items={footer?.items} contact={footer?.contact}/>
+            <FooterContainer items={footer?.items} contact={footer?.contact} />
         </>
     );
 };
@@ -71,6 +71,6 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, defaultLo
             errorCode,
         },
     };
-}
+};
 
 export default PaymentErrorPage;

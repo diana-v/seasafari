@@ -2,11 +2,11 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
 import sendgrid from '@sendgrid/mail';
 import { Buffer } from 'node:buffer';
+import { eq } from 'drizzle-orm';
 
 import { db } from '@/server/db';
 import { orders, Status } from '@/server/db/schema';
 import { generatePdfDoc } from '@/templates/payment-success';
-import { eq } from "drizzle-orm";
 
 const getTemplateId = (locale: string): string => {
     switch (locale) {
@@ -34,6 +34,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (!isString(ref) || !isString(email) || !isString(count) || !isString(locale) || !isString(amount)) {
         res.status(400).redirect(`/${locale}/error?errorCode=400`);
+
         return;
     }
 
@@ -41,6 +42,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (existingOrder.length > 0) {
         res.status(400).redirect(`/${locale}/error?errorCode=400`);
+
         return;
     }
 
@@ -109,6 +111,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         res.redirect(302, `/success`);
     } catch {
         res.status(500).redirect(`/${locale}/error?errorCode=500`);
+
         return;
     }
 };
