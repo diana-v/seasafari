@@ -98,7 +98,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res, req, locale,
 
     cookies.set('paymentRef', '', { httpOnly: true, maxAge: 0, sameSite: 'strict', path: '/' });
     cookies.set('paymentEmail', '', { httpOnly: true, maxAge: 0, sameSite: 'strict', path: '/' });
-    cookies.set('pdfBase64', '', { httpOnly: true, maxAge: 0, sameSite: 'strict', path: '/' });
+    cookies.set('validFrom', '', { httpOnly: true, maxAge: 0, sameSite: 'strict', path: '/' });
     cookies.set('validTo', '', { httpOnly: true, maxAge: 0, sameSite: 'strict', path: '/' });
     cookies.set('count', '', { httpOnly: true, maxAge: 0, sameSite: 'strict', path: '/' });
 
