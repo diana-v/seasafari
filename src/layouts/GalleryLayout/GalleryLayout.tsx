@@ -75,7 +75,7 @@ export const GalleryLayout: React.FC<GalleryProps> = ({ sectionTitle, title, des
                                                     src={card.image}
                                                     width={500}
                                                     height={500}
-                                                    className="flex-grow object-cover"
+                                                    className="h-100 flex-grow object-cover"
                                                 />
                                             )}
                                         </Link>
@@ -85,7 +85,7 @@ export const GalleryLayout: React.FC<GalleryProps> = ({ sectionTitle, title, des
                                                 src={card.image}
                                                 width={500}
                                                 height={500}
-                                                className="flex-grow object-cover"
+                                                className="h-full flex-grow object-cover"
                                             />
                                         )
                                     )}
