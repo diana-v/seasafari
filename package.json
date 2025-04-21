@@ -23,6 +23,7 @@
     "@sanity/cli": "^3.32.0",
     "@sanity/client": "^6.17.0",
     "@sanity/document-internationalization": "^2.1.0",
+    "@sanity/image-url": "^1.1.0",
     "@sanity/orderable-document-list": "^1.2.1",
     "@sanity/vision": "^3.32.0",
     "@sendgrid/mail": "^7.7.0",
