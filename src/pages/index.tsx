@@ -88,6 +88,8 @@ const Home: NextPage<PageProps> = ({
                 title={home?.title}
                 videoMp4={home?.videoMp4}
                 videoWebm={home?.videoWebm}
+                image={home?.image}
+                heroMedia={home?.heroMedia}
             />
             <AboutLayout sectionTitle={about?.sectionTitle} description={about?.description} image={about?.image} />
             <OffersLayout
