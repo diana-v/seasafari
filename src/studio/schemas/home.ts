@@ -27,6 +27,44 @@ export default defineType({
             title: 'Video mp4',
             type: 'file',
         }),
+        defineField({
+            name: 'image',
+            title: 'Image',
+            type: 'file',
+        }),
+        defineField({
+            name: 'heroMedia',
+            title: 'Hero Media',
+            type: 'object',
+            fields: [
+                defineField({
+                    name: 'desktopContent',
+                    title: 'Desktop Content Type',
+                    type: 'string',
+                    options: {
+                        list: [
+                            { title: 'Image', value: 'image' },
+                            { title: 'Video', value: 'video' },
+                        ],
+                        layout: 'radio',
+                        direction: 'horizontal',
+                    },
+                }),
+                defineField({
+                    name: 'mobileContent',
+                    title: 'Mobile Content Type',
+                    type: 'string',
+                    options: {
+                        list: [
+                            { title: 'Image', value: 'image' },
+                            { title: 'Video', value: 'video' },
+                        ],
+                        layout: 'radio',
+                        direction: 'horizontal',
+                    },
+                }),
+            ],
+        }),
     ],
     preview: {
         select: {
