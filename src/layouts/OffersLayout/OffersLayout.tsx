@@ -37,7 +37,7 @@ export const OffersLayout: React.FC<OffersProps> = ({ sectionTitle, title, descr
                     </div>
                 )}
 
-                <div className="flex flex-wrap flex-col md:flex-row gap-4 lg:gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
                     {cards?.map((card, index) => (
                         <Link
                             key={index}
@@ -45,7 +45,7 @@ export const OffersLayout: React.FC<OffersProps> = ({ sectionTitle, title, descr
                                 pathname: '/[locale]/[offerId]',
                                 query: { offerId: card.slug, locale },
                             }}
-                            className="flex-grow basis-1 md:basis-1/3 lg:basis-1/4 max-w-[480px]"
+                            className="max-w-[480px]"
                         >
                             <CardComponent
                                 classNames={{ root: 'mb-4 h-full w-full', image: 'h-[250px] brightness-50' }}

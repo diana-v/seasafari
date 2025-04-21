@@ -12,6 +12,7 @@ export enum Icons {
     hamburger = 'hamburger',
     phone = 'phone',
     pin = 'pin',
+    calendar = 'calendar',
 }
 
 interface ComponentProps {

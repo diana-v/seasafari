@@ -41,6 +41,26 @@ export default defineType({
         defineArrayMember({
             type: 'image',
             options: { hotspot: true },
+            fields: [
+                {
+                    name: 'position',
+                    title: 'Position',
+                    type: 'string',
+                    options: {
+                        list: [
+                            { title: 'Left', value: 'left' },
+                            { title: 'Right', value: 'right' },
+                            { title: 'Center', value: 'center' },
+                        ],
+                        layout: 'radio',
+                    },
+                },
+                {
+                    name: 'alt',
+                    type: 'string',
+                    title: 'Alt Text',
+                },
+            ],
         }),
     ],
 });

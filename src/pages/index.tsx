@@ -22,6 +22,8 @@ import { fetchGallerySectionData } from '@/schemas/gallery';
 import { GalleryLayout, GalleryProps } from '@/layouts/GalleryLayout/GalleryLayout';
 import { FooterContainer, FooterProps } from '@/containers/Footer/FooterContainer';
 import { fetchFooterSectionData } from '@/schemas/footer';
+import { BlogsLayout, BlogsProps } from '@/layouts/BlogsLayout/BlogsLayout';
+import { fetchBlogsSectionData } from '@/schemas/blogs';
 
 interface PageProps {
     navigation?: NavigationProps;
@@ -30,6 +32,7 @@ interface PageProps {
     offers?: OffersProps;
     safety?: SafetyProps;
     gallery?: GalleryProps;
+    blogs?: BlogsProps;
     faq?: FAQProps;
     reviews?: ReviewsProps;
     contact?: ContactProps;
@@ -43,6 +46,7 @@ const Home: NextPage<PageProps> = ({
     about,
     offers,
     safety,
+    blogs,
     faq,
     gallery,
     reviews,
@@ -111,6 +115,12 @@ const Home: NextPage<PageProps> = ({
                 description={gallery?.description}
                 cards={gallery?.cards}
             />
+            <BlogsLayout
+                sectionTitle={blogs?.sectionTitle}
+                title={blogs?.title}
+                description={blogs?.description}
+                cards={blogs?.cards}
+            />
             <FAQLayout
                 sectionTitle={faq?.sectionTitle}
                 title={faq?.title}
@@ -142,8 +152,9 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, defaultLo
     const about = await fetchAboutSectionData(client, locale, defaultLocale);
     const offers = await fetchOffersSectionData(client, locale, defaultLocale);
     const safety = await fetchSafetySectionData(client, locale, defaultLocale);
-    const faq = await fetchFAQSectionData(client, locale, defaultLocale);
     const gallery = await fetchGallerySectionData(client, locale, defaultLocale);
+    const blogs = await fetchBlogsSectionData(client, locale, defaultLocale);
+    const faq = await fetchFAQSectionData(client, locale, defaultLocale);
     const reviews = await fetchReviewsSectionData(client, locale, defaultLocale);
     const contact = await fetchContactSectionData(client, locale, defaultLocale);
     const footer = await fetchFooterSectionData(client, locale, defaultLocale);
@@ -155,8 +166,9 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, defaultLo
             about,
             offers,
             safety,
-            faq,
             gallery,
+            blogs,
+            faq,
             reviews,
             contact,
             footer,
