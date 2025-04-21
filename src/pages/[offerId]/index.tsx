@@ -37,10 +37,9 @@ interface PageProps {
     navigation?: NavigationProps;
     offer?: OfferProps;
     footer?: FooterProps;
-    isAuthenticated: boolean;
 }
 
-const Offer: NextPage<PageProps> = ({ navigation, offer, footer, isAuthenticated }) => (
+const Offer: NextPage<PageProps> = ({ navigation, offer, footer }) => (
     <div id={offer?.slug ?? ''} className="flex-grow bg-grey-50 min-h-screen">
         <Head>
             <title>{`${offer?.title ?? ''} | SeaSafari`}</title>

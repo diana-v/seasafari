@@ -26,7 +26,7 @@ export const ReviewsLayout: React.FC<ReviewsProps> = ({ sectionTitle, title, car
     return (
         <div
             id={sectionTitle?.toLowerCase()}
-            className="container mx-auto px-4 my-8 md:my-16 lg:my-24 flex flex-col items-center gap-6 md:gap-10 lg:gap-16"
+            className="container mx-auto px-4 my-8 md:my-16 lg:my-24 flex flex-col items-center"
         >
             {title && <h1 className="uppercase">{title}</h1>}
             <div className="flex-grow w-full">

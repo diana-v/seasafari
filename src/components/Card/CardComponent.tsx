@@ -1,14 +1,18 @@
 import * as React from 'react';
 import cn from 'clsx';
 import { TypedObject } from '@portabletext/types';
+import Link from 'next/link';
+import type { UrlObject } from 'node:url';
 
 import { ImageContainer } from '@/containers/Image/ImageContainer';
 import { RichTextComponent } from '@/components/RichText/RichTextComponent';
+import { IconComponent } from '@/components/Icon/IconComponent';
 
 export enum CardType {
     Icon = 'icon',
     Image = 'image',
     Review = 'review',
+    Blog = 'blog',
 }
 
 interface ComponentProps {
@@ -18,6 +22,9 @@ interface ComponentProps {
     description?: string;
     icon?: string;
     image?: string;
+    linkUrl?: string | UrlObject;
+    linkTitle?: string;
+    createdAt?: string;
     onClick?: () => void;
     classNames?: {
         root?: string;
@@ -85,12 +92,53 @@ const ReviewCard = ({ title, image, description, classNames }: Partial<Component
     </div>
 );
 
+const BlogCard = ({
+    title,
+    image,
+    description,
+    linkUrl,
+    linkTitle,
+    createdAt,
+    classNames,
+}: Partial<ComponentProps>) => (
+    <div className={cn('bg-white rounded border border-grey-100', classNames?.root)}>
+        <div className="flex flex-col gap-4 grow h-full">
+            {image && (
+                <ImageContainer
+                    src={image}
+                    width={500}
+                    height={250}
+                    className={cn('w-full object-cover rounded-t', classNames?.image)}
+                />
+            )}
+            <div className="px-4 grow h-full flex flex-col justify-between">
+                <div>
+                    {title && <h4 className="mb-0">{title}</h4>}
+                    {description && <p className="mb-0">{description}</p>}
+                </div>
+                {linkUrl && (
+                    <Link className="underline underline-offset-4 py-2 text-red-900 rounded" href={linkUrl}>
+                        {linkTitle}
+                    </Link>
+                )}
+            </div>
+            <div className="bg-grey-50 text-grey-400 text-sm p-4 border-t border-grey-100 flex gap-2 items-center">
+                <IconComponent name="calendar" className="w-4 h-4 text-grey-400" />
+                {createdAt && createdAt?.split('T')[0]}
+            </div>
+        </div>
+    </div>
+);
+
 export const CardComponent: React.FC<ComponentProps> = ({
     type,
     title,
     description,
     icon,
     image,
+    linkUrl,
+    linkTitle,
+    createdAt,
     onClick,
     classNames = {},
 }) => {
@@ -104,6 +152,19 @@ export const CardComponent: React.FC<ComponentProps> = ({
             }
             case CardType.Review: {
                 return <ReviewCard title={title} image={image} description={description} classNames={classNames} />;
+            }
+            case CardType.Blog: {
+                return (
+                    <BlogCard
+                        title={title}
+                        image={image}
+                        description={description}
+                        linkUrl={linkUrl}
+                        linkTitle={linkTitle}
+                        createdAt={createdAt}
+                        classNames={classNames}
+                    />
+                );
             }
             default: {
                 return null;
