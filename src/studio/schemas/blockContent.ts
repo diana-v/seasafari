@@ -62,5 +62,32 @@ export default defineType({
                 },
             ],
         }),
+        defineArrayMember({
+            type: 'file',
+            title: 'Video',
+            options: {
+                accept: 'video/mp4',
+            },
+            fields: [
+                {
+                    name: 'position',
+                    title: 'Position',
+                    type: 'string',
+                    options: {
+                        list: [
+                            { title: 'Left', value: 'left' },
+                            { title: 'Right', value: 'right' },
+                            { title: 'Center', value: 'center' },
+                        ],
+                        layout: 'radio',
+                    },
+                },
+                {
+                    name: 'alt',
+                    type: 'string',
+                    title: 'Alt Text',
+                },
+            ],
+        }),
     ],
 });
