@@ -9,7 +9,7 @@ export const languages = {
         disclaimerQuestion: "Didn't receive the email or have any other questions? ",
         disclaimerSubmitForm: 'Submit a contact form ',
         disclaimerOr: 'or reach out at ',
-        disclaimerSendEmail: 'seasafari.lietuva@gmail.com',
+        disclaimerSendEmail: process.env.NEXT_PUBLIC_SENDGRID_EMAIL,
         link: 'Back to Home',
     },
     lt: {
@@ -20,7 +20,7 @@ export const languages = {
         disclaimerQuestion: 'Negavote el. pašto ar turite kitų klausimų? ',
         disclaimerSubmitForm: 'Užpildykite kontaktinę formą ',
         disclaimerOr: 'arba susisiekite su mumis adresu ',
-        disclaimerSendEmail: 'seasafari.lietuva@gmail.com',
+        disclaimerSendEmail: process.env.NEXT_PUBLIC_SENDGRID_EMAIL,
         link: 'Grįžti į pagrindinį puslapį',
     },
     ru: {
@@ -31,7 +31,7 @@ export const languages = {
         disclaimerQuestion: 'Не получили электронное письмо или есть другие вопросы? ',
         disclaimerSubmitForm: 'Отправьте контактную форму ',
         disclaimerOr: 'или свяжитесь с нами по ',
-        disclaimerSendEmail: 'seasafari.lietuva@gmail.com',
+        disclaimerSendEmail: process.env.NEXT_PUBLIC_SENDGRID_EMAIL,
         link: 'Вернуться на главную',
     },
 };

@@ -61,7 +61,10 @@ const PaymentSuccessPage: NextPage<PageProps> = ({ navigation, footer, paymentRe
                             {localisedString.disclaimerSubmitForm}
                         </Link>
                         {localisedString.disclaimerOr}{' '}
-                        <Link className="underline underline-offset-4" href="mailto:seasafari.lietuva@gmail.com">
+                        <Link
+                            className="underline underline-offset-4"
+                            href={`mailto:${process.env.NEXT_PUBLIC_SENDGRID_EMAIL}`}
+                        >
                             {localisedString.disclaimerSendEmail}
                         </Link>
                     </p>
