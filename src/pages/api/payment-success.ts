@@ -1,23 +1,34 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cookies from 'cookies';
-import sendgrid from '@sendgrid/mail';
 import { Buffer } from 'node:buffer';
 import { eq } from 'drizzle-orm';
+import { Resend } from 'resend';
 
 import { db } from '@/server/db';
 import { orders, Status } from '@/server/db/schema';
 import { generatePdfDoc } from '@/templates/payment-success';
+import LtTemplate from '@/templates/lt-template';
+import EnTemplate from '@/templates/en-template';
+import RuTemplate from '@/templates/ru-template';
+import { languages, LocaleType } from '@/translations/success';
 
-const getTemplateId = (locale: string): string => {
+const getTemplate = (
+    locale: string,
+    ref: string,
+    email: string,
+    amount: string,
+    validFrom: string,
+    validTo: string
+): string => {
     switch (locale) {
         case 'lt': {
-            return process.env.SENDGRID_GIFTCARD_TEMPLATE_ID_LT ?? '';
+            return LtTemplate(ref, email, amount, validFrom, validTo);
         }
         case 'ru': {
-            return process.env.SENDGRID_GIFTCARD_TEMPLATE_ID_RU ?? '';
+            return RuTemplate(ref, email, amount, validFrom, validTo);
         }
         default: {
-            return process.env.SENDGRID_GIFTCARD_TEMPLATE_ID_EN ?? '';
+            return EnTemplate(ref, email, amount, validFrom, validTo);
         }
     }
 };
@@ -27,10 +38,11 @@ const isString = (value: unknown): value is string => {
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-    const { ref, email, amount, count, locale } = req.query;
+    const { ref, email, amount, count, locale, defaultLocale } = req.query;
     const cookies = new Cookies(req, res);
+    const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
 
-    sendgrid.setApiKey(process.env.NEXT_PUBLIC_SENDGRID_API_KEY ?? '');
+    const resend = new Resend(process.env.RESEND_API_KEY ?? '');
 
     if (!isString(ref) || !isString(email) || !isString(count) || !isString(locale) || !isString(amount)) {
         res.status(400).redirect(`/${locale}/error?errorCode=400`);
@@ -82,23 +94,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const pdfBuffer = Buffer.concat(chunks);
         const attachment = pdfBuffer.toString('base64');
 
-        await sendgrid.send({
+        await resend.emails.send({
             to: email,
-            from: process.env.NEXT_PUBLIC_SENDGRID_EMAIL ?? '',
-            templateId: getTemplateId(locale),
-            dynamicTemplateData: {
-                ref: ref,
-                email: email,
-                amount: amount,
-                validFrom: validFrom.toISOString().split('T')[0],
-                validTo: validTo.toISOString().split('T')[0],
-            },
+            from: process.env.NEXT_PUBLIC_RESEND_FROM_EMAIL ?? '',
+            subject: `${localisedString.giftCardEmailSubject} - ${ref}`,
+            html: getTemplate(
+                locale,
+                ref,
+                email,
+                amount,
+                validFrom.toISOString().split('T')[0],
+                validTo.toISOString().split('T')[0]
+            ),
             attachments: [
                 {
                     content: attachment,
                     filename: `${ref}.pdf`,
-                    type: 'application/pdf',
-                    disposition: 'attachment',
+                    contentType: 'application/pdf',
                 },
             ],
         });
