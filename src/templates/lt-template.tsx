@@ -126,7 +126,7 @@ const LtTemplate = (ref: string, email: string, amount: string, validFrom: strin
         <p class="closing>Iki pasimatymo, <br/> SeaSafari komanda</p>
     </div>
     <div class="footer">
-        <p>&copy; 2024 SeaSafari. Visos teisės saugomos.</p>
+        <p>&copy; 2025 SeaSafari. Visos teisės saugomos.</p>
         <p>SeaSafari, Danės g. 5, Klaipėda</p>
     </div>
 </div>
