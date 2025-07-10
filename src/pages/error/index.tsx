@@ -43,7 +43,7 @@ const PaymentErrorPage: NextPage<PageProps> = ({ navigation, footer, errorCode }
                         {localisedString.disclaimerOr}
                         <Link
                             className="underline underline-offset-4"
-                            href={`mailto:${process.env.NEXT_PUBLIC_SENDGRID_EMAIL}`}
+                            href={`mailto:${process.env.NEXT_PUBLIC_RESEND_FROM_EMAIL}`}
                         >
                             {localisedString.disclaimerSendEmail}
                         </Link>

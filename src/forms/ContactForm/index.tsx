@@ -37,8 +37,8 @@ const ContactForm = () => {
         async ({ name, from, message }: Values, { resetForm }: FormikHelpers<Values>) => {
             await fetch('/api/send-email', {
                 body: JSON.stringify({
-                    to: process.env.NEXT_PUBLIC_SENDGRID_EMAIL,
-                    from: process.env.NEXT_PUBLIC_SENDGRID_EMAIL,
+                    to: process.env.NEXT_PUBLIC_RESEND_TO_EMAIL,
+                    from: process.env.NEXT_PUBLIC_RESEND_FROM_EMAIL,
                     subject: `Seasafari užklausa - ${name}`,
                     text: `Vardas: ${name}\n\n El. Paštas: ${from}\n\n Žinutė: ${message}`,
                 }),

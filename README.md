@@ -11,7 +11,7 @@ It is deployed using Vercel to the following domains:
 1. Install Node LTS (the latest working version v20.10.0)
 2. Copy file `.env` to `env.development.local`
 3. Go to https://www.sanity.io/ and grab secrets
-4. Go to https://app.sendgrid.com/ and grab secrets
+4. Go to https://resend.com/ and grab secrets
 4. `npm ci` Install modules
 5. `npm run dev` Start local server
 6. `npm run sanity:dev` Start Sanity studio local server
@@ -32,7 +32,7 @@ By introducing new Environment variables or modifying existing one please read b
 
 -   [NextJs](https://nextjs.org) + [Typescript](https://www.typescriptlang.org)
 -   [Sanity](https://www.sanity.io/)
--   [SendGrid](https://app.sendgrid.com/) for the contact form emails
+-   [Resend](https://resend.com/) for the contact form emails
 -   [TailwindCss](https://tailwindcss.com) - because it is tree-shakable
 -   [Eslint](https://eslint.org) + [prettier](https://prettier.io) - Code quality
 -   [Stylelint](https://stylelint.io) + [prettier](https://prettier.io) - Code Quality
