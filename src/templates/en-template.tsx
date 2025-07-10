@@ -124,7 +124,7 @@ const EnTemplate = (ref: string, email: string, amount: string, validFrom: strin
         <p class="closing">Best regards,<br>SeaSafari Team</p>
     </div>
     <div class="footer">
-        <p>&copy; 2024 SeaSafari. All rights reserved.</p>
+        <p>&copy; 2025 SeaSafari. All rights reserved.</p>
         <p>SeaSafari, Danės g. 5, Klaipėda</p>
     </div>
 </div>

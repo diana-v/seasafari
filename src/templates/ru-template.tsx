@@ -125,7 +125,7 @@ const RuTemplate = (ref: string, email: string, amount: string, validFrom: strin
         <p class="closing">С наилучшими пожеланиями,<br>Команда SeaSafari</p>
     </div>
     <div class="footer">
-        <p>&copy; 2024 SeaSafari. Все права защищены.</p>
+        <p>&copy; 2025 SeaSafari. Все права защищены.</p>
         <p>SeaSafari, Danės g. 5, Клайпеда</p>
     </div>
 </div>

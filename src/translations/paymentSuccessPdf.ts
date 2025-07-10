@@ -8,7 +8,6 @@ export const languages = {
         description:
             'The high-speed R.I.B. boat and the waves of the Baltic Sea will not disappoint even the biggest adrenaline fans. This is an extreme ride full of unforgettable experiences and laughter. During the trip, you will have the opportunity to sail along the Danė River, see the gates of the Baltic Sea. So fasten your life jackets and get comfortable and enjoy the carefree day full of adrenaline!',
         intentTitle: 'The gift is for:',
-        intentCount: 'person coupon',
         intentDescription: 'The number of persons is specified in the title',
         registrationTitle: 'Registration:',
         registrationDescription: '+37067572133',
@@ -38,7 +37,6 @@ export const languages = {
         description:
             'Greitaeigis R.I.B. kateris ir Baltijos jūros bangų mūša nenuvils net ir didžiausių adrenalino fanatikų. Tai neišdildomų įspūdžių ir juoko kupinas ekstremalus plaukimas. Kelionės metu turėsite galimybę praplaukti Danės upe, pamatyti Baltijos jūros vartus. Tad užsisekite liemenes ir įsipatoginkite ir mėgaukitės nerūpestingos dienos šėlsmu ir adrenalino potyriais!',
         intentTitle: 'Dovana skirta:',
-        intentCount: 'asm. kuponas',
         intentDescription: 'Asmenų skaičius nurodytas pavadinime',
         registrationTitle: 'Registracija:',
         registrationDescription: '+37067572133',
@@ -67,7 +65,6 @@ export const languages = {
         description:
             'Высокоскоростной катер R.I.B. и волны Балтийского моря не разочаруют даже самых больших любителей адреналина. Это экстремальная поездка, полная незабываемых впечатлений и смеха. Во время поездки у вас будет возможность проплыть по реке Дане, увидеть ворота Балтийского моря. Так что пристегните спасательные жилеты, устройтесь поудобнее и наслаждайтесь беззаботным днем, полным адреналина!',
         intentTitle: 'Подарок предназначен:',
-        intentCount: 'персональный купон',
         intentDescription: 'Количество человек указано в названии',
         registrationTitle: 'Регистрация:',
         registrationDescription: '+37067572133',
