@@ -7,31 +7,8 @@ import { Resend } from 'resend';
 import { db } from '@/server/db';
 import { orders, Status } from '@/server/db/schema';
 import { generatePdfDoc } from '@/templates/payment-success';
-import LtTemplate from '@/templates/lt-template';
-import EnTemplate from '@/templates/en-template';
-import RuTemplate from '@/templates/ru-template';
 import { languages, LocaleType } from '@/translations/success';
-
-const getTemplate = (
-    locale: string,
-    ref: string,
-    email: string,
-    amount: string,
-    validFrom: string,
-    validTo: string
-): string => {
-    switch (locale) {
-        case 'lt': {
-            return LtTemplate(ref, email, amount, validFrom, validTo);
-        }
-        case 'ru': {
-            return RuTemplate(ref, email, amount, validFrom, validTo);
-        }
-        default: {
-            return EnTemplate(ref, email, amount, validFrom, validTo);
-        }
-    }
-};
+import { getTemplate } from '@/utils/getTemplate';
 
 const isString = (value: unknown): value is string => {
     return typeof value === 'string';

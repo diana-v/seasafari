@@ -160,6 +160,37 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
         [searchTerm, sortBy]
     );
 
+    const handleResendEmail = React.useCallback(
+        async (item: Order) => {
+            try {
+                const res = await fetch('/api/resend-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        orderRef: item.orderRef,
+                        email: item.orderEmail,
+                        amount: item.orderAmount,
+                        validFrom: item.validFrom,
+                        validTo: item.validTo,
+                        locale: locale ?? defaultLocale,
+                    }),
+                });
+
+                if (res.ok) {
+                    setAlert({ message: localisedString.emailResent, type: AlertType.Success });
+                } else {
+                    setAlert({ message: localisedString.emailResendError, type: AlertType.Error });
+                }
+            } catch (error) {
+                console.error(error);
+                setAlert({ message: localisedString.emailResendError, type: AlertType.Error });
+            } finally {
+                setTimeout(() => setAlert({ message: '', type: AlertType.Error }), 5000);
+            }
+        },
+        [locale, defaultLocale, localisedString]
+    );
+
     return (
         <>
             <NavigationContainer logo={navigation?.logo} isAuthenticated />
@@ -271,6 +302,9 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
                                             />
                                         </div>
                                     </th>
+                                    <th scope="col">
+                                        <div className={styles.tableHead}>{localisedString.actions}</div>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
@@ -293,6 +327,14 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
                                                     onChange={() => handleUpdateStatus(item)}
                                                     checked={item.status === Status.COMPLETED}
                                                 />
+                                            </td>
+                                            <td className={styles.tableDetail}>
+                                                <button
+                                                    className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                                                    onClick={() => handleResendEmail(item)}
+                                                >
+                                                    {localisedString.resendEmail}
+                                                </button>
                                             </td>
                                         </tr>
                                     ))
