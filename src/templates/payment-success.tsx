@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
 
 interface PaymentSuccessPDFProps {
     orderRef: string;
-    count: string;
+    count?: string;
     validFrom: string;
     validTo: string;
     locale: string;
@@ -173,7 +173,7 @@ const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({ orderRef, count, 
                         <Text style={styles.header}>{localisedString.giftCard}</Text>
                         <View style={styles.titleContainer}>
                             <Text style={styles.title}>{localisedString.title}</Text>
-                            <Text style={styles.title}>({count})</Text>
+                            {count && <Text style={styles.title}>({count})</Text>}
                         </View>
 
                         <View style={[styles.section, styles.textCenter]}>
@@ -253,7 +253,7 @@ const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({ orderRef, count, 
 };
 
 export const generatePdfDoc = async ({ orderRef, validFrom, validTo, count, locale }: PaymentSuccessPDFProps) => {
-    const decodedCount = decodeURIComponent(count);
+    const decodedCount = count ? decodeURIComponent(count) : undefined;
 
     return renderToStream(
         <PaymentSuccessPDF

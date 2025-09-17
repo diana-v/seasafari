@@ -15,6 +15,10 @@ export const languages = {
         noOrdersFound: 'No Orders found based on search criteria',
         sortError: 'Error filtering orders',
         updateError: 'Error updating order',
+        actions: 'Actions',
+        resendEmail: 'Resend Email',
+        emailResent: 'Email resent successfully!',
+        emailResendError: 'Failed to resend email.',
     },
     lt: {
         logout: 'Atsijungti',
@@ -30,6 +34,10 @@ export const languages = {
         noOrdersFound: 'Pagal paieškos kriterijus užsakymų nerasta',
         sortError: 'Klaida filtruojant užsakymus',
         updateError: 'Klaida atnaujinant užsakymą',
+        actions: 'Veiksmai',
+        resendEmail: 'Siųsti laišką dar kartą',
+        emailResent: 'Laiškas sėkmingai išsiųstas!',
+        emailResendError: 'Nepavyko išsiųsti laiško.',
     },
     ru: {
         logout: 'Выход',
@@ -45,5 +53,9 @@ export const languages = {
         noOrdersFound: 'По заданным критериям заказов не найдено',
         sortError: 'Ошибка фильтрации заказов',
         updateError: 'Ошибка при обновлении заказа',
+        actions: 'действия',
+        resendEmail: 'Отправить письмо снова',
+        emailResent: 'Письмо успешно отправлено!',
+        emailResendError: 'Не удалось отправить письмо.',
     },
 };
