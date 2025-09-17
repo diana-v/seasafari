@@ -21,4 +21,4 @@ export const getTemplate = (
             return EnTemplate(ref, email, amount, validFrom, validTo);
         }
     }
-}
+};
