@@ -50,14 +50,15 @@ const Offer: NextPage<PageProps> = ({ navigation, offer, footer }) => {
             <NavigationContainer logo={navigation?.logo} phone={navigation?.phone} isSimple />
 
             <div className="xl:container max-w-7xl min-h-[calc(100vh-130px)] mx-auto px-4 py-8 md:py-16 lg:py-24 flex flex-col flex-wrap gap-2 md:gap-4 lg:gap-6">
-                {offer?.title && (
-                    <div className="max-w-5xl">
-                        <h2>{offer.title}</h2>
-                    </div>
-                )}
                 <div className="flex flex-col-reverse lg:flex-row gap-4 lg:gap-8">
                     <div className="w-full lg:w-8/12">
-                        <div className="flex flex-col flex-grow h-full">
+                        <div className="flex flex-col h-full">
+                            {offer?.title && (
+                                <div className="max-w-5xl mb-4 lg:mb-6">
+                                    <h2>{offer.title}</h2>
+                                </div>
+                            )}
+
                             {offer?.longDescription && <RichTextComponent content={offer.longDescription} />}
 
                             {offer?.phoneReservationLink && offer?.phoneReservationLabel && (
@@ -74,15 +75,15 @@ const Offer: NextPage<PageProps> = ({ navigation, offer, footer }) => {
                         </div>
                     </div>
 
-                    <div className="w-full lg:w-4/12 h-80 lg:h-auto">
+                    <div className="w-full lg:w-4/12 h-64 lg:h-auto">
                         {offer && offer.image && (
                             <ImageContainer
                                 loading="eager"
                                 src={offer.image}
                                 fill
                                 classNames={{
-                                    root: 'flex flex-col flex-grow h-full',
-                                    image: 'rounded-3xl object-cover h-full',
+                                    root: 'h-full',
+                                    image: 'rounded-3xl object-cover',
                                 }}
                             />
                         )}
