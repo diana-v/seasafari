@@ -82,6 +82,7 @@ const ImageCard = ({
                     {linkUrl && linkTitle && (
                         <Link
                             href={linkUrl}
+                            aria-label={linkTitle}
                             className="flex items-center gap-2 px-6 py-3 border border-blue-900 rounded-full text-blue-900 hover:bg-blue-900 hover:text-white transition-colors duration-200 w-fit"
                         >
                             {linkTitle}
@@ -154,7 +155,7 @@ const ReviewCard = ({
                             />
                         </div>
                     )}
-                    {title && <h4 className="truncate">{title}</h4>}
+                    {title && <div className="truncate text-lg lg:text-xl mb-2 md:mb-3 lg:mb-4 font-bold">{title}</div>}
                     {location && <p className="opacity-40">{location}</p>}
                 </div>
                 {description && <p className="flex-grow line-clamp-2 lg:line-clamp-3">{description}</p>}
@@ -189,6 +190,7 @@ const BlogCard = ({ title, image, description, linkUrl, linkTitle, classNames, .
             {linkUrl && (
                 <Link
                     href={linkUrl}
+                    aria-label={linkTitle}
                     className="flex items-center gap-2 px-6 py-3 border border-blue-900 rounded-full text-blue-900 hover:bg-blue-900 hover:text-white transition-colors duration-200 w-fit mt-auto"
                 >
                     {linkTitle && <div>{linkTitle}</div>}

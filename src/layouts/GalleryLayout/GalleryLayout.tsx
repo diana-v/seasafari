@@ -41,7 +41,7 @@ export const GalleryLayout: React.FC<GalleryProps> = ({ cards }) => {
                             {cards.map((card, index) => (
                                 <SwiperSlide key={index} className="!h-96 !w-auto shadow-md rounded-3xl">
                                     {card.url ? (
-                                        <Link href={card.url} target="_blank">
+                                        <Link href={card.url} target="_blank" aria-label={card.url}>
                                             {card.image && (
                                                 <ImageContainer
                                                     src={card.image}

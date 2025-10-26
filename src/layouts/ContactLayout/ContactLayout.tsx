@@ -20,7 +20,7 @@ export const ContactLayout: React.FC<ContactProps> = ({ title, description, phon
     const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
 
     return (
-        <div className="relative">
+        <div className="relative" id="kontaktai">
             <div className="absolute bottom-0 left-0 w-full h-[60%] bg-blue-50" />
 
             <div className="relative xl:container mx-auto lg:px-4 pt-16 md:pt-24 lg:pt-32">
@@ -36,6 +36,7 @@ export const ContactLayout: React.FC<ContactProps> = ({ title, description, phon
                         </div>
                         <Link
                             href={`tel:${phone}`}
+                            aria-label={localisedString.contactUs}
                             className="flex items-center gap-2 px-6 py-3 border border-blue-900 rounded-full text-blue-900 hover:bg-blue-900 hover:text-white transition-colors duration-200 w-fit"
                         >
                             {localisedString.contactUs}

@@ -1,8 +1,10 @@
 import * as React from 'react';
 import cn from 'clsx';
+import { useRouter } from 'next/router';
 
 import { ImageContainer } from '@/containers/Image/ImageContainer';
 import { IconComponent } from '@/components/Icon/IconComponent';
+import { languages, LocaleType } from '@/translations/common';
 
 export interface HomeProps {
     videoWebm?: string;
@@ -21,6 +23,9 @@ export interface HomeProps {
 }
 
 export const HomeLayout: React.FC<HomeProps> = ({ videoWebm, videoMp4, image, heroMedia, title, subtitle, cta }) => {
+    const { locale, defaultLocale } = useRouter();
+    const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
+
     const { desktopContent, mobileContent } = heroMedia ?? {};
 
     return (
@@ -72,6 +77,7 @@ export const HomeLayout: React.FC<HomeProps> = ({ videoWebm, videoMp4, image, he
 
             <a
                 href="#offers"
+                aria-label={localisedString.scrollDown}
                 className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden flex-col items-center gap-2 text-sm uppercase tracking-widest md:flex animate-bounce z-10"
             >
                 <IconComponent name="arrow" className="rotate-90 h-6 w-6 text-white" />
