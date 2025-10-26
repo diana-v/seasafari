@@ -37,7 +37,7 @@ const PaymentSuccessPage: NextPage<PageProps> = ({ navigation, footer, paymentRe
                 <button type="button" className="self-end m-8" onClick={handlePrint}>
                     <IconComponent name="print" className="w-8 h-8" />
                 </button>
-                <div className="max-w-lg mx-auto text-center flex flex-grow flex-col gap-4 items-center justify-around">
+                <div className="max-w-lg mx-auto text-center flex flex-grow flex-col gap-4 items-center justify-around mb-4">
                     <div className="flex flex-col gap-4 items-center">
                         <IconComponent
                             name="checkCircle"

@@ -45,6 +45,7 @@ export const BlogsLayout: React.FC<BlogsProps> = ({ title, description, cards })
                             pathname: '/[locale]/blogs',
                             query: { locale },
                         }}
+                        aria-label={localisedString.showMore}
                     >
                         {localisedString.showMore}
                         <IconComponent name="arrowRightUp" className="h-2.5 w-3" />

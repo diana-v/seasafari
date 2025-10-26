@@ -85,7 +85,7 @@ export const FooterContainer: React.FC<FooterProps> = ({ faq, common }) => {
                     </div>
 
                     <div className="flex flex-col gap-4">
-                        <h4 className="font-semibold text-white">{localisedStringFooter.quickLinks}</h4>
+                        <div className="font-semibold text-white">{localisedStringFooter.quickLinks}</div>
                         <ul className="space-y-2 !ml-0 !list-none">
                             <li>
                                 <Link
@@ -93,6 +93,7 @@ export const FooterContainer: React.FC<FooterProps> = ({ faq, common }) => {
                                         pathname: '/[locale]/c/[contentId]',
                                         query: { contentId: privacyPolicy?.slug, locale },
                                     }}
+                                    aria-label={localisedStringCommon.privacyPolicy}
                                     className="hover:text-white transition-colors"
                                 >
                                     {localisedStringCommon.privacyPolicy}
@@ -104,6 +105,7 @@ export const FooterContainer: React.FC<FooterProps> = ({ faq, common }) => {
                                         pathname: '/[locale]/c/[contentId]',
                                         query: { contentId: purchaseRules?.slug, locale },
                                     }}
+                                    aria-label={localisedStringCommon.purchaseRules}
                                     className="hover:text-white transition-colors"
                                 >
                                     {localisedStringCommon.purchaseRules}
@@ -113,6 +115,7 @@ export const FooterContainer: React.FC<FooterProps> = ({ faq, common }) => {
                                 <li>
                                     <Link
                                         href={{ pathname: '/[locale]/faq', query: { locale } }}
+                                        aria-label={faq.title}
                                         className="hover:text-white transition-colors"
                                     >
                                         {faq.title}
@@ -123,7 +126,7 @@ export const FooterContainer: React.FC<FooterProps> = ({ faq, common }) => {
                     </div>
 
                     <div className="flex flex-col gap-4">
-                        <h4 className="font-semibold text-white">{localisedStringFooter.contactUs}</h4>
+                        <div className="font-semibold text-white">{localisedStringFooter.contactUs}</div>
                         <ul className="space-y-3 !ml-0">
                             <li className="flex items-start gap-3">
                                 <IconComponent className="w-5 h-5 mt-1 shrink-0 text-slate-400" name="pin" />
@@ -131,13 +134,21 @@ export const FooterContainer: React.FC<FooterProps> = ({ faq, common }) => {
                             </li>
                             <li className="flex items-start gap-3">
                                 <IconComponent className="w-5 h-5 mt-1 shrink-0 text-slate-400" name="email" />
-                                <a href={`mailto:${email}`} className="hover:text-white transition-colors">
+                                <a
+                                    href={`mailto:${email}`}
+                                    aria-label={email}
+                                    className="hover:text-white transition-colors"
+                                >
                                     {email}
                                 </a>
                             </li>
                             <li className="flex items-start gap-3">
                                 <IconComponent className="w-5 h-5 mt-1 shrink-0 text-slate-400" name="phone" />
-                                <a href={`tel:${phone}`} className="hover:text-white transition-colors">
+                                <a
+                                    href={`tel:${phone}`}
+                                    aria-label={phone}
+                                    className="hover:text-white transition-colors"
+                                >
                                     {phone}
                                 </a>
                             </li>
@@ -146,7 +157,7 @@ export const FooterContainer: React.FC<FooterProps> = ({ faq, common }) => {
 
                     {companyDetails && (
                         <div className="flex flex-col gap-4">
-                            <h4 className="font-semibold text-white">{localisedStringCommon.companyDetails}</h4>
+                            <div className="font-semibold text-white">{localisedStringCommon.companyDetails}</div>
                             <div className="text-slate-400 space-y-1">
                                 <p>{companyDetails.name}</p>
                                 <p>{companyDetails.companyCode}</p>

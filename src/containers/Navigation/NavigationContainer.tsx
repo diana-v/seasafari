@@ -58,7 +58,7 @@ export const NavigationContainer: React.FC<NavigationProps> = ({ logo, phone, is
             })}
             ref={menuRef}
         >
-            <a href="/" className="flex gap-8">
+            <a href="/" className="flex gap-8" aria-label="SeaSafari">
                 {logo ? (
                     <ImageContainer
                         src={logo}
