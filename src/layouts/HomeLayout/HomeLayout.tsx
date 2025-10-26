@@ -2,9 +2,9 @@ import * as React from 'react';
 import cn from 'clsx';
 
 import { ImageContainer } from '@/containers/Image/ImageContainer';
+import { IconComponent } from '@/components/Icon/IconComponent';
 
 export interface HomeProps {
-    sectionTitle?: string;
     videoWebm?: string;
     videoMp4?: string;
     image?: string;
@@ -13,13 +13,18 @@ export interface HomeProps {
         mobileContent?: 'image' | 'video';
     };
     title?: string;
+    subtitle?: string;
+    cta?: {
+        link?: string;
+        label?: string;
+    };
 }
 
-export const HomeLayout: React.FC<HomeProps> = ({ sectionTitle, videoWebm, videoMp4, image, heroMedia, title }) => {
+export const HomeLayout: React.FC<HomeProps> = ({ videoWebm, videoMp4, image, heroMedia, title, subtitle, cta }) => {
     const { desktopContent, mobileContent } = heroMedia ?? {};
 
     return (
-        <div id={sectionTitle?.toLowerCase()} className="relative h-screen w-full">
+        <div className="absolute top-0 h-screen w-full">
             <video
                 autoPlay
                 muted
@@ -38,15 +43,39 @@ export const HomeLayout: React.FC<HomeProps> = ({ sectionTitle, videoWebm, video
                 src={image}
                 height={750}
                 width={1500}
-                className={cn('h-screen w-full object-cover', {
-                    hidden: mobileContent !== 'image',
-                    'md:block': desktopContent === 'image',
-                    'md:hidden': desktopContent !== 'image',
-                })}
+                classNames={{
+                    root: 'h-full',
+                    image: cn('h-screen w-full object-cover', {
+                        hidden: mobileContent !== 'image',
+                        'md:block': desktopContent === 'image',
+                        'md:hidden': desktopContent !== 'image',
+                    }),
+                }}
             />
-            <h1 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-3xl md:text-5xl lg:text-7xl text-center uppercase text-white w-full lg:px-24">
-                {title}
-            </h1>
+
+            <div className="shadow-inner-xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex h-full w-full flex-col items-center justify-center p-4 text-center text-white">
+                {title && <h1 className="tracking-tight">{title}</h1>}
+                {subtitle && (
+                    <div className="mt-4 max-w-xl text-md font-extralight text-sm md:text-2xl lg:max-w-2xl">
+                        {subtitle}
+                    </div>
+                )}
+                {cta && (
+                    <a
+                        href={cta.link}
+                        className="mt-8 rounded bg-orange-500 px-10 py-3 text-sm md:text-lg lg:max-w-xl font-bold uppercase tracking-wider transition-transform hover:scale-105"
+                    >
+                        {cta.label}
+                    </a>
+                )}
+            </div>
+
+            <a
+                href="#offers"
+                className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden flex-col items-center gap-2 text-sm uppercase tracking-widest md:flex animate-bounce z-10"
+            >
+                <IconComponent name="arrow" className="rotate-90 h-6 w-6 text-white" />
+            </a>
         </div>
     );
 };

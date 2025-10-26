@@ -5,18 +5,21 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import { NavigationContainer, NavigationProps } from '@/containers/Navigation/NavigationContainer';
-import { fetchHeaderData } from '@/schemas/navigation';
+import { fetchNavigationData } from '@/schemas/navigation';
 import { FooterContainer, FooterProps } from '@/containers/Footer/FooterContainer';
 import { fetchFooterSectionData } from '@/schemas/footer';
 import { fetchBlogsSectionData } from '@/schemas/blogs';
 import { CardComponent, CardType } from '@/components/Card/CardComponent';
 import { languages, LocaleType } from '@/translations/blog';
+import { Widget, WidgetProps } from '@/components/Widget/WidgetComponent';
+import { fetchGiftCardWidgetSectionData } from '@/schemas/giftCardWidget';
 
 type BlogCardType = {
     slug?: string;
     title?: string;
     image?: string;
     description?: string;
+    backgroundColor?: string;
     _createdAt?: string;
 };
 
@@ -31,9 +34,10 @@ interface PageProps {
     navigation?: NavigationProps;
     blogs?: BlogsProps;
     footer?: FooterProps;
+    giftCardWidget?: WidgetProps;
 }
 
-const Blogs: NextPage<PageProps> = ({ navigation, blogs, footer }) => {
+const Blogs: NextPage<PageProps> = ({ navigation, blogs, footer, giftCardWidget }) => {
     const { slug, title, description, cards } = blogs ?? {};
     const { locale, defaultLocale } = useRouter();
     const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
@@ -44,20 +48,24 @@ const Blogs: NextPage<PageProps> = ({ navigation, blogs, footer }) => {
                 <title>{`${title ?? ''} | SeaSafari`}</title>
                 <meta name="description" content={description} />
             </Head>
-            <NavigationContainer logo={navigation?.logo} sections={navigation?.sections} />
-            <div className="container max-w-7xl min-h-[calc(100vh-130px)] mx-auto px-4 py-8 md:py-16 lg:py-24 flex flex-col flex-wrap items-center gap-6 md:gap-8 lg:gap-10">
+            <NavigationContainer logo={navigation?.logo} phone={navigation?.phone} isSimple />
+            <div className="xl:container min-h-[calc(100vh-130px)] mx-auto px-4 py-8 md:py-16 lg:py-24 flex flex-col flex-wrap gap-6 md:gap-8 lg:gap-10">
                 {(title || description) && (
-                    <div className="max-w-5xl text-center">
-                        {title && <h1 className="uppercase">{title}</h1>}
+                    <div className="max-w-5xl">
+                        {title && <h2>{title}</h2>}
                         {description && <p>{description}</p>}
                     </div>
                 )}
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
                     {cards?.map((card, index) => (
-                        <div key={index} className="max-w-[480px] w-full">
+                        <div key={index} className="max-w-[736px] w-full">
                             <CardComponent
-                                classNames={{ root: 'h-full w-full', image: 'h-[250px] brightness-50' }}
+                                classNames={{
+                                    root: `h-full w-full`,
+                                    image: 'brightness-50',
+                                }}
+                                style={{ backgroundColor: card.backgroundColor }}
                                 type={CardType.Blog}
                                 title={card.title}
                                 description={card.description}
@@ -74,7 +82,15 @@ const Blogs: NextPage<PageProps> = ({ navigation, blogs, footer }) => {
                 </div>
             </div>
 
-            <FooterContainer items={footer?.items} contact={footer?.contact} />
+            <FooterContainer common={footer?.common} faq={footer?.faq} />
+            {giftCardWidget && giftCardWidget.title && (
+                <Widget
+                    isVisible
+                    link={giftCardWidget.link}
+                    title={giftCardWidget.title}
+                    image={giftCardWidget.image}
+                />
+            )}
         </div>
     );
 };
@@ -86,16 +102,18 @@ const client = createClient({
     useCdn: false,
 });
 
-export const getServerSideProps: GetServerSideProps = async ({ params, locale, defaultLocale }) => {
-    const navigation = await fetchHeaderData(client, locale, defaultLocale);
+export const getServerSideProps: GetServerSideProps = async ({ locale, defaultLocale }) => {
+    const navigation = await fetchNavigationData(client, locale, defaultLocale);
     const blogs = await fetchBlogsSectionData(client, locale, defaultLocale);
     const footer = await fetchFooterSectionData(client, locale, defaultLocale);
+    const giftCardWidget = await fetchGiftCardWidgetSectionData(client, locale, defaultLocale);
 
     return {
         props: {
             navigation,
             blogs,
             footer,
+            giftCardWidget,
         },
     };
 };

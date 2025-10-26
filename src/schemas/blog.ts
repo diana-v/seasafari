@@ -14,6 +14,7 @@ export const fetchBlogSectionData = (
         "title": coalesce(title.[$locale], title.[$defaultLocale]),
         "description": coalesce(description.[$locale], description.[$defaultLocale]),
         "content": coalesce(content.[$locale], content.[$defaultLocale], "Missing translation"),
+        backgroundColor,
         _createdAt
     }[0]
 `,

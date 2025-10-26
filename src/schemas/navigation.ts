@@ -1,13 +1,11 @@
 import { SanityClient } from '@sanity/client';
 
-export const fetchHeaderData = (client: SanityClient, locale?: string, defaultLocale?: string) =>
+export const fetchNavigationData = (client: SanityClient, locale?: string, defaultLocale?: string) =>
     client.fetch(
         `
-    *[_type == "navigation"]{
+    *[_type == "common"]{
         "logo": logo.asset->url,
-        "sections": sections[] {
-            "title": coalesce(title.[$locale], title.[$defaultLocale], "Missing translation"),
-        },
+        "phone": coalesce(phone.[$locale], phone.[$defaultLocale], "Missing translation"),
     }[0]
 `,
         { locale, defaultLocale }

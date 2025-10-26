@@ -1,19 +1,10 @@
 import { defineField, defineType } from 'sanity';
 
-import { baseLanguage } from '../constants';
-
 export default defineType({
     name: 'gallery',
     title: 'Gallery',
     type: 'document',
     fields: [
-        defineField({
-            name: 'sectionTitle',
-            title: 'Section Title',
-            type: 'localeString',
-        }),
-        defineField({ name: 'title', title: 'Title', type: 'localeString' }),
-        defineField({ name: 'description', title: 'Description', type: 'localeBlock' }),
         defineField({
             name: 'cards',
             title: 'Cards',
@@ -35,8 +26,10 @@ export default defineType({
         }),
     ],
     preview: {
-        select: {
-            title: `sectionTitle.${baseLanguage?.id}`,
+        prepare() {
+            return {
+                title: 'Gallery',
+            };
         },
     },
 });

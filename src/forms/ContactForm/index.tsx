@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import styles from './contact.module.scss';
 import { AlertComponent, AlertType } from '@/components/Alert/AlertComponent';
 import { languages, LocaleType } from '@/translations/contactForm';
+import { IconComponent } from '@/components/Icon/IconComponent';
 
 interface Values {
     name: string;
@@ -127,12 +128,13 @@ const ContactForm = () => {
                         </div>
 
                         <button
-                            className={styles.submitButton}
+                            className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-900 rounded-full text-white hover:shadow-xl transition-shadow duration-200 w-full cursor-pointer"
                             type="submit"
                             disabled={isSubmitting || !dirty}
                             aria-label="Submit form"
                         >
                             {localisedString.submitButton}
+                            <IconComponent name="arrowRightUp" className="h-2.5 w-3" />
                         </button>
                         {alert.message && <AlertComponent color={alert.type} message={alert.message} />}
                     </Form>

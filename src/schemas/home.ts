@@ -4,7 +4,6 @@ export const fetchHomeSectionData = (client: SanityClient, locale?: string, defa
     client.fetch(
         `
     *[_type == "home"]{
-        "sectionTitle": coalesce(sectionTitle.[$locale], sectionTitle.[$defaultLocale], "Missing translation"),
         "videoWebm": videoWebm.asset->url,
         "videoMp4": videoMp4.asset->url,
         "image": image.asset->url,
@@ -13,6 +12,11 @@ export const fetchHomeSectionData = (client: SanityClient, locale?: string, defa
             "mobileContent": heroMedia.mobileContent
         },
         "title": coalesce(title.[$locale], title.[$defaultLocale]),
+        "subtitle": coalesce(subtitle.[$locale], subtitle.[$defaultLocale]),
+        "cta": {
+            "link": coalesce(cta.link.[$locale], cta.link.[$defaultLocale]),
+            "label": coalesce(cta.label.[$locale], cta.label.[$defaultLocale]),
+        }
     }[0]
 `,
         { locale, defaultLocale }
