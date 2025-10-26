@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { createClient } from '@sanity/client';
 import { GetServerSideProps, NextPage } from 'next';
 import * as React from 'react';
-import { JWT } from 'google-auth-library';
+// import { JWT } from 'google-auth-library';
 import { useEffect, useState } from 'react';
 
 import { ContactLayout, ContactProps } from '@/layouts/ContactLayout/ContactLayout';
