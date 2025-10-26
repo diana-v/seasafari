@@ -132,7 +132,7 @@ export const GiftCardForm: React.FC<GiftCardFormProps> = ({ options }) => {
                         </div>
 
                         <div className="mt-auto">
-                            <label className="flex flex-wrap gap-x-2">
+                            <label className="flex flex-wrap items-center gap-x-2">
                                 <Field type="checkbox" name="agreeToTerms" />
                                 {localisedString.agreeWith}{' '}
                                 <Link
