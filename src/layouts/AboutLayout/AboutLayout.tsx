@@ -39,13 +39,16 @@ export const AboutLayout: React.FC<AboutProps> = ({ title, image, description, b
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8 md:gap-y-6 md:gap-x-10">
                         {benefits.map((benefit, index) => (
                             <div key={index} className="flex flex-col gap-4 items-start">
-                                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 shadow-md">
+                                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 shadow-md flex-shrink-0">
                                     {benefit.image && (
                                         <ImageContainer
                                             src={benefit.image}
                                             width={16}
                                             height={16}
-                                            classNames={{ root: 'h-full' }}
+                                            classNames={{
+                                                root: 'flex items-center justify-center w-full h-full',
+                                                image: 'block w-4.5 h-4.5 object-contain mx-auto',
+                                            }}
                                         />
                                     )}
                                 </div>

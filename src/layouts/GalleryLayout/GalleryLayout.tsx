@@ -33,13 +33,18 @@ export const GalleryLayout: React.FC<GalleryProps> = ({ cards }) => {
                                 nextEl: '.next',
                                 prevEl: '.prev',
                             }}
-                            slidesPerView="auto"
                             spaceBetween={20}
                             modules={[Navigation]}
                             className="w-full"
+                            slidesPerView={1}
+                            breakpoints={{
+                                768: {
+                                    slidesPerView: 'auto',
+                                },
+                            }}
                         >
                             {cards.map((card, index) => (
-                                <SwiperSlide key={index} className="!h-96 !w-auto shadow-md rounded-3xl">
+                                <SwiperSlide key={index} className="!h-96 md:!w-auto shadow-md rounded-3xl">
                                     {card.url ? (
                                         <Link href={card.url} target="_blank" aria-label={card.url}>
                                             {card.image && (
@@ -49,7 +54,7 @@ export const GalleryLayout: React.FC<GalleryProps> = ({ cards }) => {
                                                     height={500}
                                                     classNames={{
                                                         root: 'h-full',
-                                                        image: 'h-full w-full flex-grow rounded-3xl',
+                                                        image: 'h-full w-full flex-grow object-cover rounded-3xl',
                                                     }}
                                                 />
                                             )}
