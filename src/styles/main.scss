@@ -51,6 +51,8 @@
     html {
         box-sizing: border-box;
         @apply scroll-smooth scroll-pt-20;
+        overflow-x: hidden;
+        overflow-y: auto;
     }
 
     body
