@@ -8,8 +8,8 @@ export default defineType({
     type: 'document',
     fields: [
         defineField({
-            name: 'sectionTitle',
-            title: 'Section Title',
+            name: 'title',
+            title: 'Title',
             type: 'localeString',
         }),
         defineField({
@@ -25,10 +25,34 @@ export default defineType({
             type: 'localeBlock',
             title: 'Description',
         }),
+        defineField({
+            name: 'benefits',
+            type: 'array',
+            title: 'Benefits',
+            of: [
+                {
+                    type: 'object',
+                    fields: [
+                        defineField({ name: 'title', title: 'Title', type: 'localeString' }),
+                        defineField({ name: 'description', title: 'Description', type: 'localeBlock' }),
+                        defineField({ name: 'image', title: 'Image', type: 'image' }),
+                    ],
+                    preview: {
+                        select: {
+                            title: `title.${baseLanguage?.id}`,
+                            subtitle: `description.${baseLanguage?.id}`,
+                            media: 'image',
+                        },
+                    },
+                },
+            ],
+        }),
     ],
     preview: {
         select: {
-            title: `sectionTitle.${baseLanguage?.id}`,
+            title: `title.${baseLanguage?.id}`,
+            subtitle: `description.${baseLanguage?.id}`,
+            media: 'image',
         },
     },
 });

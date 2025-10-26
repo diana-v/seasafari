@@ -8,11 +8,6 @@ export default defineType({
     type: 'document',
     fields: [
         defineField({
-            name: 'sectionTitle',
-            title: 'Section Title',
-            type: 'localeString',
-        }),
-        defineField({
             name: 'title',
             title: 'Title',
             type: 'localeString',
@@ -25,7 +20,8 @@ export default defineType({
     ],
     preview: {
         select: {
-            title: `sectionTitle.${baseLanguage?.id}`,
+            title: `title.${baseLanguage?.id}`,
+            subtitle: `description.${baseLanguage?.id}`,
         },
     },
 });

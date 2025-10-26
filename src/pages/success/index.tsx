@@ -7,7 +7,7 @@ import Cookies from 'cookies';
 
 import { NavigationContainer, NavigationProps } from '@/containers/Navigation/NavigationContainer';
 import { FooterContainer, FooterProps } from '@/containers/Footer/FooterContainer';
-import { fetchHeaderData } from '@/schemas/navigation';
+import { fetchNavigationData } from '@/schemas/navigation';
 import { fetchFooterSectionData } from '@/schemas/footer';
 import { IconComponent } from '@/components/Icon/IconComponent';
 import { languages, LocaleType } from '@/translations/success';
@@ -32,18 +32,18 @@ const PaymentSuccessPage: NextPage<PageProps> = ({ navigation, footer, paymentRe
 
     return (
         <>
-            <NavigationContainer logo={navigation?.logo} sections={navigation?.sections} />
-            <div className="container mx-auto min-h-[calc(100vh-130px)] flex flex-col">
+            <NavigationContainer logo={navigation?.logo} phone={navigation?.phone} isSimple />
+            <div className="xl:container mx-auto min-h-[calc(100vh-130px)] flex flex-col">
                 <button type="button" className="self-end m-8" onClick={handlePrint}>
                     <IconComponent name="print" className="w-8 h-8" />
                 </button>
                 <div className="max-w-lg mx-auto text-center flex flex-grow flex-col gap-4 items-center justify-around">
                     <div className="flex flex-col gap-4 items-center">
                         <IconComponent
-                            name="check"
+                            name="checkCircle"
                             className="w-16 h-16 md:w-24 md:h-24 lg:w-28 lg:h-28 text-green-600 mb-8"
                         />
-                        <h1 className="!mb-0 text-green-600">{localisedString.thankYou}</h1>
+                        <h1 className="text-green-600">{localisedString.thankYou}</h1>
                         <h4 className="text-gray-900 font-bold">{localisedString.paymentSuccess}</h4>
                         <p className="text-gray-900">
                             {localisedString.giftCardRef}
@@ -70,7 +70,7 @@ const PaymentSuccessPage: NextPage<PageProps> = ({ navigation, footer, paymentRe
                     </p>
                 </div>
             </div>
-            <FooterContainer items={footer?.items} contact={footer?.contact} />
+            <FooterContainer common={footer?.common} faq={footer?.faq} />
         </>
     );
 };
@@ -105,7 +105,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res, req, locale,
     cookies.set('validTo', '', { httpOnly: true, maxAge: 0, sameSite: 'strict', path: '/' });
     cookies.set('count', '', { httpOnly: true, maxAge: 0, sameSite: 'strict', path: '/' });
 
-    const navigation = await fetchHeaderData(client, locale, defaultLocale);
+    const navigation = await fetchNavigationData(client, locale, defaultLocale);
     const footer = await fetchFooterSectionData(client, locale, defaultLocale);
 
     const pdfStream = await generatePdfDoc({

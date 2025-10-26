@@ -5,26 +5,59 @@ import { ImageContainer } from '@/containers/Image/ImageContainer';
 import { RichTextComponent } from '@/components/RichText/RichTextComponent';
 
 export interface AboutProps {
-    sectionTitle?: string;
     image?: string;
+    title?: string;
     description?: TypedObject | TypedObject[];
+    benefits?: {
+        image?: string;
+        title?: string;
+        description?: TypedObject | TypedObject[];
+    }[];
 }
 
-export const AboutLayout: React.FC<AboutProps> = ({ sectionTitle, image, description }) => (
-    <div
-        id={sectionTitle?.toLowerCase()}
-        className="container mx-auto px-4 my-8 md:my-16 lg:my-24 flex flex-wrap flex-col lg:flex-row items-center gap-6 md:gap-10 lg:gap-16"
-    >
-        <div className="basis-1 flex-grow w-full">
+export const AboutLayout: React.FC<AboutProps> = ({ title, image, description, benefits }) => (
+    <div className="xl:container mx-auto px-4 my-8 md:my-16 lg:my-24 flex flex-col xl:flex-row items-start gap-6 xl:gap-16">
+        <div className="flex flex-col items-start w-full lg:basis-2/5 gap-2 xl:gap-14">
+            {title && <h2>{title}</h2>}
             {image && (
-                <ImageContainer
-                    src={image}
-                    width={750}
-                    height={550}
-                    className="rounded object-cover flex-grow h-96 lg:h-auto"
-                />
+                <div className="w-full h-56 md:h-72 lg:h-96 xl:h-auto xl:max-w-xl xl:aspect-square">
+                    <ImageContainer
+                        src={image}
+                        width={600}
+                        height={600}
+                        classNames={{ root: 'h-full', image: 'rounded-3xl shadow-sm object-cover w-full h-full' }}
+                    />
+                </div>
             )}
         </div>
-        <div className="basis-1 flex-grow w-full">{description && <RichTextComponent content={description} />}</div>
+
+        <div className="flex-grow lg:basis-3/5">
+            <div className="flex flex-col gap-6 lg:gap-8">
+                {description && <RichTextComponent content={description} />}
+
+                {benefits && benefits.length > 0 && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8 md:gap-y-6 md:gap-x-10">
+                        {benefits.map((benefit, index) => (
+                            <div key={index} className="flex flex-col gap-4 items-start">
+                                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 shadow-md">
+                                    {benefit.image && (
+                                        <ImageContainer
+                                            src={benefit.image}
+                                            width={16}
+                                            height={16}
+                                            classNames={{ root: 'h-full' }}
+                                        />
+                                    )}
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    {benefit.title && <h4 className="text-lg font-medium">{benefit.title}</h4>}
+                                    {benefit.description && <RichTextComponent content={benefit.description} />}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+        </div>
     </div>
 );

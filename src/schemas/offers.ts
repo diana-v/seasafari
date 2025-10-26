@@ -4,7 +4,6 @@ export const fetchOffersSectionData = (client: SanityClient, locale?: string, de
     client.fetch(
         `
     *[_type == "offers"] {
-        "sectionTitle": coalesce(sectionTitle.[$locale], sectionTitle.[$defaultLocale], "Missing translation"),
         "title": coalesce(title.[$locale], title.[$defaultLocale]),
         "description": coalesce(description.[$locale], description.[$defaultLocale]),
         "cards": *[_type == "offer"] {
@@ -12,8 +11,8 @@ export const fetchOffersSectionData = (client: SanityClient, locale?: string, de
             "imageCompressed": imageCompressed.asset->url,
             "title": coalesce(title.[$locale], title.[$defaultLocale], "Missing translation"),
             "description": coalesce(description.[$locale], description.[$defaultLocale], "Missing translation"),
+            "linkTitle": coalesce(linkTitle.[$locale], linkTitle.[$defaultLocale], "Missing translation"),
             orderRank,
-            isGiftcard
         } | order(orderRank)
     }[0]
 `,

@@ -7,11 +7,6 @@ export default defineType({
     title: 'Faq',
     type: 'document',
     fields: [
-        defineField({
-            name: 'sectionTitle',
-            title: 'Section Title',
-            type: 'localeString',
-        }),
         defineField({ name: 'title', title: 'Title', type: 'localeString' }),
         defineField({ name: 'description', title: 'Description', type: 'localeBlock' }),
         defineField({
@@ -39,7 +34,7 @@ export default defineType({
     ],
     preview: {
         select: {
-            title: `sectionTitle.${baseLanguage?.id}`,
+            title: `title.${baseLanguage?.id}`,
         },
     },
 });

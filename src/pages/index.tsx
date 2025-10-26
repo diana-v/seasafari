@@ -1,6 +1,9 @@
 import Head from 'next/head';
 import { createClient } from '@sanity/client';
 import { GetServerSideProps, NextPage } from 'next';
+import * as React from 'react';
+import { JWT } from 'google-auth-library';
+import { useEffect, useState } from 'react';
 
 import { ContactLayout, ContactProps } from '@/layouts/ContactLayout/ContactLayout';
 import { fetchContactSectionData } from '@/schemas/contact';
@@ -10,33 +13,37 @@ import { fetchHomeSectionData } from '@/schemas/home';
 import { HomeLayout, HomeProps } from '@/layouts/HomeLayout/HomeLayout';
 import { fetchReviewsSectionData } from '@/schemas/reviews';
 import { ReviewsLayout, ReviewsProps } from '@/layouts/ReviewsLayout/ReviewsLayout';
-import { fetchSafetySectionData } from '@/schemas/safety';
-import { SafetyLayout, SafetyProps } from '@/layouts/SafetyLayout/SafetyLayout';
 import { OffersLayout, OffersProps } from '@/layouts/OffersLayout/OffersLayout';
 import { fetchOffersSectionData } from '@/schemas/offers';
 import { NavigationContainer, NavigationProps } from '@/containers/Navigation/NavigationContainer';
-import { fetchHeaderData } from '@/schemas/navigation';
-import { FAQLayout, FAQProps } from '@/layouts/FAQLayout/FAQLayout';
-import { fetchFAQSectionData } from '@/schemas/faq';
+import { fetchNavigationData } from '@/schemas/navigation';
 import { fetchGallerySectionData } from '@/schemas/gallery';
 import { GalleryLayout, GalleryProps } from '@/layouts/GalleryLayout/GalleryLayout';
 import { FooterContainer, FooterProps } from '@/containers/Footer/FooterContainer';
 import { fetchFooterSectionData } from '@/schemas/footer';
 import { BlogsLayout, BlogsProps } from '@/layouts/BlogsLayout/BlogsLayout';
 import { fetchBlogsSectionData } from '@/schemas/blogs';
+import { Widget, WidgetProps } from '@/components/Widget/WidgetComponent';
+import { fetchGiftCardWidgetSectionData } from '@/schemas/giftCardWidget';
+import { GiftCardLayout, GiftcardProps } from '@/layouts/GiftCardLayout/GiftCardLayout';
+import { fetchGiftCardSectionData } from '@/schemas/giftCard';
+import { PartnersLayout, PartnersProps } from '@/layouts/PartnersLayout/PartnersLayout';
+import { fetchPartnersSectionData } from '@/schemas/partners';
 
 interface PageProps {
     navigation?: NavigationProps;
     home?: HomeProps;
     about?: AboutProps;
+    partners?: PartnersProps;
     offers?: OffersProps;
-    safety?: SafetyProps;
     gallery?: GalleryProps;
     blogs?: BlogsProps;
-    faq?: FAQProps;
     reviews?: ReviewsProps;
+    reviewsData?: any;
     contact?: ContactProps;
     footer?: FooterProps;
+    giftCard?: GiftcardProps;
+    giftCardWidget?: WidgetProps;
     isAuthenticated: boolean;
 }
 
@@ -44,15 +51,35 @@ const Home: NextPage<PageProps> = ({
     navigation,
     home,
     about,
-    offers,
-    safety,
     blogs,
-    faq,
     gallery,
+    giftCard,
+    partners,
+    offers,
     reviews,
+    // reviewsData,
     contact,
     footer,
+    giftCardWidget,
 }) => {
+    const [isWidgetVisible, setIsWidgetVisible] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollThreshold = window.innerHeight * 0.7;
+
+            if (window.scrollY > scrollThreshold) {
+                setIsWidgetVisible(true);
+
+                window.removeEventListener('scroll', handleScroll);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     return (
         <>
             <Head>
@@ -86,55 +113,53 @@ const Home: NextPage<PageProps> = ({
                     content="https://cdn.sanity.io/images/9s9wwf86/production/ffc3ca964587227a6969b43f96f6fa266cfecd97-1771x1257.jpg"
                 />
             </Head>
-            <NavigationContainer logo={navigation?.logo} sections={navigation?.sections} />
-            <HomeLayout
-                sectionTitle={home?.sectionTitle}
-                title={home?.title}
-                videoMp4={home?.videoMp4}
-                videoWebm={home?.videoWebm}
-                image={home?.image}
-                heroMedia={home?.heroMedia}
+            <div className="h-[100vh]">
+                <NavigationContainer logo={navigation?.logo} phone={navigation?.phone} />
+                <HomeLayout
+                    title={home?.title}
+                    subtitle={home?.subtitle}
+                    cta={home?.cta}
+                    videoMp4={home?.videoMp4}
+                    videoWebm={home?.videoWebm}
+                    image={home?.image}
+                    heroMedia={home?.heroMedia}
+                />
+            </div>
+
+            <AboutLayout
+                title={about?.title}
+                description={about?.description}
+                image={about?.image}
+                benefits={about?.benefits}
             />
-            <AboutLayout sectionTitle={about?.sectionTitle} description={about?.description} image={about?.image} />
-            <OffersLayout
-                sectionTitle={offers?.sectionTitle}
-                title={offers?.title}
-                description={offers?.description}
-                cards={offers?.cards}
+            <BlogsLayout title={blogs?.title} description={blogs?.description} cards={blogs?.cards} />
+            <GalleryLayout cards={gallery?.cards} />
+            <GiftCardLayout
+                title={giftCard?.title}
+                description={giftCard?.description}
+                bullets={giftCard?.bullets}
+                image={giftCard?.image}
+                options={giftCard?.options}
             />
-            <SafetyLayout
-                sectionTitle={safety?.sectionTitle}
-                title={safety?.title}
-                description={safety?.description}
-                cards={safety?.cards}
-                disclaimer={safety?.disclaimer}
-            />
-            <GalleryLayout
-                sectionTitle={gallery?.sectionTitle}
-                title={gallery?.title}
-                description={gallery?.description}
-                cards={gallery?.cards}
-            />
-            <BlogsLayout
-                sectionTitle={blogs?.sectionTitle}
-                title={blogs?.title}
-                description={blogs?.description}
-                cards={blogs?.cards}
-            />
-            <FAQLayout
-                sectionTitle={faq?.sectionTitle}
-                title={faq?.title}
-                description={faq?.description}
-                faq={faq?.faq}
-            />
-            <ReviewsLayout sectionTitle={reviews?.sectionTitle} title={reviews?.title} cards={reviews?.cards} />
+            <PartnersLayout title={partners?.title} logos={partners?.logos} />
+            <OffersLayout title={offers?.title} description={offers?.description} cards={offers?.cards} />
+            {/*<ReviewsLayout title={reviews?.title} cards={reviews?.cards} reviewsData={reviewsData} />*/}
+            <ReviewsLayout title={reviews?.title} cards={reviews?.cards} />
             <ContactLayout
-                sectionTitle={contact?.sectionTitle}
                 title={contact?.title}
                 description={contact?.description}
-                backgroundImage={contact?.backgroundImage}
+                phone={contact?.phone}
+                formTitle={contact?.formTitle}
             />
-            <FooterContainer items={footer?.items} contact={footer?.contact} />
+            <FooterContainer common={footer?.common} faq={footer?.faq} />
+            {giftCardWidget && giftCardWidget.title && (
+                <Widget
+                    isVisible={isWidgetVisible}
+                    link={giftCardWidget.link}
+                    title={giftCardWidget.title}
+                    image={giftCardWidget.image}
+                />
+            )}
         </>
     );
 };
@@ -147,31 +172,53 @@ const client = createClient({
 });
 
 export const getServerSideProps: GetServerSideProps = async ({ locale, defaultLocale }) => {
-    const navigation = await fetchHeaderData(client, locale, defaultLocale);
+    const navigation = await fetchNavigationData(client, locale, defaultLocale);
     const home = await fetchHomeSectionData(client, locale, defaultLocale);
     const about = await fetchAboutSectionData(client, locale, defaultLocale);
-    const offers = await fetchOffersSectionData(client, locale, defaultLocale);
-    const safety = await fetchSafetySectionData(client, locale, defaultLocale);
-    const gallery = await fetchGallerySectionData(client, locale, defaultLocale);
     const blogs = await fetchBlogsSectionData(client, locale, defaultLocale);
-    const faq = await fetchFAQSectionData(client, locale, defaultLocale);
+    const gallery = await fetchGallerySectionData(client, locale, defaultLocale);
+    const giftCard = await fetchGiftCardSectionData(client, locale, defaultLocale);
+    const partners = await fetchPartnersSectionData(client, locale, defaultLocale);
+    const offers = await fetchOffersSectionData(client, locale, defaultLocale);
     const reviews = await fetchReviewsSectionData(client, locale, defaultLocale);
     const contact = await fetchContactSectionData(client, locale, defaultLocale);
     const footer = await fetchFooterSectionData(client, locale, defaultLocale);
+    const giftCardWidget = await fetchGiftCardWidgetSectionData(client, locale, defaultLocale);
+
+    // const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_CREDENTIALS ?? '{}');
+    //
+    // const auth = new JWT({
+    //     email: serviceAccount.client_email,
+    //     key: serviceAccount.private_key,
+    //     scopes: ['https://www.googleapis.com/auth/business.manage'],
+    // });
+    //
+    // const accessToken = await auth.getAccessToken();
+    //
+    // const reviewsData = await fetch(
+    //     `https://mybusiness.googleapis.com/v4/accounts/${process.env.GOOGLE_BUSINESS_ID}/locations/${process.env.GOOGLE_LOCATION_ID}/reviews`,
+    //     {
+    //         headers: {
+    //             Authorization: `Bearer ${accessToken}`,
+    //         },
+    //     }
+    // ).then((res) => res.json());
 
     return {
         props: {
             navigation,
             home,
             about,
-            offers,
-            safety,
-            gallery,
             blogs,
-            faq,
+            gallery,
+            giftCard,
+            partners,
+            offers,
             reviews,
+            // reviewsData,
             contact,
             footer,
+            giftCardWidget,
         },
     };
 };

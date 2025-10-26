@@ -2,11 +2,12 @@ import { useRouter } from 'next/router';
 import { GetServerSideProps, NextPage } from 'next';
 import Link from 'next/link';
 import { createClient } from '@sanity/client';
+import * as React from 'react';
 
 import { languages, LocaleType } from '@/translations/error';
 import { NavigationContainer, NavigationProps } from '@/containers/Navigation/NavigationContainer';
 import { FooterContainer, FooterProps } from '@/containers/Footer/FooterContainer';
-import { fetchHeaderData } from '@/schemas/navigation';
+import { fetchNavigationData } from '@/schemas/navigation';
 import { fetchFooterSectionData } from '@/schemas/footer';
 
 interface PageProps {
@@ -21,8 +22,8 @@ const PaymentErrorPage: NextPage<PageProps> = ({ navigation, footer, errorCode }
 
     return (
         <>
-            <NavigationContainer logo={navigation?.logo} sections={navigation?.sections} />
-            <div className="container mx-auto min-h-[calc(100vh-130px)] flex flex-col">
+            <NavigationContainer logo={navigation?.logo} phone={navigation?.phone} isSimple />
+            <div className="xl:container mx-auto min-h-[calc(100vh-130px)] flex flex-col">
                 <div className="max-w-lg mx-auto text-center flex flex-grow flex-col gap-4 items-center justify-around">
                     <div className="flex flex-col flex-grow gap-4 items-center justify-center relative">
                         {errorCode && (
@@ -50,7 +51,7 @@ const PaymentErrorPage: NextPage<PageProps> = ({ navigation, footer, errorCode }
                     </p>
                 </div>
             </div>
-            <FooterContainer items={footer?.items} contact={footer?.contact} />
+            <FooterContainer common={footer?.common} faq={footer?.faq} />
         </>
     );
 };
@@ -64,7 +65,7 @@ const client = createClient({
 
 export const getServerSideProps: GetServerSideProps = async ({ locale, defaultLocale, query }) => {
     const errorCode = query.errorCode ?? null;
-    const navigation = await fetchHeaderData(client, locale, defaultLocale);
+    const navigation = await fetchNavigationData(client, locale, defaultLocale);
     const footer = await fetchFooterSectionData(client, locale, defaultLocale);
 
     return {

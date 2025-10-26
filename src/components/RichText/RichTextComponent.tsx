@@ -35,7 +35,10 @@ const components: PortableTextComponents = {
                         src={imageUrl}
                         width={1500}
                         height={250}
-                        className="h-[200px] md:h-[300px] lg:h-[300px] object-cover rounded-md"
+                        classNames={{
+                            root: 'h-full',
+                            image: 'h-[200px] md:h-[300px] lg:h-[300px] object-cover rounded-md',
+                        }}
                     />
                 </div>
             );

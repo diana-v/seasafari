@@ -4,7 +4,6 @@ export const fetchReviewsSectionData = (client: SanityClient, locale?: string, d
     client.fetch(
         `
     *[_type == "reviews"]{
-        "sectionTitle": coalesce(sectionTitle.[$locale], sectionTitle.[$defaultLocale], "Missing translation"),
         "title": coalesce(title.[$locale], title.[$defaultLocale]),
         "cards": cards[] {
             "name": coalesce(name.[$locale], name.[$defaultLocale], "Missing translation"),

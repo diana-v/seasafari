@@ -8,14 +8,31 @@ export default defineType({
     type: 'document',
     fields: [
         defineField({
-            name: 'sectionTitle',
-            title: 'Section Title',
-            type: 'localeString',
-        }),
-        defineField({
             name: 'title',
             title: 'Title',
             type: 'localeString',
+        }),
+        defineField({
+            name: 'subtitle',
+            title: 'Subtitle',
+            type: 'localeString',
+        }),
+        defineField({
+            name: 'cta',
+            title: 'CTA',
+            type: 'object',
+            fields: [
+                defineField({
+                    name: 'label',
+                    title: 'Label',
+                    type: 'localeString',
+                }),
+                defineField({
+                    name: 'link',
+                    title: 'Link',
+                    type: 'localeString',
+                }),
+            ],
         }),
         defineField({
             name: 'videoWebm',
@@ -68,7 +85,8 @@ export default defineType({
     ],
     preview: {
         select: {
-            title: `sectionTitle.${baseLanguage?.id}`,
+            title: `title.${baseLanguage?.id}`,
+            subtitle: `subtitle.${baseLanguage?.id}`,
         },
     },
 });
