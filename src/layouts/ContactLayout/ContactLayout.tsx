@@ -11,9 +11,7 @@ import { languages, LocaleType } from '@/translations/navigation';
 export interface ContactProps {
     title?: string;
     description?: TypedObject | TypedObject[];
-    phone?: {
-        value: string;
-    };
+    phone?: string;
     formTitle?: string;
 }
 
@@ -37,7 +35,7 @@ export const ContactLayout: React.FC<ContactProps> = ({ title, description, phon
                             )}
                         </div>
                         <Link
-                            href={`tel:${phone?.value}`}
+                            href={`tel:${phone}`}
                             className="flex items-center gap-2 px-6 py-3 border border-blue-900 rounded-full text-blue-900 hover:bg-blue-900 hover:text-white transition-colors duration-200 w-fit"
                         >
                             {localisedString.contactUs}
