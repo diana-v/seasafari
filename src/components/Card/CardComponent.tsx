@@ -191,7 +191,7 @@ const BlogCard = ({ title, image, description, linkUrl, linkTitle, classNames, .
                     href={linkUrl}
                     className="flex items-center gap-2 px-6 py-3 border border-blue-900 rounded-full text-blue-900 hover:bg-blue-900 hover:text-white transition-colors duration-200 w-fit mt-auto"
                 >
-                    <div>{linkTitle || 'View Details'}</div>
+                    {linkTitle && <div>{linkTitle}</div>}
                     <IconComponent name="arrowRightUp" className="w-2.5 h-3" />
                 </Link>
             )}

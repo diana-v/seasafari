@@ -74,17 +74,13 @@ const Offer: NextPage<PageProps> = ({ navigation, offer, footer }) => {
                         </div>
                     </div>
 
-                    {/* --- IMAGE COLUMN MODIFIED --- */}
-                    {/* 1. Added h-80 (a fixed height for mobile) and lg:h-auto (to unset it on desktop) */}
                     <div className="w-full lg:w-4/12 h-80 lg:h-auto">
                         {offer && offer.image && (
                             <ImageContainer
                                 loading="eager"
                                 src={offer.image}
-                                // 2. Re-instated 'fill'
                                 fill
                                 classNames={{
-                                    // 3. Kept h-full so it fills its parent (which is now h-80 on mobile)
                                     root: 'flex flex-col flex-grow h-full',
                                     image: 'rounded-3xl object-cover h-full',
                                 }}
@@ -118,8 +114,6 @@ const Offer: NextPage<PageProps> = ({ navigation, offer, footer }) => {
         </div>
     );
 };
-
-// ... getServerSideProps and client config remain the same ...
 
 const client = createClient({
     projectId: process.env.SANITY_STUDIO_PROJECT_ID,
