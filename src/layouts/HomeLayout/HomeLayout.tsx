@@ -34,7 +34,8 @@ export const HomeLayout: React.FC<HomeProps> = ({ videoWebm, videoMp4, image, he
                 autoPlay
                 muted
                 loop
-                preload={'preload'}
+                playsInline
+                preload="auto"
                 className={cn('h-screen w-full object-cover', {
                     hidden: mobileContent !== 'video',
                     'md:block': desktopContent === 'video',

@@ -83,6 +83,7 @@ const ImageCard = ({
                         <Link
                             href={linkUrl}
                             aria-label={linkTitle}
+                            scroll={true}
                             className="flex items-center gap-2 px-6 py-3 border border-blue-900 rounded-full text-blue-900 hover:bg-blue-900 hover:text-white transition-colors duration-200 w-fit"
                         >
                             {linkTitle}
@@ -191,6 +192,7 @@ const BlogCard = ({ title, image, description, linkUrl, linkTitle, classNames, .
                 <Link
                     href={linkUrl}
                     aria-label={linkTitle}
+                    scroll={true}
                     className="flex items-center gap-2 px-6 py-3 border border-blue-900 rounded-full text-blue-900 hover:bg-blue-900 hover:text-white transition-colors duration-200 w-fit mt-auto"
                 >
                     {linkTitle && <div>{linkTitle}</div>}

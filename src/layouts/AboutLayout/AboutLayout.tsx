@@ -45,7 +45,7 @@ export const AboutLayout: React.FC<AboutProps> = ({ title, image, description, b
                                             src={benefit.image}
                                             width={16}
                                             height={16}
-                                            classNames={{ root: 'h-full' }}
+                                            classNames={{ root: 'min-h-full h-full' }}
                                         />
                                     )}
                                 </div>

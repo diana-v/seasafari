@@ -45,6 +45,7 @@ export const BlogsLayout: React.FC<BlogsProps> = ({ title, description, cards })
                             pathname: '/[locale]/blogs',
                             query: { locale },
                         }}
+                        scroll={true}
                         aria-label={localisedString.showMore}
                     >
                         {localisedString.showMore}
