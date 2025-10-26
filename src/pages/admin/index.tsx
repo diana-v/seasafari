@@ -193,7 +193,7 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
 
     return (
         <>
-            <NavigationContainer logo={navigation?.logo} phone={navigation?.phone} isSimple />
+            <NavigationContainer logo={navigation?.logo} phone={navigation?.phone} isSimple isAuthenticated />
             <div className="bg-grey-50 py-8 md:py-16 lg:py-24">
                 <div className="xl:container mx-auto p-4 flex flex-col gap-4">
                     {alert.message && <AlertComponent color={alert.type} message={alert.message} />}
