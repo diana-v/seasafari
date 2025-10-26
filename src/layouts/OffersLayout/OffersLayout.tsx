@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { TypedObject } from '@portabletext/types';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { CardComponent, CardType } from '@/components/Card/CardComponent';
@@ -11,16 +10,16 @@ type OffersCardType = {
     title?: string;
     imageCompressed?: string;
     description?: string;
+    linkTitle?: string;
 };
 
 export interface OffersProps {
-    sectionTitle?: string;
     title?: string;
     description?: TypedObject | TypedObject[];
     cards?: OffersCardType[];
 }
 
-export const OffersLayout: React.FC<OffersProps> = ({ sectionTitle, title, description, cards }) => {
+export const OffersLayout: React.FC<OffersProps> = ({ title, description, cards }) => {
     if (!cards?.length) {
         return null;
     }
@@ -28,33 +27,31 @@ export const OffersLayout: React.FC<OffersProps> = ({ sectionTitle, title, descr
     const { locale } = useRouter();
 
     return (
-        <div id={sectionTitle?.toLowerCase()} className="bg-grey-50 py-8 md:py-16 lg:py-24">
-            <div className="container mx-auto px-4 flex flex-col items-center flex flex-col gap-6 md:gap-10 lg:gap-16">
+        <div id="offers" className="bg-blue-50 pt-8 md:pt-16 lg:pt-24">
+            <div className="xl:container mx-auto px-4 flex flex-col gap-6 md:gap-10 lg:gap-16">
                 {(title || description) && (
-                    <div className="max-w-5xl text-center">
-                        {title && <h1 className="uppercase">{title}</h1>}
+                    <div className="max-w-5xl">
+                        {title && <h2>{title}</h2>}
                         {description && <RichTextComponent content={description} />}
                     </div>
                 )}
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
+                <div className="flex flex-col divide-y">
                     {cards?.map((card, index) => (
-                        <Link
+                        <CardComponent
                             key={index}
-                            href={{
+                            classNames={{ root: 'mb-12 pt-12 h-full w-full' }}
+                            type={CardType.Image}
+                            title={card.title}
+                            description={card.description}
+                            image={card.imageCompressed}
+                            linkUrl={{
                                 pathname: '/[locale]/[offerId]',
                                 query: { offerId: card.slug, locale },
                             }}
-                            className="max-w-[480px]"
-                        >
-                            <CardComponent
-                                classNames={{ root: 'mb-4 h-full w-full', image: 'h-[250px] brightness-50' }}
-                                type={CardType.Image}
-                                title={card.title}
-                                description={card.description}
-                                image={card.imageCompressed}
-                            />
-                        </Link>
+                            linkTitle={card.linkTitle}
+                            index={index}
+                        />
                     ))}
                 </div>
             </div>

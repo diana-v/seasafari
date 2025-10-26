@@ -1,23 +1,22 @@
 import * as React from 'react';
-import cn from 'clsx';
 import { useRouter } from 'next/router';
+import cn from 'clsx';
 
-import styles from './navigationContainer.module.scss';
-import { IconComponent } from '@/components/Icon/IconComponent';
 import { ImageContainer } from '@/containers/Image/ImageContainer';
 import { useClickOutside } from '@/hooks/useClickOutside';
-import { languages, LocaleType } from '@/translations/admin';
+import { languages, LocaleType } from '@/translations/navigation';
+import { DropdownComponent } from '@/components/Dropdown/DropdownComponent';
+import { IconComponent } from '@/components/Icon/IconComponent';
 
 export interface NavigationProps {
     logo?: string;
-    sections?: {
-        title?: string;
-    }[];
+    phone?: string;
     showLocales?: boolean;
     isAuthenticated?: boolean;
+    isSimple?: boolean;
 }
 
-export const NavigationContainer: React.FC<NavigationProps> = ({ logo, sections, isAuthenticated }) => {
+export const NavigationContainer: React.FC<NavigationProps> = ({ logo, phone, isAuthenticated, isSimple }) => {
     const { locales, locale, defaultLocale, asPath, push, reload } = useRouter();
     const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
     const [showMenu, setShowMenu] = React.useState(false);
@@ -34,8 +33,8 @@ export const NavigationContainer: React.FC<NavigationProps> = ({ logo, sections,
     useClickOutside(menuRef, closeMenu);
 
     const switchToLocale = React.useCallback(
-        (newLocale: string) => () => push(asPath, undefined, { locale: newLocale, scroll: false }),
-        []
+        (newLocale: string) => push(asPath, undefined, { locale: newLocale, scroll: false }),
+        [asPath, push]
     );
 
     const handleLogout = React.useCallback(() => {
@@ -53,46 +52,62 @@ export const NavigationContainer: React.FC<NavigationProps> = ({ logo, sections,
     }, []);
 
     return (
-        <nav className={styles.root} ref={menuRef}>
+        <nav
+            className={cn('z-20 relative mx-auto flex flex-wrap justify-between items-center px-4 py-3 gap-x-5', {
+                'bg-slate-900': isSimple,
+            })}
+            ref={menuRef}
+        >
             <a href="/" className="flex gap-8">
-                {logo ? <ImageContainer src={logo} width={120} height={50} /> : 'SeaSafari'}
+                {logo ? (
+                    <ImageContainer
+                        src={logo}
+                        width={180}
+                        height={80}
+                        classNames={{
+                            root: 'h-full',
+                            image: cn('w-[100px] h-[50px]', {
+                                'lg:w-[160px] lg:h-[80px]': !isSimple,
+                                'lg:w-[100px] lg:h-[50px]': isSimple,
+                            }),
+                        }}
+                    />
+                ) : (
+                    'SeaSafari'
+                )}
             </a>
-            {sections?.length && (
-                <button
-                    className="block lg:hidden w-6 h-6 text-grey-600 hover:text-black"
-                    onClick={toggleMenu}
-                    aria-label="Navigation"
+            <div className="flex gap-2 lg:gap-3 text-sm lg:text-lg text-center">
+                <a
+                    href={`tel:${phone}`}
+                    className="rounded-full bg-white py-1.5 lg:py-2.5 px-3 lg:px-6 flex gap-2 items-center shadow-lg"
                 >
-                    <IconComponent name="hamburger" />
-                </button>
-            )}
-            <div className={`${showMenu ? 'max-h-[300px]' : 'max-h-[0px]'} ${styles.linkContainer}`}>
-                {sections &&
-                    sections.map((section, index) => (
-                        <a
-                            key={index}
-                            href={`/${locale === 'lt' ? '' : locale}#${section.title?.toLowerCase()}`}
-                            className={cn('hover:text-red-800 capitalise')}
-                        >
-                            {section.title}
-                        </a>
-                    ))}
+                    {localisedString.contactUs}
+                    <IconComponent name="phone" className="w-6 h-6" />
+                </a>
                 {isAuthenticated && (
-                    <button onClick={handleLogout} className="uppercase">
+                    <button
+                        onClick={handleLogout}
+                        className="uppercase rounded-full bg-white py-1.5 lg:py-2.5 px-3 lg:px-6 shadow-lg"
+                    >
                         {localisedString.logout}
                     </button>
                 )}
                 {locales && locales.length > 1 && (
-                    <div className="border-t lg:border-t-0 pt-2 lg:pt-0 lg:border-l lg:pl-5 flex gap-2 md:gap-5 justify-center">
-                        {locales.map((item, index) => (
-                            <button
-                                key={index}
-                                onClick={switchToLocale(item)}
-                                className={cn('uppercase', { 'font-bold text-red-800': item === locale })}
-                            >
-                                {item}
-                            </button>
-                        ))}
+                    <div className="relative">
+                        <button
+                            onClick={toggleMenu}
+                            className="uppercase rounded-full bg-white py-2 lg:py-2.5 px-2.5 lg:px-3.5 shadow-lg"
+                        >
+                            {locale}
+                        </button>
+                        {showMenu && (
+                            <DropdownComponent
+                                ref={menuRef}
+                                items={locales}
+                                onSelect={switchToLocale}
+                                classNames={{ root: 'absolute rounded-lg top-[60px] right-[-8px] w-[60px] p-3' }}
+                            />
+                        )}
                     </div>
                 )}
             </div>

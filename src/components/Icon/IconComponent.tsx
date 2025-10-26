@@ -5,6 +5,8 @@ import * as React from 'react';
  */
 export enum Icons {
     arrow = 'arrow',
+    arrowRightUp = 'arrow-right-up',
+    checkCircle = 'check-circle',
     check = 'check',
     cross = 'cross',
     print = 'print',
@@ -13,6 +15,10 @@ export enum Icons {
     phone = 'phone',
     pin = 'pin',
     calendar = 'calendar',
+    star = 'star',
+    securePayment = 'secure-payment',
+    makeCommerce = 'makecommerce-logo',
+    propeller = 'propeller',
 }
 
 interface ComponentProps {

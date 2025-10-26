@@ -4,7 +4,6 @@ export const fetchFAQSectionData = (client: SanityClient, locale?: string, defau
     client.fetch(
         `
     *[_type == "faq"]{
-        "sectionTitle": coalesce(sectionTitle.[$locale], sectionTitle.[$defaultLocale], "Missing translation"),
         "title": coalesce(title.[$locale], title.[$defaultLocale]),
         "description": coalesce(description.[$locale], description.[$defaultLocale]),
         "faq": frequentlyAskedQuestions[] {

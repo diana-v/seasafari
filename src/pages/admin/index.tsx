@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import Cookies from 'cookies';
 
 import { NavigationContainer, NavigationProps } from '@/containers/Navigation/NavigationContainer';
-import { fetchHeaderData } from '@/schemas/navigation';
+import { fetchNavigationData } from '@/schemas/navigation';
 import styles from './admin.module.scss';
 import { db } from '@/server/db';
 import { Order, orders, Status } from '@/server/db/schema';
@@ -193,9 +193,9 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
 
     return (
         <>
-            <NavigationContainer logo={navigation?.logo} isAuthenticated />
+            <NavigationContainer logo={navigation?.logo} phone={navigation?.phone} isSimple isAuthenticated />
             <div className="bg-grey-50 py-8 md:py-16 lg:py-24">
-                <div className="container mx-auto p-4 flex flex-col gap-4">
+                <div className="xl:container mx-auto p-4 flex flex-col gap-4">
                     {alert.message && <AlertComponent color={alert.type} message={alert.message} />}
 
                     <div className="flex flex-wrap gap-4 justify-between align-center">
@@ -225,7 +225,7 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
                     </div>
                 </div>
 
-                <div className="container mx-auto px-4 flex flex-col items-center gap-6 md:gap-10 lg:gap-16">
+                <div className="xl:container mx-auto px-4 flex flex-col items-center gap-6 md:gap-10 lg:gap-16">
                     <div className="w-full overflow-auto">
                         <table className={styles.table}>
                             <thead className="bg-gray-50">
@@ -330,7 +330,7 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
                                             </td>
                                             <td className={styles.tableDetail}>
                                                 <button
-                                                    className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                                                    className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-900"
                                                     onClick={() => handleResendEmail(item)}
                                                 >
                                                     {localisedString.resendEmail}
@@ -386,7 +386,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, defaultLo
         };
     }
 
-    const navigation = await fetchHeaderData(client, locale, defaultLocale);
+    const navigation = await fetchNavigationData(client, locale, defaultLocale);
     const initialOrders = await db.query.orders.findMany({
         where: (order) => eq(order.status, Status.CREATED),
         orderBy: asc(orders.orderRef),

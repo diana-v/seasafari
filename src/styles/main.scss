@@ -30,6 +30,19 @@
         --grey-color-100: #{$grey100};
         --grey-color-50: #{$grey50};
 
+        // Blue
+        --blue-color-50: #{$blue50};
+        --blue-color-100: #{$blue100};
+        --blue-color-200: #{$blue200};
+        --blue-color-300: #{$blue300};
+        --blue-color-400: #{$blue400};
+        --blue-color-500: #{$blue500};
+        --blue-color-600: #{$blue600};
+        --blue-color-700: #{$blue700};
+        --blue-color-800: #{$blue800};
+        --blue-color-900: #{$blue900};
+        --blue-color-950: #{$blue950};
+
         // Utility colours
         --white-color: #{$white};
         --black-color: #{$black};
@@ -44,11 +57,11 @@
         > div:not([data-portal], [data-ui='MenuButton__popover'])
         > div:not(#sanity) {
         h1 {
-            @apply text-2xl md:text-3xl lg:text-5xl mb-2 md:mb-4 lg:mb-6 font-bold;
+            @apply text-2xl md:text-5xl lg:text-7xl mb-2 md:mb-4 lg:mb-6 font-bold;
         }
 
         h2 {
-            @apply text-xl md:text-2xl lg:text-3xl mb-2 md:mb-3 lg:mb-4 font-bold;
+            @apply text-xl md:text-2xl lg:text-4xl mb-2 md:mb-3 lg:mb-4 font-bold;
         }
 
         h3 {
@@ -60,10 +73,10 @@
         }
 
         p {
-            @apply text-sm md:text-base mb-2 md:mb-3 lg:mb-4;
+            @apply text-sm md:text-base;
 
             em {
-                @apply text-sm md:text-base mb-2 md:mb-4 italic text-red-900;
+                @apply text-sm md:text-base italic;
             }
         }
 
@@ -72,7 +85,11 @@
         }
 
         span {
-            @apply text-sm md:text-base mb-2 md:mb-4 italic text-red-900;
+            @apply text-sm md:text-base mb-2 md:mb-4;
+        }
+
+        a {
+            @apply text-sm md:text-base;
         }
     }
 }

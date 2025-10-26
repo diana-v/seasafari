@@ -4,7 +4,7 @@ import { createClient } from '@sanity/client';
 import Cookies from 'cookies';
 
 import { NavigationContainer, NavigationProps } from '@/containers/Navigation/NavigationContainer';
-import { fetchHeaderData } from '@/schemas/navigation';
+import { fetchNavigationData } from '@/schemas/navigation';
 import LoginForm from '@/forms/LoginForm';
 
 interface PageProps {
@@ -14,7 +14,7 @@ interface PageProps {
 export const Login = ({ navigation }: PageProps) => {
     return (
         <>
-            <NavigationContainer logo={navigation.logo} sections={navigation.sections} />
+            <NavigationContainer logo={navigation?.logo} phone={navigation?.phone} isSimple />
             <LoginForm />
         </>
     );
@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, defaultLo
         };
     }
 
-    const navigation = await fetchHeaderData(client, locale, defaultLocale);
+    const navigation = await fetchNavigationData(client, locale, defaultLocale);
 
     return {
         props: {

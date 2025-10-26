@@ -2,7 +2,6 @@ export type LocaleType = 'en' | 'lt' | 'ru';
 
 export const languages = {
     en: {
-        logout: 'Logout',
         search: 'Search:',
         searchHelp: '*You can search by email or reference',
         filter: 'Show completed',
@@ -21,7 +20,6 @@ export const languages = {
         emailResendError: 'Failed to resend email.',
     },
     lt: {
-        logout: 'Atsijungti',
         search: 'Paieška:',
         searchHelp: '*Galite ieškoti pagal el. paštą arba kupono kodą',
         filter: 'Rodyti įvykdytus',
@@ -40,7 +38,6 @@ export const languages = {
         emailResendError: 'Nepavyko išsiųsti laiško.',
     },
     ru: {
-        logout: 'Выход',
         search: 'Поиск:',
         searchHelp: '*Вы можете искать по электронной почте или ссылке',
         filter: 'Показать выполненные',

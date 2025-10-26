@@ -1,118 +1,165 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { TypedObject } from '@portabletext/types/src';
 
 import { ImageContainer } from '@/containers/Image/ImageContainer';
 import { IconComponent } from '@/components/Icon/IconComponent';
-
-export type ItemType = {
-    label: string;
-    slug: string;
-    content?: TypedObject | TypedObject[];
-};
-
-type ContactType = {
-    title?: string;
-    value?: string;
-};
+import { FAQProps } from '@/layouts/FAQLayout/FAQLayout';
+import { languages as languagesCommon, LocaleType as LocaleTypeCommon } from '@/translations/common';
+import { languages as languagesFooter, LocaleType as LocaleTypeFooter } from '@/translations/footer';
 
 type CompanyContactType = {
-    title?: string;
     name?: string;
     companyCode?: string;
     address?: string;
 };
 
+type SocialLinkType = {
+    platform?: string;
+    link?: string;
+    icon?: string;
+};
+
 export interface FooterProps {
-    items?: ItemType[];
-    contact?: {
-        socialLinks?: {
-            platform?: string;
-            link?: string;
-            icon?: string;
-        }[];
-        address?: ContactType;
-        email?: ContactType;
-        phone?: ContactType;
+    faq?: FAQProps;
+    common?: {
+        logo?: string;
+        phone?: string;
+        address?: string;
+        email?: string;
         companyDetails?: CompanyContactType;
+        socialLinks?: SocialLinkType[];
+        privacyPolicy?: { slug: string };
+        purchaseRules?: { slug: string };
     };
 }
 
-export const FooterContainer: React.FC<FooterProps> = ({ items, contact }) => {
-    const { locale } = useRouter();
+export const FooterContainer: React.FC<FooterProps> = ({ faq, common }) => {
+    const { locale, defaultLocale } = useRouter();
+    const localisedStringCommon = languagesCommon[(locale ?? defaultLocale) as LocaleTypeCommon];
+    const localisedStringFooter = languagesFooter[(locale ?? defaultLocale) as LocaleTypeFooter];
 
-    if (!items || !contact) {
+    if (!common || !faq) {
         return null;
     }
 
-    const { address, phone, email, companyDetails, socialLinks } = contact;
+    const { logo, phone, address, email, companyDetails, socialLinks, privacyPolicy, purchaseRules } = common;
 
     return (
-        <div className="w-full bg-black text-white flex flex-col divide-y">
-            <div className="flex flex-col sm:flex-row flex-grow flex-wrap justify-between sm:items-center p-4 gap-4">
-                <div className="font-bold">© Copyright {new Date().getFullYear()} SeaSafari</div>
-                <div className="flex flex-wrap sm:divide-x gap-y-4">
-                    {items?.map(
-                        (item, index) =>
-                            item.content && (
-                                <p key={index} className="!mb-0">
+        <footer className="w-full bg-slate-900 text-slate-300">
+            <div className="xl:container mx-auto px-4 md:px-8">
+                <div className="py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+                    <div className="flex flex-col gap-4 pr-8">
+                        {logo ? (
+                            <ImageContainer
+                                src={logo}
+                                width={100}
+                                height={50}
+                                classNames={{ root: 'h-full', image: 'w-[100px] h-[50px]' }}
+                            />
+                        ) : (
+                            <h3 className="text-2xl font-bold text-white">{localisedStringFooter.title}</h3>
+                        )}
+                        <p className="text-slate-400">{localisedStringFooter.cta}</p>
+                        <div className="flex gap-3 mt-4">
+                            {socialLinks?.map((social, index) => (
+                                <a
+                                    key={index}
+                                    href={social.link}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="w-10 h-10 bg-slate-800 hover:bg-blue-900 rounded-full flex items-center justify-center transition-colors"
+                                    aria-label={social.platform}
+                                >
+                                    {social.icon && (
+                                        <ImageContainer
+                                            src={social.icon}
+                                            width={20}
+                                            height={20}
+                                            classNames={{ root: 'w-5 h-5', image: 'w-5 h-5' }}
+                                        />
+                                    )}
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col gap-4">
+                        <h4 className="font-semibold text-white">{localisedStringFooter.quickLinks}</h4>
+                        <ul className="space-y-2 !ml-0 !list-none">
+                            <li>
+                                <Link
+                                    href={{
+                                        pathname: '/[locale]/c/[contentId]',
+                                        query: { contentId: privacyPolicy?.slug, locale },
+                                    }}
+                                    className="hover:text-white transition-colors"
+                                >
+                                    {localisedStringCommon.privacyPolicy}
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    href={{
+                                        pathname: '/[locale]/c/[contentId]',
+                                        query: { contentId: purchaseRules?.slug, locale },
+                                    }}
+                                    className="hover:text-white transition-colors"
+                                >
+                                    {localisedStringCommon.purchaseRules}
+                                </Link>
+                            </li>
+                            {faq?.title && (
+                                <li>
                                     <Link
-                                        href={{
-                                            pathname: '/[locale]/c/[contentId]',
-                                            query: { contentId: item.slug, locale },
-                                        }}
-                                        className="px-4 underline underline-offset-4"
+                                        href={{ pathname: '/[locale]/faq', query: { locale } }}
+                                        className="hover:text-white transition-colors"
                                     >
-                                        {item.label}
+                                        {faq.title}
                                     </Link>
-                                </p>
-                            )
+                                </li>
+                            )}
+                        </ul>
+                    </div>
+
+                    <div className="flex flex-col gap-4">
+                        <h4 className="font-semibold text-white">{localisedStringFooter.contactUs}</h4>
+                        <ul className="space-y-3 !ml-0">
+                            <li className="flex items-start gap-3">
+                                <IconComponent className="w-5 h-5 mt-1 shrink-0 text-slate-400" name="pin" />
+                                <p>{address}</p>
+                            </li>
+                            <li className="flex items-start gap-3">
+                                <IconComponent className="w-5 h-5 mt-1 shrink-0 text-slate-400" name="email" />
+                                <a href={`mailto:${email}`} className="hover:text-white transition-colors">
+                                    {email}
+                                </a>
+                            </li>
+                            <li className="flex items-start gap-3">
+                                <IconComponent className="w-5 h-5 mt-1 shrink-0 text-slate-400" name="phone" />
+                                <a href={`tel:${phone}`} className="hover:text-white transition-colors">
+                                    {phone}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {companyDetails && (
+                        <div className="flex flex-col gap-4">
+                            <h4 className="font-semibold text-white">{localisedStringCommon.companyDetails}</h4>
+                            <div className="text-slate-400 space-y-1">
+                                <p>{companyDetails.name}</p>
+                                <p>{companyDetails.companyCode}</p>
+                                <p>{companyDetails.address}</p>
+                            </div>
+                        </div>
                     )}
                 </div>
-            </div>
-            <div className="p-4 flex flex-col sm:flex-row flex-wrap justify-between gap-4">
-                <div>
-                    <p className="flex gap-2">
-                        <IconComponent className="w-6 h-6" name="pin" />
-                        {address?.value}
-                    </p>
-                    <p className="flex gap-2">
-                        <IconComponent className="w-6 h-6" name="email" />
-                        <a href={`mailto:${email?.value}`}>{email?.value}</a>
-                    </p>
-                    <p className="flex gap-2">
-                        <IconComponent className="w-6 h-6" name="phone" />
-                        <a href={`tel:${phone?.value}`}>{phone?.value}</a>
-                    </p>
-                </div>
 
-                {companyDetails?.title && (
-                    <div>
-                        <p className="m-0 font-bold">{companyDetails?.title}</p>
-                        <p>{companyDetails?.name}</p>
-                        <p>{companyDetails?.companyCode}</p>
-                        <p>{companyDetails?.address}</p>
-                    </div>
-                )}
-                <div className="flex flex-col gap-4 justify-center flex-wrap">
-                    {socialLinks &&
-                        socialLinks?.map((socialLink, index) => (
-                            <a
-                                key={index}
-                                className="flex flex-row items-center px-4 gap-2 underline underline-offset-4"
-                                target="_blank"
-                                href={socialLink.link}
-                                rel="noreferrer"
-                            >
-                                {socialLink.icon && (
-                                    <ImageContainer src={socialLink.icon} width={40} height={40} className="w-6 h-6" />
-                                )}
-                                <p className="m-0">{socialLink.platform}</p>
-                            </a>
-                        ))}
+                <div className="py-6 border-t border-slate-800 text-center sm:text-left">
+                    <p className="text-sm text-slate-500">© Copyright {new Date().getFullYear()} SeaSafari</p>
                 </div>
             </div>
-        </div>
+        </footer>
     );
 };

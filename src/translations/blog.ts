@@ -2,11 +2,11 @@ export type LocaleType = 'en' | 'lt' | 'ru';
 
 export const languages = {
     en: {
-        showMore: 'Show more',
+        showMore: 'Show all',
         continueReading: 'Continue reading',
     },
     lt: {
-        showMore: 'Rodyti daugiau',
+        showMore: 'Rodyti visus',
         continueReading: 'Skaityti toliau',
     },
     ru: {
