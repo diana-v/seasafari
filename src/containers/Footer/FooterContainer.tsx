@@ -94,6 +94,7 @@ export const FooterContainer: React.FC<FooterProps> = ({ faq, common }) => {
                                         query: { contentId: privacyPolicy?.slug, locale },
                                     }}
                                     aria-label={localisedStringCommon.privacyPolicy}
+                                    scroll={true}
                                     className="hover:text-white transition-colors"
                                 >
                                     {localisedStringCommon.privacyPolicy}
@@ -106,6 +107,7 @@ export const FooterContainer: React.FC<FooterProps> = ({ faq, common }) => {
                                         query: { contentId: purchaseRules?.slug, locale },
                                     }}
                                     aria-label={localisedStringCommon.purchaseRules}
+                                    scroll={true}
                                     className="hover:text-white transition-colors"
                                 >
                                     {localisedStringCommon.purchaseRules}
@@ -116,6 +118,7 @@ export const FooterContainer: React.FC<FooterProps> = ({ faq, common }) => {
                                     <Link
                                         href={{ pathname: '/[locale]/faq', query: { locale } }}
                                         aria-label={faq.title}
+                                        scroll={true}
                                         className="hover:text-white transition-colors"
                                     >
                                         {faq.title}
@@ -128,12 +131,12 @@ export const FooterContainer: React.FC<FooterProps> = ({ faq, common }) => {
                     <div className="flex flex-col gap-4">
                         <div className="font-semibold text-white">{localisedStringFooter.contactUs}</div>
                         <ul className="space-y-3 !ml-0">
-                            <li className="flex items-start gap-3">
-                                <IconComponent className="w-5 h-5 mt-1 shrink-0 text-slate-400" name="pin" />
+                            <li className="flex items-center gap-3">
+                                <IconComponent className="w-5 h-5 shrink-0 text-slate-400" name="pin" />
                                 <p>{address}</p>
                             </li>
-                            <li className="flex items-start gap-3">
-                                <IconComponent className="w-5 h-5 mt-1 shrink-0 text-slate-400" name="email" />
+                            <li className="flex items-center gap-3">
+                                <IconComponent className="w-5 h-5 shrink-0 text-slate-400" name="email" />
                                 <a
                                     href={`mailto:${email}`}
                                     aria-label={email}
@@ -142,8 +145,8 @@ export const FooterContainer: React.FC<FooterProps> = ({ faq, common }) => {
                                     {email}
                                 </a>
                             </li>
-                            <li className="flex items-start gap-3">
-                                <IconComponent className="w-5 h-5 mt-1 shrink-0 text-slate-400" name="phone" />
+                            <li className="flex items-center gap-3">
+                                <IconComponent className="w-5 h-5 shrink-0 text-slate-400" name="phone" />
                                 <a
                                     href={`tel:${phone}`}
                                     aria-label={phone}
