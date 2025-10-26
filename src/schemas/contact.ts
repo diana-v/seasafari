@@ -7,9 +7,7 @@ export const fetchContactSectionData = (client: SanityClient, locale?: string, d
         "title": coalesce(title.[$locale], title.[$defaultLocale]),
         "description": coalesce(description.[$locale], description.[$defaultLocale]),
         "formTitle": coalesce(formTitle.[$locale], formTitle.[$defaultLocale]),
-        "common": *[_type == "common"] {
-            "phone": coalesce(phone.[$locale], phone.[$defaultLocale], "Missing translation"),
-        }[0],
+        "phone": *[_type == "common"].phone
     }[0]
 `,
         { locale, defaultLocale }
