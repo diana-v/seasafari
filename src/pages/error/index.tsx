@@ -24,7 +24,7 @@ const PaymentErrorPage: NextPage<PageProps> = ({ navigation, footer, errorCode }
         <>
             <NavigationContainer logo={navigation?.logo} phone={navigation?.phone} isSimple />
             <div className="xl:container mx-auto min-h-[calc(100vh-130px)] flex flex-col">
-                <div className="max-w-lg mx-auto text-center flex flex-grow flex-col gap-4 items-center justify-around">
+                <div className="max-w-lg mx-auto text-center flex flex-grow flex-col gap-4 items-center justify-around mb-4">
                     <div className="flex flex-col flex-grow gap-4 items-center justify-center relative">
                         {errorCode && (
                             <div className="absolute flex items-center justify-center text-gray-100 text-[12rem] md:text-[28rem] lg:text-[36rem] font-bold overflow-hidden">
@@ -32,7 +32,7 @@ const PaymentErrorPage: NextPage<PageProps> = ({ navigation, footer, errorCode }
                             </div>
                         )}
                         <h4 className="text-gray-900 font-bold z-10">{localisedString.errorMessage}</h4>
-                        <Link href="/" className="underline underline-offset-4 z-10">
+                        <Link href="/" aria-label={localisedString.link} className="underline underline-offset-4 z-10">
                             {localisedString.link}
                         </Link>
                     </div>

@@ -108,7 +108,7 @@ export const GiftCardForm: React.FC<GiftCardFormProps> = ({ options }) => {
                                 </div>
 
                                 <div className={cn('py-4 w-full flex-grow', styles.question)}>
-                                    <h5 className="font-bold mb-4">{localisedString.emailDescription}</h5>
+                                    <p className="font-bold mb-4">{localisedString.emailDescription}</p>
                                     <label htmlFor="email">
                                         <p>{localisedString.emailLabel}</p>
                                     </label>
@@ -138,6 +138,7 @@ export const GiftCardForm: React.FC<GiftCardFormProps> = ({ options }) => {
                                 <Link
                                     target="_blank"
                                     className="underline underline-offset-4"
+                                    aria-label={localisedString.privacyPolicy}
                                     href="/c/privatumo-politika"
                                 >
                                     {localisedString.privacyPolicy}{' '}

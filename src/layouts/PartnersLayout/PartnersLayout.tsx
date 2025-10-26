@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
-
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import { useRouter } from 'next/router';
+
 import { IconComponent } from '@/components/Icon/IconComponent';
 import { ImageContainer } from '@/containers/Image/ImageContainer';
+import { languages, LocaleType } from '@/translations/common';
 
 export interface PartnersProps {
     title?: string;
@@ -14,6 +16,9 @@ export interface PartnersProps {
 }
 
 export const PartnersLayout: React.FC<PartnersProps> = ({ title, logos }) => {
+    const { locale, defaultLocale } = useRouter();
+    const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
+
     if (!logos?.length) {
         return null;
     }
@@ -63,10 +68,16 @@ export const PartnersLayout: React.FC<PartnersProps> = ({ title, logos }) => {
                         ))}
                     </Swiper>
 
-                    <button className="swiper-partners-button-prev-custom absolute top-1/2 -translate-y-1/2 left-0 z-20 w-10 h-10 rounded-full items-center justify-center text-blue-800 disabled:opacity-50 hidden md:flex">
+                    <button
+                        className="swiper-partners-button-prev-custom absolute top-1/2 -translate-y-1/2 left-0 z-20 w-10 h-10 rounded-full items-center justify-center text-blue-800 disabled:opacity-50 hidden md:flex"
+                        aria-label={localisedString.previous}
+                    >
                         <IconComponent name="arrow" className="w-5 h-5 rotate-180" />
                     </button>
-                    <button className="swiper-partners-button-next-custom absolute top-1/2 -translate-y-1/2 right-0 z-20 w-10 h-10 rounded-full items-center justify-center text-blue-800 disabled:opacity-50 hidden md:flex">
+                    <button
+                        className="swiper-partners-button-next-custom absolute top-1/2 -translate-y-1/2 right-0 z-20 w-10 h-10 rounded-full items-center justify-center text-blue-800 disabled:opacity-50 hidden md:flex"
+                        aria-label={localisedString.next}
+                    >
                         <IconComponent name="arrow" className="w-5 h-5" />
                     </button>
                     <div className="swiper-partners-pagination-custom flex justify-center gap-2 md:hidden [&_.swiper-pagination-bullet]:!bg-blue-800/50 [&_.swiper-pagination-bullet-active]:!bg-blue-800" />

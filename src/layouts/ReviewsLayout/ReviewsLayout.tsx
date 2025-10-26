@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
-
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import { useRouter } from 'next/router';
+
 import { IconComponent } from '@/components/Icon/IconComponent';
 import { CardComponent, CardType } from '@/components/Card/CardComponent';
+import { languages, LocaleType } from '@/translations/common';
 
 type TestimonialCardType = {
     name?: string;
@@ -21,6 +23,9 @@ export interface ReviewsProps {
 }
 
 export const ReviewsLayout: React.FC<ReviewsProps> = ({ title, cards }) => {
+    const { locale, defaultLocale } = useRouter();
+    const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
+
     if (!cards?.length) {
         return null;
     }
@@ -71,10 +76,16 @@ export const ReviewsLayout: React.FC<ReviewsProps> = ({ title, cards }) => {
                             </SwiperSlide>
                         ))}
                     </Swiper>
-                    <button className="swiper-reviews-button-prev-custom absolute top-1/2 -translate-y-1/2 left-0 z-20 w-10 h-10 rounded-full items-center justify-center text-blue-800 disabled:opacity-50 hidden md:flex">
+                    <button
+                        className="swiper-reviews-button-prev-custom absolute top-1/2 -translate-y-1/2 left-0 z-20 w-10 h-10 rounded-full items-center justify-center text-blue-800 disabled:opacity-50 hidden md:flex"
+                        aria-label={localisedString.previous}
+                    >
                         <IconComponent name="arrow" className="w-5 h-5 rotate-180" />
                     </button>
-                    <button className="swiper-reviews-button-next-custom absolute top-1/2 -translate-y-1/2 right-0 z-20 w-10 h-10 rounded-full items-center justify-center text-blue-800 disabled:opacity-50 hidden md:flex">
+                    <button
+                        className="swiper-reviews-button-next-custom absolute top-1/2 -translate-y-1/2 right-0 z-20 w-10 h-10 rounded-full items-center justify-center text-blue-800 disabled:opacity-50 hidden md:flex"
+                        aria-label={localisedString.next}
+                    >
                         <IconComponent name="arrow" className="w-5 h-5" />
                     </button>
                 </div>

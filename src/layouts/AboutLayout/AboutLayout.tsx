@@ -50,7 +50,7 @@ export const AboutLayout: React.FC<AboutProps> = ({ title, image, description, b
                                     )}
                                 </div>
                                 <div className="flex flex-col gap-2">
-                                    {benefit.title && <h4 className="text-lg font-medium">{benefit.title}</h4>}
+                                    {benefit.title && <div className="text-lg font-bold">{benefit.title}</div>}
                                     {benefit.description && <RichTextComponent content={benefit.description} />}
                                 </div>
                             </div>
