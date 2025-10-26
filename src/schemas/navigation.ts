@@ -5,7 +5,7 @@ export const fetchNavigationData = (client: SanityClient, locale?: string, defau
         `
     *[_type == "common"]{
         "logo": logo.asset->url,
-        "phone": coalesce(phone.[$locale], phone.[$defaultLocale], "Missing translation"),
+        phone
     }[0]
 `,
         { locale, defaultLocale }
