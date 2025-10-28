@@ -61,7 +61,7 @@ export const PartnersLayout: React.FC<PartnersProps> = ({ title, logos }) => {
                                     height={100}
                                     classNames={{
                                         root: 'h-[100px] md:w-[100px]',
-                                        image: 'object-contain w-full h-[100px] md:h-[unset] md:w-[unset]',
+                                        image: 'object-contain w-full h-[100px] md:h-full md:w-[unset]',
                                     }}
                                 />
                             </SwiperSlide>
