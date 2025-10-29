@@ -53,31 +53,28 @@ const ImageCard = ({
     const formattedIndex = index === undefined ? null : String(index + 1).padStart(2, '0');
 
     return (
-        <div
-            className={cn('mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 xl:gap-16 items-center', classNames?.root)}
-            {...rest}
-        >
-            <div className="flex flex-col gap-2 lg:gap-4 md:col-span-4 xl:col-span-1">
+        <div className={cn('flex flex-col xl:flex-row gap-8 xl:gap-16 items-start', classNames?.root)} {...rest}>
+            <div className="flex flex-col gap-2 lg:gap-4 flex-none w-full xl:w-1/4">
                 {formattedIndex && (
                     <div className="text-gray-400 text-lg lg:text-2xl font-semibold">/{formattedIndex}</div>
                 )}
                 <h3 className="font-bold text-gray-800">{title}</h3>
             </div>
 
-            <div className="md:col-span-4 xl:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 xl:gap-16 items-center">
+            <div className="flex flex-col md:flex-row gap-8 md:gap-12 xl:gap-16 flex-1 items-center">
                 {image && (
                     <ImageContainer
                         src={image}
                         width={450}
                         height={300}
                         classNames={{
-                            root: 'h-full',
+                            root: 'h-full w-full md:w-auto flex-1',
                             image: cn('w-full h-56 object-cover rounded-3xl', classNames?.image),
                         }}
                     />
                 )}
 
-                <div className="flex flex-col gap-4 text-gray-700">
+                <div className="flex flex-col gap-4 text-gray-700 flex-1">
                     <p>{description}</p>
                     {linkUrl && linkTitle && (
                         <Link
