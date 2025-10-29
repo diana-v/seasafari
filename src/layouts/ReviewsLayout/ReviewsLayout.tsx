@@ -31,7 +31,7 @@ export const ReviewsLayout: React.FC<ReviewsProps> = ({ title, cards }) => {
     }
 
     return (
-        <div className="pt-16 lg:pt-24 isolation-isolate">
+        <div className="pt-16 lg:pt-24">
             <div className="xl:container mx-auto px-4 flex flex-col items-center gap-4 lg:gap-8">
                 <div className="text-center max-w-3xl">{title && <h2>{title}</h2>}</div>
 

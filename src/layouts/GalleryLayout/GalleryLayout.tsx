@@ -24,7 +24,7 @@ export const GalleryLayout: React.FC<GalleryProps> = ({ cards }) => {
     }
 
     return (
-        <div className="pt-8 md:pt-16 lg:pt-24 isolation-isolate">
+        <div className="pt-8 md:pt-16 lg:pt-24">
             <div className="mx-auto px-4 flex flex-col items-center gap-6 md:gap-10 lg:gap-16">
                 {cards.length > 0 && (
                     <div className="flex-grow w-full">
