@@ -53,10 +53,10 @@ export const BlogsLayout: React.FC<BlogsProps> = ({ title, description, cards })
                     </Link>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
+                <div className="flex flex-col md:flex-row gap-4 lg:gap-8">
                     {cards?.slice(0, 2)?.map((card, index) => {
                         return (
-                            <div key={index}>
+                            <div key={index} className="flex-1">
                                 <CardComponent
                                     classNames={{
                                         root: `h-full w-full`,
