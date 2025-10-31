@@ -4,10 +4,7 @@ import { asc, desc, ilike, or, and } from 'drizzle-orm';
 
 import { db } from '@/server/db';
 import { Order, orders, Status } from '@/server/db/schema';
-
-const isString = (value: unknown): value is string => {
-    return typeof value === 'string';
-};
+import { isString } from '@/utils/isString';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { searchTerm, field, direction, orderRef, status, showCompleted } = req.query;

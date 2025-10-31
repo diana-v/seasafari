@@ -211,12 +211,7 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
                     return setIsScannerOpen(false);
                 }
 
-                const res = await fetch('/api/admin/verify-qr?token=' + encodeURIComponent(token), {
-                    method: 'GET',
-                    headers: {
-                        'x-api-key': process.env.NEXT_PUBLIC_ADMIN_API_KEY,
-                    } as HeadersInit,
-                });
+                const res = await fetch(`/api/scan-qr-proxy?token=${encodeURIComponent(token)}`);
 
                 const data = await res.json();
 
