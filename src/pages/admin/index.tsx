@@ -198,12 +198,19 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
     }, []);
 
     const handleScan = React.useCallback(
-        async (token: string) => {
-            if (!token) return;
-
-            setIsScannerOpen(false);
+        async (scannedValue: string) => {
+            if (!scannedValue) return;
 
             try {
+                const url = new URL(scannedValue);
+                const token = url.searchParams.get('token');
+
+                if (!token) {
+                    setAlert({ message: 'Invalid QR code', type: AlertType.Error });
+
+                    return setIsScannerOpen(false);
+                }
+
                 const res = await fetch('/api/admin/verify-qr?token=' + encodeURIComponent(token), {
                     method: 'GET',
                     headers: {
@@ -241,6 +248,7 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
             } catch (error) {
                 console.error(error);
                 setAlert({ message: localisedString.scanError, type: AlertType.Error });
+                setIsScannerOpen(false);
             }
         },
         [localisedString]
