@@ -21,13 +21,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         const localisedString = languages[locale as LocaleType];
 
-        const formattedValidFrom = validFromDate.toISOString().split('T')[0];
-        const formattedValidTo = validToDate.toISOString().split('T')[0];
-
         const pdfStream = await generatePdfDoc({
             orderRef,
-            validFrom: formattedValidFrom,
-            validTo: formattedValidTo,
+            validFrom,
+            validTo,
             count: (+amount / 25).toString(),
             locale,
         });

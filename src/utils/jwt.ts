@@ -2,8 +2,10 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'super-secret';
 
-export function createGiftCardToken(orderRef: string) {
-    return jwt.sign({ orderRef }, JWT_SECRET, { expiresIn: '1y' });
+export function createGiftCardToken(orderRef: string, validTo: Date) {
+    const expiresInSeconds = Math.floor((validTo.getTime() - Date.now()) / 1000);
+
+    return jwt.sign({ orderRef }, JWT_SECRET, { expiresIn: expiresInSeconds });
 }
 
 export function verifyGiftCardToken(token: string): { expired?: boolean; orderRef: string } {

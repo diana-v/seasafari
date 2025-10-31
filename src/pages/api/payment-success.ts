@@ -54,8 +54,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const pdfStream = await generatePdfDoc({
             orderRef: ref,
             count,
-            validFrom: validFrom.toISOString().split('T')[0],
-            validTo: validTo.toISOString().split('T')[0],
+            validFrom,
+            validTo,
             locale,
         });
 
@@ -94,8 +94,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         cookies.set('paymentRef', ref, { sameSite: 'none', secureProxy: true });
         cookies.set('paymentEmail', email, { sameSite: 'none', secureProxy: true });
-        cookies.set('validFrom', validFrom.toISOString().split('T')[0], { sameSite: 'none', secureProxy: true });
-        cookies.set('validTo', validTo.toISOString().split('T')[0], { sameSite: 'none', secureProxy: true });
+        cookies.set('validFrom', validFrom, { sameSite: 'none', secureProxy: true });
+        cookies.set('validTo', validTo, { sameSite: 'none', secureProxy: true });
         cookies.set('count', encodeURIComponent(count), { sameSite: 'none', secureProxy: true });
         res.redirect(302, `/${locale}/success`);
     } catch {
