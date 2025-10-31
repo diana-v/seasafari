@@ -290,7 +290,7 @@ const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({
 export const generatePdfDoc = async ({ orderRef, validFrom, validTo, count, locale }: PaymentSuccessPDFProps) => {
     const decodedCount = count ? decodeURIComponent(count) : undefined;
     const token = createGiftCardToken(orderRef, validTo);
-    const qrUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/api/admin/verify-qr?token=${token}`;
+    const qrUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/api/verify-qr?token=${token}`;
     const qrDataUrl = await QRCode.toDataURL(qrUrl, { width: 200 });
 
     return renderToStream(

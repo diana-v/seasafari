@@ -9,10 +9,7 @@ import { orders, Status } from '@/server/db/schema';
 import { generatePdfDoc } from '@/templates/payment-success';
 import { languages, LocaleType } from '@/translations/success';
 import { getTemplate } from '@/utils/getTemplate';
-
-const isString = (value: unknown): value is string => {
-    return typeof value === 'string';
-};
+import { isString } from '@/utils/isString';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { ref, email, amount, count, locale, defaultLocale } = req.query;
