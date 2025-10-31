@@ -175,8 +175,8 @@ const styles = StyleSheet.create({
 interface PaymentSuccessPDFProps {
     orderRef: string;
     count?: string;
-    validFrom: string;
-    validTo: string;
+    validFrom: Date;
+    validTo: Date;
     locale: string;
     qrDataUrl?: string;
 }
@@ -190,6 +190,8 @@ const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({
     qrDataUrl,
 }) => {
     const localisedString = languages[locale as LocaleType];
+    const formattedValidFrom = validFrom.toISOString().split('T')[0];
+    const formattedValidTo = validTo.toISOString().split('T')[0];
 
     return (
         <Document>
@@ -263,11 +265,11 @@ const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({
                                     </View>
                                     <View style={styles.details}>
                                         <Text style={styles.detailsTitle}>{localisedString.validFrom}</Text>
-                                        <Text style={{ flex: 1 }}>{validFrom}</Text>
+                                        <Text style={{ flex: 1 }}>{formattedValidFrom}</Text>
                                     </View>
                                     <View style={styles.details}>
                                         <Text style={styles.detailsTitle}>{localisedString.validTo}</Text>
-                                        <Text style={{ flex: 1 }}>{validTo}</Text>
+                                        <Text style={{ flex: 1 }}>{formattedValidTo}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -286,8 +288,6 @@ const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({
 };
 
 export const generatePdfDoc = async ({ orderRef, validFrom, validTo, count, locale }: PaymentSuccessPDFProps) => {
-    const formattedValidFrom = validFrom.toISOString().split('T')[0];
-    const formattedValidTo = validTo.toISOString().split('T')[0];
     const decodedCount = count ? decodeURIComponent(count) : undefined;
     const token = createGiftCardToken(orderRef, validTo);
     const qrUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/verify-qr?token=${token}`;
@@ -297,8 +297,8 @@ export const generatePdfDoc = async ({ orderRef, validFrom, validTo, count, loca
         <PaymentSuccessPDF
             orderRef={orderRef}
             count={decodedCount}
-            validFrom={formattedValidFrom}
-            validTo={formattedValidTo}
+            validFrom={validFrom}
+            validTo={validTo}
             locale={locale}
             qrDataUrl={qrDataUrl}
         />

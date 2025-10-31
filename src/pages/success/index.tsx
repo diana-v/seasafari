@@ -110,8 +110,8 @@ export const getServerSideProps: GetServerSideProps = async ({ res, req, locale,
 
     const pdfStream = await generatePdfDoc({
         orderRef: paymentRef,
-        validTo: validTo,
-        validFrom: validFrom,
+        validTo: new Date(validTo),
+        validFrom: new Date(validFrom),
         locale: locale ?? '',
         count: count,
     });

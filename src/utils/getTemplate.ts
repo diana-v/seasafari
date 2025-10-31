@@ -7,18 +7,21 @@ export const getTemplate = (
     ref: string,
     email: string,
     amount: string,
-    validFrom: string,
-    validTo: string
+    validFrom: Date,
+    validTo: Date
 ): string => {
+    const formattedValidFrom = validFrom.toISOString().split('T')[0];
+    const formattedValidTo = validTo.toISOString().split('T')[0];
+
     switch (locale) {
         case 'lt': {
-            return LtTemplate(ref, email, amount, validFrom, validTo);
+            return LtTemplate(ref, email, amount, formattedValidFrom, formattedValidTo);
         }
         case 'ru': {
-            return RuTemplate(ref, email, amount, validFrom, validTo);
+            return RuTemplate(ref, email, amount, formattedValidFrom, formattedValidTo);
         }
         default: {
-            return EnTemplate(ref, email, amount, validFrom, validTo);
+            return EnTemplate(ref, email, amount, formattedValidFrom, formattedValidTo);
         }
     }
 };
