@@ -216,21 +216,27 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
                 setUpdatedOrders(data.updatedOrders ?? []);
 
                 if (res.ok && data.valid) {
-                    return setAlert({ message: localisedString.scanSuccess, type: AlertType.Success });
+                    setAlert({ message: localisedString.scanSuccess, type: AlertType.Success });
+
+                    return setIsScannerOpen(false);
                 }
 
                 if (!data.valid && data.manualCheckRequired) {
-                    return setAlert({
+                    setAlert({
                         message: localisedString.manualCheckRequired,
                         type: AlertType.Error,
                     });
+
+                    return setIsScannerOpen(false);
                 }
 
                 if (!data.valid) {
-                    return setAlert({
+                    setAlert({
                         message: localisedString.scanError + (data.reason ? ` (${data.reason})` : ''),
                         type: AlertType.Error,
                     });
+
+                    return setIsScannerOpen(false);
                 }
             } catch (error) {
                 console.error(error);
