@@ -6,6 +6,7 @@ import { asc, eq } from 'drizzle-orm';
 import cn from 'clsx';
 import { useRouter } from 'next/router';
 import Cookies from 'cookies';
+import { Scanner } from '@yudiel/react-qr-scanner';
 
 import { NavigationContainer, NavigationProps } from '@/containers/Navigation/NavigationContainer';
 import { fetchNavigationData } from '@/schemas/navigation';
@@ -37,6 +38,7 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
         direction: 'asc',
     });
     const [searchTerm, setSearchTerm] = React.useState('');
+    const [isScannerOpen, setIsScannerOpen] = React.useState(false);
 
     const fetchData = React.useCallback(
         async (queryParams: URLSearchParams) => {
@@ -191,6 +193,53 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
         [locale, defaultLocale, localisedString]
     );
 
+    const handleOpenScanner = React.useCallback(() => {
+        setIsScannerOpen((prev) => !prev);
+    }, []);
+
+    const handleScan = React.useCallback(
+        async (token: string) => {
+            if (!token) return;
+
+            setIsScannerOpen(false);
+
+            try {
+                const res = await fetch('/api/admin/verify-qr?token=' + encodeURIComponent(token), {
+                    method: 'GET',
+                    headers: {
+                        'x-api-key': process.env.NEXT_PUBLIC_ADMIN_API_KEY,
+                    } as HeadersInit,
+                });
+
+                const data = await res.json();
+
+                setUpdatedOrders(data.updatedOrders ?? []);
+
+                if (res.ok && data.valid) {
+                    return setAlert({ message: localisedString.scanSuccess, type: AlertType.Success });
+                }
+
+                if (!data.valid && data.manualCheckRequired) {
+                    return setAlert({
+                        message: localisedString.manualCheckRequired,
+                        type: AlertType.Error,
+                    });
+                }
+
+                if (!data.valid) {
+                    return setAlert({
+                        message: localisedString.scanError + (data.reason ? ` (${data.reason})` : ''),
+                        type: AlertType.Error,
+                    });
+                }
+            } catch (error) {
+                console.error(error);
+                setAlert({ message: localisedString.scanError, type: AlertType.Error });
+            }
+        },
+        [localisedString]
+    );
+
     return (
         <>
             <NavigationContainer logo={navigation?.logo} phone={navigation?.phone} isSimple isAuthenticated />
@@ -223,6 +272,40 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
                             </label>
                         </div>
                     </div>
+                    <div className="flex items-center md:justify-end mb-6">
+                        <button
+                            onClick={handleOpenScanner}
+                            className="flex justify-center text-white bg-orange-500 items-center gap-2 px-6 py-3"
+                        >
+                            {localisedString.scanQR}
+                        </button>
+                    </div>
+
+                    {isScannerOpen && (
+                        <div className="fixed inset-0 z-50 flex flex-col bg-black bg-opacity-90">
+                            <button
+                                onClick={handleOpenScanner}
+                                className="absolute flex items-center gap-2 top-4 right-4 text-white md:text-lg bg-gray-800 bg-opacity-60 px-4 py-2 rounded-md hover:bg-opacity-80"
+                            >
+                                {localisedString.closeScanner} <IconComponent name="cross" className="w-3 md:w-4 h-3 md:h-4" />
+                            </button>
+
+                            <div className="flex-1 flex justify-center items-center">
+                                <div className="w-[90vw] max-w-md aspect-square border-4 border-gray-400 rounded-xl overflow-hidden shadow-lg">
+                                    <Scanner
+                                        onScan={(detectedCodes) => {
+                                            const token = detectedCodes[0]?.rawValue;
+
+                                            if (token) handleScan(token);
+                                        }}
+                                        onError={(error) => console.error(error)}
+                                        classNames={{ container: 'w-full h-full' }}
+                                        constraints={{ facingMode: 'environment' }}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 <div className="xl:container mx-auto px-4 flex flex-col items-center gap-6 md:gap-10 lg:gap-16">
@@ -311,16 +394,22 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
                                 {updatedOrders.length > 0 ? (
                                     updatedOrders.map((item, index) => (
                                         <tr key={index}>
-                                            <td className={styles.tableDetail}>{item.orderRef}</td>
-                                            <td className={styles.tableDetail}>{item.orderAmount}</td>
-                                            <td className={styles.tableDetail}>{item.orderEmail}</td>
-                                            <td className={styles.tableDetail}>
+                                            <td className={styles.tableDetail} data-label={localisedString.reference}>
+                                                {item.orderRef}
+                                            </td>
+                                            <td className={styles.tableDetail} data-label={localisedString.amount}>
+                                                {item.orderAmount}
+                                            </td>
+                                            <td className={styles.tableDetail} data-label={localisedString.email}>
+                                                {item.orderEmail}
+                                            </td>
+                                            <td className={styles.tableDetail} data-label={localisedString.validFrom}>
                                                 {new Date(item.validFrom).toISOString().split('T')[0]}
                                             </td>
-                                            <td className={styles.tableDetail}>
+                                            <td className={styles.tableDetail} data-label={localisedString.validTo}>
                                                 {new Date(item.validTo).toISOString().split('T')[0]}
                                             </td>
-                                            <td className={styles.tableDetail}>
+                                            <td className={styles.tableDetail} data-label={localisedString.completed}>
                                                 <input
                                                     type="checkbox"
                                                     className={styles.checkmark}
@@ -328,9 +417,9 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
                                                     checked={item.status === Status.COMPLETED}
                                                 />
                                             </td>
-                                            <td className={styles.tableDetail}>
+                                            <td className={styles.tableDetail} data-label={localisedString.actions}>
                                                 <button
-                                                    className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-900"
+                                                    className="flex items-center justify-center px-4 py-2 bg-blue-900 text-white cursor-pointer"
                                                     onClick={() => handleResendEmail(item)}
                                                 >
                                                     {localisedString.resendEmail}

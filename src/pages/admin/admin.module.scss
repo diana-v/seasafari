@@ -4,6 +4,32 @@
 
 .table {
     @apply min-w-full divide-y divide-gray-200;
+
+    @media (max-width: 1284px) {
+        thead {
+            display: none;
+        }
+
+        tbody,
+        tr,
+        td {
+            display: block;
+            width: 100%;
+        }
+
+        tr {
+            @apply mb-4 bg-white rounded-lg shadow-sm p-4;
+        }
+
+        .tableDetail {
+            @apply flex justify-between items-center py-2 border-none;
+
+            &::before {
+                content: attr(data-label);
+                @apply font-semibold text-gray-600 capitalize;
+            }
+        }
+    }
 }
 
 .tableHead {
@@ -11,7 +37,7 @@
 }
 
 .tableDetail {
-    @apply px-6 py-4 whitespace-nowrap;
+    @apply md:px-6 py-4 whitespace-nowrap;
 }
 
 .checkmark {

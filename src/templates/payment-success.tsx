@@ -1,8 +1,10 @@
 import React from 'react';
 import { Page, Text, View, Document, Image, Font, StyleSheet, renderToStream } from '@react-pdf/renderer';
 import * as path from 'node:path';
+import QRCode from 'qrcode';
 
 import { languages, LocaleType } from '@/translations/paymentSuccessPdf';
+import { createGiftCardToken } from '@/utils/jwt';
 
 Font.register({
     family: 'Roboto',
@@ -117,14 +119,37 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         flex: 1,
     },
-    footerColumn: {
-        flexDirection: 'column',
-        flex: 1,
-        gap: 8,
-    },
     footer: {
         paddingTop: 10,
         borderTop: '2px solid #A8352E',
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        gap: 12,
+    },
+    qrImage: {
+        width: 60,
+        height: 60,
+        flexShrink: 0,
+    },
+    infoColumn: {
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        gap: 4,
+        flexShrink: 1,
+        flex: 1,
+    },
+    footerLeft: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 12,
+        flex: 1,
+    },
+    footerRight: {
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        flex: 1,
+        gap: 4,
     },
     textCenter: {
         textAlign: 'center',
@@ -153,9 +178,17 @@ interface PaymentSuccessPDFProps {
     validFrom: string;
     validTo: string;
     locale: string;
+    qrDataUrl?: string;
 }
 
-const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({ orderRef, count, validFrom, validTo, locale }) => {
+const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({
+    orderRef,
+    count,
+    validFrom,
+    validTo,
+    locale,
+    qrDataUrl,
+}) => {
     const localisedString = languages[locale as LocaleType];
 
     return (
@@ -220,29 +253,29 @@ const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({ orderRef, count, 
                             </View>
                         </View>
 
-                        {/* Footer */}
                         <View style={styles.footer}>
-                            <View style={styles.row}>
-                                <View style={styles.footerColumn}>
+                            <View style={styles.footerLeft}>
+                                {qrDataUrl && <Image src={qrDataUrl} style={styles.qrImage} />}
+                                <View style={styles.infoColumn}>
                                     <View style={styles.details}>
                                         <Text style={styles.detailsTitle}>{localisedString.giftCardRef}</Text>
-                                        <Text>{orderRef}</Text>
+                                        <Text style={{ flex: 1 }}>{orderRef}</Text>
                                     </View>
-
                                     <View style={styles.details}>
                                         <Text style={styles.detailsTitle}>{localisedString.validFrom}</Text>
-                                        <Text>{validFrom}</Text>
+                                        <Text style={{ flex: 1 }}>{validFrom}</Text>
                                     </View>
                                     <View style={styles.details}>
                                         <Text style={styles.detailsTitle}>{localisedString.validTo}</Text>
-                                        <Text>{validTo}</Text>
+                                        <Text style={{ flex: 1 }}>{validTo}</Text>
                                     </View>
                                 </View>
-                                <View style={styles.footerColumn}>
-                                    <Text style={styles.bullet}>- {localisedString.disclaimer1}</Text>
-                                    <Text style={styles.bullet}>- {localisedString.disclaimer2}</Text>
-                                    <Text style={styles.bullet}>- {localisedString.disclaimer3}</Text>
-                                </View>
+                            </View>
+
+                            <View style={styles.footerRight}>
+                                <Text style={styles.bullet}>- {localisedString.disclaimer1}</Text>
+                                <Text style={styles.bullet}>- {localisedString.disclaimer2}</Text>
+                                <Text style={styles.bullet}>- {localisedString.disclaimer3}</Text>
                             </View>
                         </View>
                     </View>
@@ -254,6 +287,9 @@ const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({ orderRef, count, 
 
 export const generatePdfDoc = async ({ orderRef, validFrom, validTo, count, locale }: PaymentSuccessPDFProps) => {
     const decodedCount = count ? decodeURIComponent(count) : undefined;
+    const token = createGiftCardToken(orderRef);
+    const qrUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/verify-qr?token=${token}`;
+    const qrDataUrl = await QRCode.toDataURL(qrUrl, { width: 200 });
 
     return renderToStream(
         <PaymentSuccessPDF
@@ -262,6 +298,7 @@ export const generatePdfDoc = async ({ orderRef, validFrom, validTo, count, loca
             validFrom={validFrom}
             validTo={validTo}
             locale={locale}
+            qrDataUrl={qrDataUrl}
         />
     );
 };

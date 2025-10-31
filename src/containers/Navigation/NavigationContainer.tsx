@@ -77,13 +77,15 @@ export const NavigationContainer: React.FC<NavigationProps> = ({ logo, phone, is
                 )}
             </a>
             <div className="flex gap-2 lg:gap-3 text-sm lg:text-lg text-center">
-                <a
-                    href={`tel:${phone}`}
-                    className="rounded-full bg-white py-1.5 lg:py-2.5 px-3 lg:px-6 flex gap-2 items-center shadow-lg"
-                >
-                    {localisedString.contactUs}
-                    <IconComponent name="phone" className="w-6 h-6" />
-                </a>
+                {!isAuthenticated && (
+                    <a
+                        href={`tel:${phone}`}
+                        className="rounded-full bg-white py-1.5 lg:py-2.5 px-3 lg:px-6 flex gap-2 items-center shadow-lg"
+                    >
+                        {localisedString.contactUs}
+                        <IconComponent name="phone" className="w-6 h-6" />
+                    </a>
+                )}
                 {isAuthenticated && (
                     <button
                         onClick={handleLogout}

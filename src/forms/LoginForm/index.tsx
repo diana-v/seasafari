@@ -85,7 +85,11 @@ const LoginForm = () => {
                             <p className="m-0 text-red-700 text-xs">{errors.password}</p>
                         )}
                     </div>
-                    <button className={styles.submitButton} type="submit" disabled={isSubmitting || !dirty}>
+                    <button
+                        className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-900 rounded-full text-white hover:shadow-xl transition-shadow duration-200 w-full cursor-pointer"
+                        type="submit"
+                        disabled={isSubmitting || !dirty}
+                    >
                         {isSubmitting ? localisedString.loggingIn : localisedString.login}
                     </button>
                     {alert.message && <AlertComponent color={alert.type} message={alert.message} />}
