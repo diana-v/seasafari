@@ -287,7 +287,8 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
                                 onClick={handleOpenScanner}
                                 className="absolute flex items-center gap-2 top-4 right-4 text-white md:text-lg bg-gray-800 bg-opacity-60 px-4 py-2 rounded-md hover:bg-opacity-80"
                             >
-                                {localisedString.closeScanner} <IconComponent name="cross" className="w-3 md:w-4 h-3 md:h-4" />
+                                {localisedString.closeScanner}
+                                <IconComponent name="cross" className="w-3 md:w-4 h-3 md:h-4" />
                             </button>
 
                             <div className="flex-1 flex justify-center items-center">
