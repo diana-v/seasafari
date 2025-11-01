@@ -206,35 +206,26 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
                 const token = url.searchParams.get('token');
 
                 if (!token) {
-                    setAlert({ message: 'Invalid QR code', type: AlertType.Error });
+                    setAlert({ message: localisedString.invalidQRCode, type: AlertType.Error });
 
                     return setIsScannerOpen(false);
                 }
 
-                const res = await fetch(`/api/scan-qr-proxy?token=${encodeURIComponent(token)}`);
+                const res = await fetch(`/api/scan-qr-proxy?token=${encodeURIComponent(token)}&locale=${locale ?? defaultLocale}`);
 
                 const data = await res.json();
 
                 setUpdatedOrders(data.updatedOrders ?? []);
 
                 if (res.ok && data.valid) {
-                    setAlert({ message: localisedString.scanSuccess, type: AlertType.Success });
-
-                    return setIsScannerOpen(false);
-                }
-
-                if (!data.valid && data.manualCheckRequired) {
-                    setAlert({
-                        message: localisedString.manualCheckRequired,
-                        type: AlertType.Error,
-                    });
+                    setAlert({ message: data.reason, type: AlertType.Success });
 
                     return setIsScannerOpen(false);
                 }
 
                 if (!data.valid) {
                     setAlert({
-                        message: localisedString.scanError + (data.reason ? ` (${data.reason})` : ''),
+                        message: data.reason,
                         type: AlertType.Error,
                     });
 
@@ -244,6 +235,8 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
                 console.error(error);
                 setAlert({ message: localisedString.scanError, type: AlertType.Error });
                 setIsScannerOpen(false);
+            } finally {
+                setTimeout(() => setAlert({ message: '', type: AlertType.Error }), 5000);
             }
         },
         [localisedString]
