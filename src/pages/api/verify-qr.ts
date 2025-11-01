@@ -4,8 +4,12 @@ import { eq, and, or, ilike, asc, desc } from 'drizzle-orm';
 import { verifyGiftCardToken } from '@/utils/jwt';
 import { db } from '@/server/db';
 import { orders, Order, Status } from '@/server/db/schema';
+import { languages, LocaleType } from '@/translations/admin';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    const { locale } = req.query;
+    const localisedString = languages[locale as LocaleType] ?? languages.en;
+
     if (req.headers['x-api-key'] !== process.env.ADMIN_API_KEY) {
         return res.redirect(302, '/');
     }
@@ -25,25 +29,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
 
         if (!order) {
-            return res.status(404).json({ valid: false, reason: 'not found' });
+            return res.status(404).json({ valid: false, reason: localisedString.orderNotFound });
         }
 
-        let updatedStatus = order.status;
-
-        if (decoded.expired) {
+        if (order.status === Status.COMPLETED) {
             return res.status(200).json({
                 valid: false,
-                reason: 'token expired, manual check required',
-                manualCheckRequired: true,
+                reason: localisedString.alreadyUsed,
                 orderRef: order.orderRef,
             });
         }
 
-        if (order.status !== Status.COMPLETED) {
-            updatedStatus = Status.COMPLETED;
+        if (decoded.expired) {
+            return res.status(200).json({
+                valid: false,
+                reason: localisedString.manualCheckRequired,
+                orderRef: order.orderRef,
+            });
         }
 
-        await db.update(orders).set({ status: updatedStatus }).where(eq(orders.orderRef, order.orderRef));
+        await db.update(orders).set({ status: Status.COMPLETED }).where(eq(orders.orderRef, order.orderRef));
 
         const sortDirection = direction === 'asc' ? asc : desc;
         const shouldShowCompleted = showCompleted === 'true';
@@ -59,10 +64,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             orderBy: sortDirection(orders[field as keyof Order]),
         });
 
-        return res.status(200).json({ valid: true, updatedOrders });
+        return res.status(200).json({ valid: true, reason: localisedString.scanSuccess, updatedOrders });
     } catch (error) {
         console.error(error);
 
-        return res.status(401).json({ valid: false, reason: 'invalid token' });
+        return res.status(401).json({ valid: false, reason: localisedString.scanError });
     }
 }

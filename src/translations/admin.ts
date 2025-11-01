@@ -23,6 +23,9 @@ export const languages = {
         scanSuccess: 'Gift card marked as used 🎉',
         scanError: 'Failed to mark gift card as used.',
         manualCheckRequired: "Please check the gift card's status manually",
+        alreadyUsed: 'Gift card is already used',
+        orderNotFound: 'Order not found',
+        invalidQRCode: 'Invalid QR Code',
     },
     lt: {
         search: 'Paieška:',
@@ -46,6 +49,9 @@ export const languages = {
         scanSuccess: 'Dovanų kortelė pažymėta kaip panaudota 🎉',
         scanError: 'Nepavyko pažymėti dovanų kortelės kaip panaudotos.',
         manualCheckRequired: 'Prašome rankiniu būdu patikrinti dovanų kortelės būseną',
+        alreadyUsed: 'Dovanų kortelė jau panaudota',
+        orderNotFound: 'Užsakymas nerastas',
+        invalidQRCode: 'Neteisingas QR kodas',
     },
     ru: {
         search: 'Поиск:',
@@ -69,5 +75,8 @@ export const languages = {
         scanSuccess: 'Подарочная карта отмечена как использованная 🎉',
         scanError: 'Не удалось отметить подарочную карту как использованную',
         manualCheckRequired: 'Пожалуйста, проверьте статус подарочной карты вручную',
+        alreadyUsed: 'Подарочная карта уже использована',
+        orderNotFound: 'Заказ не найден',
+        invalidQRCode: 'Неверный QR-код',
     },
 };
