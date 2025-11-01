@@ -211,7 +211,9 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
                     return setIsScannerOpen(false);
                 }
 
-                const res = await fetch(`/api/scan-qr-proxy?token=${encodeURIComponent(token)}&locale=${locale ?? defaultLocale}`);
+                const res = await fetch(
+                    `/api/scan-qr-proxy?token=${encodeURIComponent(token)}&locale=${locale ?? defaultLocale}`
+                );
 
                 const data = await res.json();
 
