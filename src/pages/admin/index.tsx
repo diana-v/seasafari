@@ -212,7 +212,7 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
                 }
 
                 const res = await fetch(
-                    `/api/scan-qr-proxy?token=${encodeURIComponent(token)}&locale=${locale ?? defaultLocale}`
+                    `/api/verify-qr?token=${encodeURIComponent(token)}&locale=${locale ?? defaultLocale}`
                 );
 
                 const data = await res.json();
