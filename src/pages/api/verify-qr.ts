@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const localisedString = languages[locale as LocaleType] ?? languages.en;
 
     if (!checkAdminAuth(req, res)) {
-        return res.status(401).json({ valid: false, reason: 'Unauthorized' });
+        return res.redirect(302, '/');
     }
 
     const token = req.query.token as string | undefined;
