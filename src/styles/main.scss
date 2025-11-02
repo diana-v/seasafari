@@ -94,4 +94,26 @@
             @apply text-sm md:text-base;
         }
     }
+
+    .blog, .content {
+        p {
+            @apply mb-2 md:mb-3 lg:mb-4;
+
+            em {
+                @apply mb-2 md:mb-4;
+            }
+
+            &:empty {
+                @apply mb-0;
+
+                &::before {
+                    content: '\00a0';
+                }
+            }
+        }
+
+        span {
+            @apply mb-2 md:mb-4;
+        }
+    }
 }

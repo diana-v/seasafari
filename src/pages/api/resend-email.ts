@@ -21,13 +21,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         const localisedString = languages[locale as LocaleType];
 
-        const formattedValidFrom = validFromDate.toISOString().split('T')[0];
-        const formattedValidTo = validToDate.toISOString().split('T')[0];
-
         const pdfStream = await generatePdfDoc({
             orderRef,
-            validFrom: formattedValidFrom,
-            validTo: formattedValidTo,
+            validFrom,
+            validTo,
             count: (+amount / 25).toString(),
             locale,
         });
@@ -44,7 +41,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             to: email,
             from: process.env.NEXT_PUBLIC_RESEND_FROM_EMAIL ?? '',
             subject: `${localisedString.giftCardEmailSubject} - ${orderRef}`,
-            html: getTemplate(locale, orderRef, email, amount, formattedValidFrom, formattedValidTo),
+            html: getTemplate(locale, orderRef, email, amount, validFrom, validTo),
             attachments: [
                 {
                     content: attachment,

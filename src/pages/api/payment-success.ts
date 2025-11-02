@@ -9,10 +9,7 @@ import { orders, Status } from '@/server/db/schema';
 import { generatePdfDoc } from '@/templates/payment-success';
 import { languages, LocaleType } from '@/translations/success';
 import { getTemplate } from '@/utils/getTemplate';
-
-const isString = (value: unknown): value is string => {
-    return typeof value === 'string';
-};
+import { isString } from '@/utils/isString';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { ref, email, amount, count, locale, defaultLocale } = req.query;
@@ -54,8 +51,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const pdfStream = await generatePdfDoc({
             orderRef: ref,
             count,
-            validFrom: validFrom.toISOString().split('T')[0],
-            validTo: validTo.toISOString().split('T')[0],
+            validFrom,
+            validTo,
             locale,
         });
 
@@ -75,14 +72,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             to: email,
             from: process.env.NEXT_PUBLIC_RESEND_FROM_EMAIL ?? '',
             subject: `${localisedString.giftCardEmailSubject} - ${ref}`,
-            html: getTemplate(
-                locale,
-                ref,
-                email,
-                amount,
-                validFrom.toISOString().split('T')[0],
-                validTo.toISOString().split('T')[0]
-            ),
+            html: getTemplate(locale, ref, email, amount, validFrom, validTo),
             attachments: [
                 {
                     content: attachment,
@@ -94,8 +84,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         cookies.set('paymentRef', ref, { sameSite: 'none', secureProxy: true });
         cookies.set('paymentEmail', email, { sameSite: 'none', secureProxy: true });
-        cookies.set('validFrom', validFrom.toISOString().split('T')[0], { sameSite: 'none', secureProxy: true });
-        cookies.set('validTo', validTo.toISOString().split('T')[0], { sameSite: 'none', secureProxy: true });
+        cookies.set('validFrom', validFrom.toString(), { sameSite: 'none', secureProxy: true });
+        cookies.set('validTo', validTo.toString(), { sameSite: 'none', secureProxy: true });
         cookies.set('count', encodeURIComponent(count), { sameSite: 'none', secureProxy: true });
         res.redirect(302, `/${locale}/success`);
     } catch {
