@@ -5,13 +5,14 @@ import { verifyGiftCardToken } from '@/utils/jwt';
 import { db } from '@/server/db';
 import { orders, Order, Status } from '@/server/db/schema';
 import { languages, LocaleType } from '@/translations/admin';
+import { checkAdminAuth } from '@/utils/checkAdminAuth';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { locale } = req.query;
     const localisedString = languages[locale as LocaleType] ?? languages.en;
 
-    if (req.headers['x-api-key'] !== process.env.ADMIN_API_KEY) {
-        return res.redirect(302, '/');
+    if (!checkAdminAuth(req, res)) {
+        return res.status(401).json({ valid: false, reason: 'Unauthorized' });
     }
 
     const token = req.query.token as string | undefined;
