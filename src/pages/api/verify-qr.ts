@@ -64,7 +64,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             orderBy: sortDirection(orders[field as keyof Order]),
         });
 
-        return res.status(200).json({ valid: true, reason: localisedString.scanSuccess, updatedOrders });
+        return res
+            .status(200)
+            .json({ valid: true, reason: `${localisedString.scanSuccess} - ${order.orderRef}`, updatedOrders });
     } catch (error) {
         console.error(error);
 
