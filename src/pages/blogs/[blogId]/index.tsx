@@ -32,7 +32,7 @@ interface PageProps {
 }
 
 const Blog: NextPage<PageProps> = ({ navigation, blog, footer, giftCardWidget }) => (
-    <div id={blog?.slug ?? ''} className="flex-grow bg-grey-50 min-h-screen">
+    <div id={blog?.slug ?? ''} className="blog flex-grow bg-grey-50 min-h-screen">
         <Head>
             <title>{`${blog?.title ?? ''} | SeaSafari`}</title>
             <meta name="description" content={blog?.description} />

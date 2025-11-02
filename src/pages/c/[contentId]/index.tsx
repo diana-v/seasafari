@@ -27,7 +27,7 @@ interface PageProps {
 }
 
 const Content: NextPage<PageProps> = ({ navigation, content, footer, giftCardWidget }) => (
-    <div id={content?.slug} className="flex-grow bg-grey-50 min-h-screen">
+    <div id={content?.slug} className="content flex-grow bg-grey-50 min-h-screen">
         <Head>
             <title>{`${content?.label} | SeaSafari`}</title>
         </Head>
