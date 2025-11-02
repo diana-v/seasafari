@@ -20,7 +20,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
         );
 
-        console.log('verify-qr response:', response, process.env.ADMIN_API_KEY, process.env.NEXT_PUBLIC_DOMAIN);
+        console.warn('verify-qr response:', response, process.env.ADMIN_API_KEY, process.env.NEXT_PUBLIC_DOMAIN);
+        console.warn('proxy: has ADMIN_API_KEY =', !!process.env.ADMIN_API_KEY);
 
         const data = await response.json();
 
