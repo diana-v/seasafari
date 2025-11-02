@@ -10,8 +10,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { locale } = req.query;
     const localisedString = languages[locale as LocaleType] ?? languages.en;
 
-    console.warn('verify: got x-api-key =', req.headers['x-api-key'] ? 'present' : 'missing');
-
     if (req.headers['x-api-key'] !== process.env.ADMIN_API_KEY) {
         return res.redirect(302, '/');
     }

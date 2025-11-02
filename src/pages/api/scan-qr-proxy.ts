@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
         const response = await fetch(
-            `${process.env.NEXT_PUBLIC_DOMAIN}/api/verify-qr?token=${encodeURIComponent(token)}
+            `/api/verify-qr?token=${encodeURIComponent(token)}
             &locale=${encodeURIComponent(locale)}`,
             {
                 headers: {
@@ -19,9 +19,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 } as HeadersInit,
             }
         );
-
-        console.warn('verify-qr response:', response, process.env.ADMIN_API_KEY, process.env.NEXT_PUBLIC_DOMAIN);
-        console.warn('proxy: has ADMIN_API_KEY =', !!process.env.ADMIN_API_KEY);
 
         const data = await response.json();
 
