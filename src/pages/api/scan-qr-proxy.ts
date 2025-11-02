@@ -9,16 +9,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).send('Invalid query parameters');
     }
 
+    res.setHeader('Cache-Control', 'no-store, max-age=0');
+
     try {
-        const response = await fetch(
-            `/api/verify-qr?token=${encodeURIComponent(token)}
-            &locale=${encodeURIComponent(locale)}`,
-            {
-                headers: {
-                    'x-api-key': process.env.ADMIN_API_KEY ?? '',
-                } as HeadersInit,
-            }
-        );
+        const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000';
+
+        const response = await fetch(`${baseUrl}/api/verify-qr?token=${encodeURIComponent(token)}&locale=${locale}`, {
+            headers: { 'x-api-key': process.env.ADMIN_API_KEY } as HeadersInit,
+        });
 
         const data = await response.json();
 
