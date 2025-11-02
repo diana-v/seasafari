@@ -187,7 +187,7 @@ export const Admin = ({ navigation, initialOrders }: PageProps) => {
                 console.error(error);
                 setAlert({ message: localisedString.emailResendError, type: AlertType.Error });
             } finally {
-                setTimeout(() => setAlert({ message: '', type: AlertType.Error }), 5000);
+                setTimeout(() => setAlert({ message: '', type: AlertType.Error }), 15_000);
             }
         },
         [locale, defaultLocale, localisedString]
