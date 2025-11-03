@@ -46,6 +46,17 @@ const Offer: NextPage<PageProps> = ({ navigation, offer, footer }) => {
             <Head>
                 <title>{`${offer?.title ?? ''} | SeaSafari`}</title>
                 <meta name="description" content={offer?.description} />
+                <meta name="image" content={offer?.image} />
+                <meta property="og:image" content={offer?.image} />
+                <meta property="og:title" content={offer?.title} />
+                <meta property="og:description" content={offer?.description} />
+                <meta property="og:url" content={`${process.env.NEXT_PUBLIC_DOMAIN}/${offer?.slug}`} />
+                <meta property="og:type" content="article" />
+                <meta property="og:site_name" content="SeaSafari" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content={offer?.title} />
+                <meta name="twitter:description" content={offer?.description} />
+                <meta name="twitter:image" content={offer?.image} />
             </Head>
             <NavigationContainer logo={navigation?.logo} phone={navigation?.phone} isSimple />
 
