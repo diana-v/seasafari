@@ -89,6 +89,7 @@ const Home: NextPage<PageProps> = ({
                     name="description"
                     content="Plaukdami su „Sea Safari“ jūs priartėsite prie gamtos ir patirsite nepamirštamus įspūdžius. Mes siūlome du R.I.B. laivus, varomus 300 AG ir 600 AG varikliais, kurių maksimalus greitis siekia net iki 60 mazgų. Patirkite naujus pojūčius su Sea Safari Lietuva!"
                 />
+                <meta name="image" content={home?.image} />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <meta property="og:title" content="Sea-Safari Lietuva | Nepamirštami įspūdžiai Jums" />
                 <meta property="og:site_name" content="Sea-Safari" />
@@ -98,20 +99,14 @@ const Home: NextPage<PageProps> = ({
                     content="Plaukdami su „Sea Safari“ jūs priartėsite prie gamtos ir patirsite nepamirštamus įspūdžius. Mes siūlome du R.I.B. laivus, varomus 300 AG ir 600 AG varikliais, kurių maksimalus greitis siekia net iki 60 mazgų. Patirkite naujus pojūčius su Sea Safari Lietuva!"
                 />
                 <meta property="og:type" content="website" />
-                <meta
-                    property="og:image"
-                    content="https://cdn.sanity.io/images/9s9wwf86/production/ffc3ca964587227a6969b43f96f6fa266cfecd97-1771x1257.jpg"
-                />
+                <meta property="og:image" content={home?.image} />
                 <meta name="twitter:card" content="summary" />
                 <meta name="twitter:title" content="Sea-Safari Lietuva | Nepamirštami įspūdžiai Jums" />
                 <meta
                     name="twitter:description"
                     content="Plaukdami su „Sea Safari“ jūs priartėsite prie gamtos ir patirsite nepamirštamus įspūdžius. Mes siūlome du R.I.B. laivus, varomus 300 AG ir 600 AG varikliais, kurių maksimalus greitis siekia net iki 60 mazgų. Patirkite naujus pojūčius su Sea Safari Lietuva!"
                 />
-                <meta
-                    name="twitter:image"
-                    content="https://cdn.sanity.io/images/9s9wwf86/production/ffc3ca964587227a6969b43f96f6fa266cfecd97-1771x1257.jpg"
-                />
+                <meta name="twitter:image" content={home?.image} />
             </Head>
             <div className="h-[100vh]">
                 <NavigationContainer logo={navigation?.logo} phone={navigation?.phone} />

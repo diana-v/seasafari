@@ -36,6 +36,17 @@ const Blog: NextPage<PageProps> = ({ navigation, blog, footer, giftCardWidget })
         <Head>
             <title>{`${blog?.title ?? ''} | SeaSafari`}</title>
             <meta name="description" content={blog?.description} />
+            <meta name="image" content={blog?.image} />
+            <meta property="og:image" content={blog?.image} />
+            <meta property="og:title" content={blog?.title} />
+            <meta property="og:description" content={blog?.description} />
+            <meta property="og:url" content={`${process.env.NEXT_PUBLIC_DOMAIN}/${blog?.slug}`} />
+            <meta property="og:type" content="article" />
+            <meta property="og:site_name" content="SeaSafari" />
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:title" content={blog?.title} />
+            <meta name="twitter:description" content={blog?.description} />
+            <meta name="twitter:image" content={blog?.image} />
         </Head>
         <NavigationContainer logo={navigation?.logo} phone={navigation?.phone} isSimple />
         <div className="xl:container max-w-7xl min-h-[calc(100vh-130px)] mx-auto px-4 py-8 md:py-16 lg:py-24 flex flex-col flex-wrap gap-6 md:gap-8 lg:gap-10">
