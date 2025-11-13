@@ -50,7 +50,7 @@
 
     html {
         box-sizing: border-box;
-        @apply scroll-smooth scroll-pt-20;
+        @apply scroll-smooth scroll-pt-10 lg:scroll-pt-0;
         overflow-x: hidden;
         overflow-y: auto;
     }
