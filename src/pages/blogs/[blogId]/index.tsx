@@ -40,7 +40,7 @@ const Blog: NextPage<PageProps> = ({ navigation, blog, footer, giftCardWidget })
             <meta property="og:image" content={blog?.image} />
             <meta property="og:title" content={blog?.title} />
             <meta property="og:description" content={blog?.description} />
-            <meta property="og:url" content={`${process.env.NEXT_PUBLIC_DOMAIN}/${blog?.slug}`} />
+            <meta property="og:url" content={`https://www.seasafari.lt/${blog?.slug ?? ''}`} />
             <meta property="og:type" content="article" />
             <meta property="og:site_name" content="SeaSafari" />
             <meta name="twitter:card" content="summary_large_image" />
