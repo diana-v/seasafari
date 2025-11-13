@@ -93,7 +93,7 @@ const Home: NextPage<PageProps> = ({
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <meta property="og:title" content="Sea-Safari Lietuva | Nepamirštami įspūdžiai Jums" />
                 <meta property="og:site_name" content="Sea-Safari" />
-                <meta property="og:url" content="seasafari.lt" />
+                <meta property="og:url" content="https://www.seasafari.lt" />
                 <meta
                     property="og:description"
                     content="Plaukdami su „Sea Safari“ jūs priartėsite prie gamtos ir patirsite nepamirštamus įspūdžius. Mes siūlome du R.I.B. laivus, varomus 300 AG ir 600 AG varikliais, kurių maksimalus greitis siekia net iki 60 mazgų. Patirkite naujus pojūčius su Sea Safari Lietuva!"
