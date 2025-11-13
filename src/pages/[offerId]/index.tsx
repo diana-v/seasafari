@@ -50,7 +50,7 @@ const Offer: NextPage<PageProps> = ({ navigation, offer, footer }) => {
                 <meta property="og:image" content={offer?.image} />
                 <meta property="og:title" content={offer?.title} />
                 <meta property="og:description" content={offer?.description} />
-                <meta property="og:url" content={`${process.env.NEXT_PUBLIC_DOMAIN}/${offer?.slug}`} />
+                <meta property="og:url" content={`https://www.seasafari.lt/${offer?.slug ?? ''}`} />
                 <meta property="og:type" content="article" />
                 <meta property="og:site_name" content="SeaSafari" />
                 <meta name="twitter:card" content="summary_large_image" />
