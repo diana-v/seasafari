@@ -23,8 +23,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         const pdfStream = await generatePdfDoc({
             orderRef,
-            validFrom,
-            validTo,
+            validFrom: validFromDate,
+            validTo: validToDate,
             count: (+amount / 25).toString(),
             locale,
         });
@@ -41,7 +41,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             to: email,
             from: process.env.NEXT_PUBLIC_RESEND_FROM_EMAIL ?? '',
             subject: `${localisedString.giftCardEmailSubject} - ${orderRef}`,
-            html: getTemplate(locale, orderRef, email, amount, validFrom, validTo),
+            html: getTemplate(locale, orderRef, email, amount, validFromDate, validToDate),
             attachments: [
                 {
                     content: attachment,
