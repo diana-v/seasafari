@@ -45,8 +45,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             })
             .returning({ validFrom: orders.validFrom, validTo: orders.validTo });
 
-        const validFrom = order?.validFrom;
-        const validTo = order?.validTo;
+        const validFrom = new Date(order.validFrom);
+        const validTo = new Date(order.validTo);
 
         const pdfStream = await generatePdfDoc({
             orderRef: ref,
