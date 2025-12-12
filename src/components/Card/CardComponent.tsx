@@ -122,7 +122,6 @@ const ReviewCard = ({
     image,
     description,
     isActive,
-    location,
     date,
     rating,
     classNames,
@@ -131,7 +130,7 @@ const ReviewCard = ({
     return (
         <div
             className={cn(
-                'h-full flex flex-col text-center px-4 md:px-8 py-8 md:py-16 rounded-3xl bg-sky-100/10 border transition-all duration-300',
+                'h-full flex flex-col text-center px-4 md:px-8 py-8 rounded-3xl bg-sky-100/10 border transition-all duration-300',
                 { 'md:border-sky-800': isActive },
                 classNames?.root
             )}
@@ -140,7 +139,7 @@ const ReviewCard = ({
             <div className="flex-grow min-h-0">
                 <div className="flex flex-col items-center mb-4">
                     {image && (
-                        <div className="w-16 h-16">
+                        <div className="w-16 h-16 mb-2 md:mb-3 lg:mb-4">
                             <ImageContainer
                                 src={image}
                                 alt={title || 'Client review'}
@@ -153,8 +152,7 @@ const ReviewCard = ({
                             />
                         </div>
                     )}
-                    {title && <div className="truncate text-lg lg:text-xl mb-2 md:mb-3 lg:mb-4 font-bold">{title}</div>}
-                    {location && <p className="opacity-40">{location}</p>}
+                    {title && <div className="truncate text-lg lg:text-xl font-bold">{title}</div>}
                 </div>
                 {description && <p className="flex-grow line-clamp-2 lg:line-clamp-3">{description}</p>}
             </div>
@@ -164,7 +162,7 @@ const ReviewCard = ({
                 {rating && (
                     <div className={cn('flex items-center gap-1.5', { 'ml-auto': !date })}>
                         <IconComponent name="star" className="w-4 h-4 text-yellow-500" />
-                        <p className="font-bold">{rating.toFixed(1)}</p>
+                        <p className="font-bold">{rating}</p>
                     </div>
                 )}
             </div>

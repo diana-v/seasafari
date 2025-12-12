@@ -2,8 +2,8 @@ import Head from 'next/head';
 import { createClient } from '@sanity/client';
 import { GetServerSideProps, NextPage } from 'next';
 import * as React from 'react';
-// import { JWT } from 'google-auth-library';
 import { useEffect, useState } from 'react';
+import { google } from 'googleapis';
 
 import { ContactLayout, ContactProps } from '@/layouts/ContactLayout/ContactLayout';
 import { fetchContactSectionData } from '@/schemas/contact';
@@ -57,7 +57,7 @@ const Home: NextPage<PageProps> = ({
     partners,
     offers,
     reviews,
-    // reviewsData,
+    reviewsData,
     contact,
     footer,
     giftCardWidget,
@@ -138,8 +138,7 @@ const Home: NextPage<PageProps> = ({
             />
             <PartnersLayout title={partners?.title} logos={partners?.logos} />
             <OffersLayout title={offers?.title} description={offers?.description} cards={offers?.cards} />
-            {/*<ReviewsLayout title={reviews?.title} cards={reviews?.cards} reviewsData={reviewsData} />*/}
-            <ReviewsLayout title={reviews?.title} cards={reviews?.cards} />
+            <ReviewsLayout title={reviews?.title} reviewsData={reviewsData} />
             <ContactLayout
                 title={contact?.title}
                 description={contact?.description}
@@ -180,24 +179,16 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, defaultLo
     const footer = await fetchFooterSectionData(client, locale, defaultLocale);
     const giftCardWidget = await fetchGiftCardWidgetSectionData(client, locale, defaultLocale);
 
-    // const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_CREDENTIALS ?? '{}');
-    //
-    // const auth = new JWT({
-    //     email: serviceAccount.client_email,
-    //     key: serviceAccount.private_key,
-    //     scopes: ['https://www.googleapis.com/auth/business.manage'],
-    // });
-    //
-    // const accessToken = await auth.getAccessToken();
-    //
-    // const reviewsData = await fetch(
-    //     `https://mybusiness.googleapis.com/v4/accounts/${process.env.GOOGLE_BUSINESS_ID}/locations/${process.env.GOOGLE_LOCATION_ID}/reviews`,
-    //     {
-    //         headers: {
-    //             Authorization: `Bearer ${accessToken}`,
-    //         },
-    //     }
-    // ).then((res) => res.json());
+    const auth = new google.auth.OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
+
+    auth.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN });
+
+    const { token } = await auth.getAccessToken();
+
+    const reviewsData = await fetch(
+        `https://mybusiness.googleapis.com/v4/accounts/${process.env.GOOGLE_BUSINESS_ID}/locations/${process.env.GOOGLE_LOCATION_ID}/reviews`,
+        { headers: { Authorization: `Bearer ${token}` } }
+    ).then((res) => res.json());
 
     return {
         props: {
@@ -210,7 +201,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, defaultLo
             partners,
             offers,
             reviews,
-            // reviewsData,
+            reviewsData,
             contact,
             footer,
             giftCardWidget,
