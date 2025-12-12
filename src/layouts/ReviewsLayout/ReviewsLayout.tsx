@@ -10,25 +10,45 @@ import { IconComponent } from '@/components/Icon/IconComponent';
 import { CardComponent, CardType } from '@/components/Card/CardComponent';
 import { languages, LocaleType } from '@/translations/common';
 
-type TestimonialCardType = {
-    name?: string;
-    review?: string;
-    image?: string;
-};
+export interface GoogleReview {
+    reviewId: string;
+    reviewer: {
+        profilePhotoUrl: string;
+        displayName: string;
+    };
+    starRating: 'ONE' | 'TWO' | 'THREE' | 'FOUR' | 'FIVE';
+    comment?: string;
+    createTime: string;
+    updateTime: string;
+    name: string;
+}
+
+export interface GoogleReviewsResponse {
+    reviews?: GoogleReview[];
+    averageRating?: number;
+    totalReviewCount?: number;
+}
 
 export interface ReviewsProps {
     title?: string;
-    cards?: TestimonialCardType[];
-    // reviewsData?: any;
+    reviewsData?: GoogleReviewsResponse;
 }
 
-export const ReviewsLayout: React.FC<ReviewsProps> = ({ title, cards }) => {
+export const ReviewsLayout: React.FC<ReviewsProps> = ({ title, reviewsData }) => {
     const { locale, defaultLocale } = useRouter();
     const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
 
-    if (!cards?.length) {
+    if (!reviewsData?.reviews?.length) {
         return null;
     }
+
+    const STAR_RATING_MAP: Record<string, number> = {
+        FIVE: 5,
+        FOUR: 4,
+        THREE: 3,
+        TWO: 2,
+        ONE: 1,
+    };
 
     return (
         <div className="pt-16 lg:pt-24 isolation-isolate">
@@ -59,22 +79,26 @@ export const ReviewsLayout: React.FC<ReviewsProps> = ({ title, cards }) => {
                         }}
                         className="!pb-2"
                     >
-                        {cards?.map((card, index) => (
-                            <SwiperSlide key={index} className="flex h-auto sm:!h-80">
-                                {({ isActive }) => (
-                                    <CardComponent
-                                        type={CardType.Review}
-                                        isActive={isActive}
-                                        image={card.image}
-                                        title={card.name}
-                                        description={card.review}
-                                        // date="2021-01-01"
-                                        // rating={4.5}
-                                        // location="London"
-                                    />
-                                )}
-                            </SwiperSlide>
-                        ))}
+                        {reviewsData?.reviews
+                            ?.filter(
+                                (review) =>
+                                    (review.starRating === 'FIVE' || review.starRating === 'FOUR') && !!review.comment
+                            )
+                            .map((review, index) => (
+                                <SwiperSlide key={index} className="flex !h-80">
+                                    {({ isActive }) => (
+                                        <CardComponent
+                                            type={CardType.Review}
+                                            isActive={isActive}
+                                            image={review.reviewer.profilePhotoUrl}
+                                            title={review.reviewer.displayName}
+                                            description={review.comment?.split('(Translated by Google)')[0].trim()}
+                                            date={new Date(review.updateTime).toISOString().split('T')[0]}
+                                            rating={STAR_RATING_MAP[review.starRating]}
+                                        />
+                                    )}
+                                </SwiperSlide>
+                            ))}
                     </Swiper>
                     <button
                         className="swiper-reviews-button-prev-custom absolute top-1/2 -translate-y-1/2 left-0 z-20 w-10 h-10 rounded-full items-center justify-center text-blue-800 disabled:opacity-50 hidden md:flex"
