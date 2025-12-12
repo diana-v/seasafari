@@ -7,7 +7,7 @@ const withPWA = require("next-pwa")({
 module.exports = withPWA({
     reactStrictMode: true,
     images: {
-        remotePatterns: [{ protocol: 'https', hostname: 'cdn.sanity.io' }]
+        remotePatterns: [{ protocol: 'https', hostname: 'cdn.sanity.io' }, { protocol: 'https', hostname: 'lh3.googleusercontent.com' }]
     },
     i18n: {
         locales: ['lt', 'en', 'ru'],
