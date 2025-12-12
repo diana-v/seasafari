@@ -3,7 +3,7 @@ import { createClient } from '@sanity/client';
 import { GetServerSideProps, NextPage } from 'next';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { google } from 'googleapis';
+import { OAuth2Client } from 'google-auth-library';
 
 import { ContactLayout, ContactProps } from '@/layouts/ContactLayout/ContactLayout';
 import { fetchContactSectionData } from '@/schemas/contact';
@@ -179,7 +179,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, defaultLo
     const footer = await fetchFooterSectionData(client, locale, defaultLocale);
     const giftCardWidget = await fetchGiftCardWidgetSectionData(client, locale, defaultLocale);
 
-    const auth = new google.auth.OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
+    const auth = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
 
     auth.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN });
 
