@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import Cookies from 'cookies';
 import { Buffer } from 'node:buffer';
 import { eq } from 'drizzle-orm';
 import { Resend } from 'resend';
@@ -13,26 +12,22 @@ import { isString } from '@/utils/isString';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { ref, email, amount, count, locale, defaultLocale } = req.query;
-    const cookies = new Cookies(req, res);
-    const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
+    const effectiveLocale = (locale as string) || (req.body?.locale as string) || 'lt'; // Default fallback
 
+    const localisedString = languages[(effectiveLocale ?? defaultLocale) as LocaleType];
     const resend = new Resend(process.env.RESEND_API_KEY ?? '');
 
-    if (!isString(ref) || !isString(email) || !isString(count) || !isString(locale) || !isString(amount)) {
-        res.status(400).redirect(`/${locale}/error?errorCode=400`);
-
-        return;
-    }
-
-    const existingOrder = await db.select().from(orders).where(eq(orders.orderRef, ref));
-
-    if (existingOrder.length > 0) {
-        res.status(400).redirect(`/${locale}/error?errorCode=400`);
-
-        return;
+    if (!isString(ref) || !isString(email) || !isString(count) || !isString(amount)) {
+        return res.status(400).send('Invalid parameters');
     }
 
     try {
+        const existingOrder = await db.select().from(orders).where(eq(orders.orderRef, ref));
+
+        if (existingOrder.length > 0) {
+            return res.status(200).send('Order already processed');
+        }
+
         const [order] = await db
             .insert(orders)
             .values({
@@ -53,7 +48,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             count,
             validFrom,
             validTo,
-            locale,
+            locale: effectiveLocale,
         });
 
         const chunks: Buffer[] = [];
@@ -72,7 +67,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             to: email,
             from: process.env.NEXT_PUBLIC_RESEND_FROM_EMAIL ?? '',
             subject: `${localisedString.giftCardEmailSubject} - ${ref}`,
-            html: getTemplate(locale, ref, email, amount, validFrom, validTo),
+            html: getTemplate(effectiveLocale, ref, email, amount, validFrom, validTo),
             attachments: [
                 {
                     content: attachment,
@@ -82,15 +77,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             ],
         });
 
-        cookies.set('paymentRef', ref, { sameSite: 'none', secureProxy: true });
-        cookies.set('paymentEmail', email, { sameSite: 'none', secureProxy: true });
-        cookies.set('validFrom', validFrom.toString(), { sameSite: 'none', secureProxy: true });
-        cookies.set('validTo', validTo.toString(), { sameSite: 'none', secureProxy: true });
-        cookies.set('count', encodeURIComponent(count), { sameSite: 'none', secureProxy: true });
-        res.redirect(302, `/${locale}/success`);
-    } catch {
-        res.status(500).redirect(`/${locale}/error?errorCode=500`);
+        return res.status(200).json({ success: true });
+    } catch (error) {
+        console.error('Webhook Error:', error);
 
-        return;
+        return res.status(500).send('Internal Server Error');
     }
 };

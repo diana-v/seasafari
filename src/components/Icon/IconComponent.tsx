@@ -19,6 +19,7 @@ export enum Icons {
     securePayment = 'secure-payment',
     makeCommerce = 'makecommerce-logo',
     propeller = 'propeller',
+    spinner = 'spinner',
 }
 
 interface ComponentProps {
