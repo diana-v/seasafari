@@ -3,16 +3,15 @@ import Script from 'next/script';
 
 export default function Document() {
     return (
+        // TODO set this from params when update to next 15
         <Html lang={(global as any).__NEXT_DATA__?.locale}>
             <Head>
                 {process.env.NODE_ENV === 'production' && (
                     <Script
-                        id="Cookiebot"
-                        src="https://consent.cookiebot.com/uc.js"
-                        data-cbid="e86699f9-31b6-4dc6-8002-d0cf04b403ea"
-                        data-blockingmode="auto"
-                        type="text/javascript"
-                        strategy="beforeInteractive"
+                        id="usercentrics-cmp"
+                        src="https://web.cmp.usercentrics.eu/ui/loader.js"
+                        data-ruleset-id="R1yY6ppcoIpJzU"
+                        async
                     />
                 )}
                 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
