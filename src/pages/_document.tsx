@@ -5,6 +5,14 @@ export default function Document() {
     return (
         <Html lang="en">
             <Head>
+                <Script
+                    id="Cookiebot"
+                    src="https://consent.cookiebot.com/uc.js"
+                    data-cbid="e86699f9-31b6-4dc6-8002-d0cf04b403ea"
+                    data-blockingmode="auto"
+                    type="text/javascript"
+                    strategy="beforeInteractive"
+                />
                 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
                 <meta name="mobile-web-app-capable" content="yes" />
                 <meta name="theme-color" content="#FFFFFF" />
@@ -19,37 +27,6 @@ export default function Document() {
                     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
                     rel="stylesheet"
                 />
-                <Script
-                    id="Cookiebot"
-                    src="https://consent.cookiebot.com/uc.js"
-                    data-cbid="e86699f9-31b6-4dc6-8002-d0cf04b403ea"
-                    data-blockingmode="auto"
-                    type="text/javascript"
-                />
-                <Script
-                    id="meta-pixel"
-                    dangerouslySetInnerHTML={{
-                        __html: `!function(f,b,e,v,n,t,s)
-                    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-                    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-                    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-                    n.queue=[];t=b.createElement(e);t.async=!0;
-                    t.src=v;s=b.getElementsByTagName(e)[0];
-                    s.parentNode.insertBefore(t,s)}(window, document,'script',
-                    'https://connect.facebook.net/en_US/fbevents.js');
-                    fbq('init', ${process.env.NEXT_PUBLIC_META_PIXEL_ID}');
-                    fbq('track', 'PageView');`,
-                    }}
-                />
-                <noscript>
-                    <img
-                        height="1"
-                        width="1"
-                        style={{ display: 'none' }}
-                        src={`https://www.facebook.com/tr?id=${process.env.NEXT_PUBLIC_META_PIXEL_ID}&ev=PageView&noscript=1`}
-                        alt="Meta Pixel"
-                    />
-                </noscript>
             </Head>
             <body className="modal">
                 <Main />
