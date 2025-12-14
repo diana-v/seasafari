@@ -3,16 +3,18 @@ import Script from 'next/script';
 
 export default function Document() {
     return (
-        <Html lang="en">
+        <Html lang={(global as any).__NEXT_DATA__?.locale}>
             <Head>
-                <Script
-                    id="Cookiebot"
-                    src="https://consent.cookiebot.com/uc.js"
-                    data-cbid="e86699f9-31b6-4dc6-8002-d0cf04b403ea"
-                    data-blockingmode="auto"
-                    type="text/javascript"
-                    strategy="beforeInteractive"
-                />
+                {process.env.NODE_ENV === 'production' && (
+                    <Script
+                        id="Cookiebot"
+                        src="https://consent.cookiebot.com/uc.js"
+                        data-cbid="e86699f9-31b6-4dc6-8002-d0cf04b403ea"
+                        data-blockingmode="auto"
+                        type="text/javascript"
+                        strategy="beforeInteractive"
+                    />
+                )}
                 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
                 <meta name="mobile-web-app-capable" content="yes" />
                 <meta name="theme-color" content="#FFFFFF" />
