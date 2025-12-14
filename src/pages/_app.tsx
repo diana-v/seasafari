@@ -19,6 +19,8 @@ export default function App({ Component, pageProps }: AppProps) {
     return (
         <>
             <Script
+                type="text/plain"
+                data-usercentrics="Facebook Pixel"
                 id="meta-pixel"
                 strategy="afterInteractive"
                 dangerouslySetInnerHTML={{
