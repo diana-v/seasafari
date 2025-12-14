@@ -11,7 +11,7 @@ export default function Document() {
                         id="usercentrics-cmp"
                         src="https://web.cmp.usercentrics.eu/ui/loader.js"
                         data-ruleset-id="R1yY6ppcoIpJzU"
-                        async
+                        strategy="beforeInteractive"
                     />
                 )}
                 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
