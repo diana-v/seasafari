@@ -3,8 +3,11 @@ import * as React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import { createClient } from '@sanity/client';
 import Link from 'next/link';
+import { eq } from 'drizzle-orm';
 import Cookies from 'cookies';
 
+import { db } from '@/server/db';
+import { orders } from '@/server/db/schema';
 import { NavigationContainer, NavigationProps } from '@/containers/Navigation/NavigationContainer';
 import { FooterContainer, FooterProps } from '@/containers/Footer/FooterContainer';
 import { fetchNavigationData } from '@/schemas/navigation';
@@ -82,15 +85,15 @@ const client = createClient({
     useCdn: false,
 });
 
-export const getServerSideProps: GetServerSideProps = async ({ res, req, locale, defaultLocale }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req, res, query, locale, defaultLocale }) => {
+    const { ref } = query;
     const cookies = new Cookies(req, res);
-    const paymentRef = cookies.get('paymentRef');
-    const paymentEmail = cookies.get('paymentEmail');
-    const validFrom = cookies.get('validFrom');
-    const validTo = cookies.get('validTo');
-    const count = cookies.get('count');
 
-    if (!paymentRef || !paymentEmail || !validTo || !validFrom || !count) {
+    const secureRef = cookies.get('paymentRef');
+
+    if (!secureRef || secureRef !== ref) {
+        console.warn(`Unauthorized attempt to view order ${ref} with cookie ${secureRef}`);
+
         return {
             redirect: {
                 destination: '/',
@@ -99,21 +102,29 @@ export const getServerSideProps: GetServerSideProps = async ({ res, req, locale,
         };
     }
 
-    cookies.set('paymentRef', '', { httpOnly: true, maxAge: 0, sameSite: 'strict', path: '/' });
-    cookies.set('paymentEmail', '', { httpOnly: true, maxAge: 0, sameSite: 'strict', path: '/' });
-    cookies.set('validFrom', '', { httpOnly: true, maxAge: 0, sameSite: 'strict', path: '/' });
-    cookies.set('validTo', '', { httpOnly: true, maxAge: 0, sameSite: 'strict', path: '/' });
-    cookies.set('count', '', { httpOnly: true, maxAge: 0, sameSite: 'strict', path: '/' });
+    const existingOrder = await db
+        .select()
+        .from(orders)
+        .where(eq(orders.orderRef, ref as string));
+
+    if (!existingOrder) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        };
+    }
 
     const navigation = await fetchNavigationData(client, locale, defaultLocale);
     const footer = await fetchFooterSectionData(client, locale, defaultLocale);
 
     const pdfStream = await generatePdfDoc({
-        orderRef: paymentRef,
-        validTo: new Date(validTo),
-        validFrom: new Date(validFrom),
+        orderRef: ref as string,
+        validTo: new Date(existingOrder[0].validTo),
+        validFrom: new Date(existingOrder[0].validFrom),
         locale: locale ?? '',
-        count: count,
+        count: (existingOrder[0].orderAmount / 25).toString(),
     });
 
     const chunks: Buffer[] = [];
@@ -132,8 +143,8 @@ export const getServerSideProps: GetServerSideProps = async ({ res, req, locale,
         props: {
             navigation,
             footer,
-            paymentRef,
-            paymentEmail,
+            paymentRef: ref,
+            paymentEmail: existingOrder[0].orderEmail,
             pdfBase64,
         },
     };

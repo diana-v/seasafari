@@ -57,7 +57,6 @@ module.exports = {
       boxShadow: {
         'inner-xl': 'inset 0 0 160px 0px rgb(0 0 0 / 0.10)',
       },
-    },
       keyframes: {
           pulseShadow: {
               '0%': {
@@ -71,6 +70,8 @@ module.exports = {
       animation: {
           pulseShadow: 'pulseShadow 3s infinite',
       },
+    },
+
   },
   plugins: [],
 }
