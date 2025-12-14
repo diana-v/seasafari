@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import Cookies from 'cookies';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     const body = JSON.parse(req.body);
@@ -7,6 +8,21 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const credentials = Buffer.from(
             `${process.env.MAKECOMMERCE_SHOP_ID}:${process.env.MAKECOMMERCE_SECRET_KEY}`
         ).toString('base64');
+
+        const cookies = new Cookies(req, res);
+
+        cookies.set('paymentRef', body.reference, {
+            httpOnly: true,
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 1000 * 60 * 60,
+        });
+
+        const params = `ref=${encodeURIComponent(body.reference)}&email=${encodeURIComponent(
+            body.email
+        )}&amount=${encodeURIComponent(body.amount)}&count=${encodeURIComponent(
+            body.count
+        )}&locale=${encodeURIComponent(body.locale)}`;
 
         const response = await fetch(`${process.env.MAKECOMMERCE_API_URL}/v1/transactions`, {
             method: 'POST',
@@ -22,21 +38,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
                     transaction_url: {
                         return_url: {
-                            url: `${process.env.NEXT_PUBLIC_DOMAIN}/${encodeURIComponent(
-                                body.locale
-                            )}/api/payment-success?ref=${encodeURIComponent(body.reference)}&email=${encodeURIComponent(
-                                body.email
-                            )}&amount=${encodeURIComponent(body.amount)}&count=${encodeURIComponent(
-                                body.count
-                            )}&locale=${encodeURIComponent(body.locale)}`,
+                            url: `${process.env.NEXT_PUBLIC_DOMAIN}/${body.locale}/pending?ref=${body.reference}`,
                             method: 'POST',
                         },
                         cancel_url: {
-                            url: `${process.env.NEXT_PUBLIC_DOMAIN}/${body.locale}/dovanu-kuponai`,
+                            url: `${process.env.NEXT_PUBLIC_DOMAIN}/${body.locale}/#gift-cards`,
                             method: 'POST',
                         },
                         notification_url: {
-                            url: `${process.env.NEXT_PUBLIC_DOMAIN}/${body.locale}`,
+                            url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/payment-success?${params}`,
                             method: 'POST',
                         },
                     },
