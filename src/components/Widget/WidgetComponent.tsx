@@ -39,7 +39,7 @@ export const Widget: React.FC<WidgetProps> = ({ isVisible = true, link = '', tit
             {title && (
                 <span
                     className={cn(
-                        'opacity-0 group-hover:opacity-100 group-hover:delay-100 transition-opacity duration-200 whitespace-nowrap text-md flex-grow text-white'
+                        'opacity-0 group-hover:opacity-100 group-hover:delay-100 transition-opacity duration-200 whitespace-nowrap text-md flex-grow text-white !mb-0'
                     )}
                 >
                     {title}
