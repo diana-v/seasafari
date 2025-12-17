@@ -208,7 +208,11 @@ const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({
                         <Text style={styles.header}>{localisedString.giftCard}</Text>
                         <View style={styles.titleContainer}>
                             <Text style={styles.title}>{localisedString.title}</Text>
-                            {count && <Text style={styles.title}>({count})</Text>}
+                            {count && (
+                                <Text style={styles.title}>
+                                    ({count} {localisedString.count})
+                                </Text>
+                            )}
                         </View>
 
                         <View style={[styles.section, styles.textCenter]}>
