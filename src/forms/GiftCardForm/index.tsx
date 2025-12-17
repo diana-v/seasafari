@@ -55,7 +55,6 @@ export const GiftCardForm: React.FC<GiftCardFormProps> = ({ options }) => {
                     reference: `SEA-${nanoid(8)}`,
                     email: email,
                     locale: locale,
-                    count: options.find((opt) => opt.value === value)?.label.split('-')[0] ?? '',
                 }),
                 method: 'POST',
             }).then(async (res) => {

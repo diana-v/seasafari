@@ -11,13 +11,13 @@ import { getTemplate } from '@/utils/getTemplate';
 import { isString } from '@/utils/isString';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-    const { ref, email, amount, count, locale, defaultLocale } = req.query;
+    const { ref, email, amount, locale, defaultLocale } = req.query;
     const effectiveLocale = (locale as string) || (req.body?.locale as string) || 'lt'; // Default fallback
 
     const localisedString = languages[(effectiveLocale ?? defaultLocale) as LocaleType];
     const resend = new Resend(process.env.RESEND_API_KEY ?? '');
 
-    if (!isString(ref) || !isString(email) || !isString(count) || !isString(amount)) {
+    if (!isString(ref) || !isString(email) || !isString(amount)) {
         return res.status(400).send('Invalid parameters');
     }
 
@@ -28,12 +28,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             return res.status(200).send('Order already processed');
         }
 
+        const parsedAmount = Number.parseInt(amount, 10);
         const [order] = await db
             .insert(orders)
             .values({
                 orderRef: ref,
                 orderEmail: email,
-                orderAmount: Number.parseInt(amount, 10),
+                orderAmount: parsedAmount,
                 status: Status.CREATED,
                 validFrom: new Date(),
                 validTo: new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate()),
@@ -45,7 +46,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         const pdfStream = await generatePdfDoc({
             orderRef: ref,
-            count,
+            count: (parsedAmount / 25).toString(),
             validFrom,
             validTo,
             locale: effectiveLocale,
