@@ -20,9 +20,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         const params = `ref=${encodeURIComponent(body.reference)}&email=${encodeURIComponent(
             body.email
-        )}&amount=${encodeURIComponent(body.amount)}&count=${encodeURIComponent(
-            body.count
-        )}&locale=${encodeURIComponent(body.locale)}`;
+        )}&amount=${encodeURIComponent(body.amount)}&locale=${encodeURIComponent(body.locale)}`;
 
         const response = await fetch(`${process.env.MAKECOMMERCE_API_URL}/v1/transactions`, {
             method: 'POST',
