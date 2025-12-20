@@ -179,16 +179,28 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, defaultLo
     const footer = await fetchFooterSectionData(client, locale, defaultLocale);
     const giftCardWidget = await fetchGiftCardWidgetSectionData(client, locale, defaultLocale);
 
-    const auth = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
+    let reviewsData = null;
 
-    auth.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN });
+    try {
+        const auth = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
 
-    const { token } = await auth.getAccessToken();
+        auth.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN });
 
-    const reviewsData = await fetch(
-        `https://mybusiness.googleapis.com/v4/accounts/${process.env.GOOGLE_BUSINESS_ID}/locations/${process.env.GOOGLE_LOCATION_ID}/reviews`,
-        { headers: { Authorization: `Bearer ${token}` } }
-    ).then((res) => res.json());
+        const { token } = await auth.getAccessToken();
+
+        const response = await fetch(
+            `https://mybusiness.googleapis.com/v4/accounts/${process.env.GOOGLE_BUSINESS_ID}/locations/${process.env.GOOGLE_LOCATION_ID}/reviews`,
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        if (response.ok) {
+            reviewsData = await response.json();
+        } else {
+            console.error(`Google API Error: ${response.status} ${response.statusText}`);
+        }
+    } catch (error) {
+        console.error('Failed to fetch Google Reviews (invalid_grant or network error):', error);
+    }
 
     return {
         props: {
