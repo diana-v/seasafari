@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Buffer } from 'node:buffer';
+import crypto from 'node:crypto';
 import { eq } from 'drizzle-orm';
 import { Resend } from 'resend';
 
@@ -8,21 +9,48 @@ import { orders, Status } from '@/server/db/schema';
 import { generatePdfDoc } from '@/templates/payment-success';
 import { languages, LocaleType } from '@/translations/success';
 import { getTemplate } from '@/utils/getTemplate';
-import { isString } from '@/utils/isString';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-    const { ref, email, amount, locale, defaultLocale } = req.query;
-    const effectiveLocale = (locale as string) || (req.body?.locale as string) || 'lt'; // Default fallback
-
-    const localisedString = languages[(effectiveLocale ?? defaultLocale) as LocaleType];
-    const resend = new Resend(process.env.RESEND_API_KEY ?? '');
-
-    if (!isString(ref) || !isString(email) || !isString(amount)) {
-        return res.status(400).send('Invalid parameters');
+    if (req.method !== 'POST') {
+        return res.status(405).send('Method Not Allowed');
     }
 
+    const { json, mac } = req.body;
+
+    if (!json || !mac) {
+        return res.status(400).send('Missing data');
+    }
+
+    const secret = process.env.MAKECOMMERCE_SECRET_KEY ?? '';
+    const calculatedMac = crypto
+        .createHash('sha512')
+        .update(json + secret)
+        .digest('hex')
+        .toUpperCase();
+
+    if (calculatedMac !== (mac as string).toUpperCase()) {
+        return res.status(401).send('Invalid signature');
+    }
+
+    const data = JSON.parse(json);
+    const { status, reference, amount, locale } = data;
+
+    const email = req.query.email as string;
+
+    if (status !== 'COMPLETED') {
+        return res.status(200).send('Notification received');
+    }
+
+    if (!email) {
+        return res.status(400).send('Customer email missing');
+    }
+
+    const effectiveLocale = locale || 'lt';
+    const localisedString = languages[effectiveLocale as LocaleType];
+    const resend = new Resend(process.env.RESEND_API_KEY ?? '');
+
     try {
-        const existingOrder = await db.select().from(orders).where(eq(orders.orderRef, ref));
+        const existingOrder = await db.select().from(orders).where(eq(orders.orderRef, reference));
 
         if (existingOrder.length > 0) {
             return res.status(200).send('Order already processed');
@@ -32,7 +60,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const [order] = await db
             .insert(orders)
             .values({
-                orderRef: ref,
+                orderRef: reference,
                 orderEmail: email,
                 orderAmount: parsedAmount,
                 status: Status.CREATED,
@@ -45,8 +73,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const validTo = new Date(order.validTo);
 
         const pdfStream = await generatePdfDoc({
-            orderRef: ref,
-            count: (parsedAmount / 25).toString(),
+            orderRef: reference,
+            count: (parsedAmount / 28).toString(),
             validFrom,
             validTo,
             locale: effectiveLocale,
@@ -67,12 +95,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         await resend.emails.send({
             to: email,
             from: process.env.NEXT_PUBLIC_RESEND_FROM_EMAIL ?? '',
-            subject: `${localisedString.giftCardEmailSubject} - ${ref}`,
-            html: getTemplate(effectiveLocale, ref, email, amount, validFrom, validTo),
+            subject: `${localisedString.giftCardEmailSubject} - ${reference}`,
+            html: getTemplate(effectiveLocale, reference, email, amount.toString(), validFrom, validTo),
             attachments: [
                 {
                     content: attachment,
-                    filename: `${ref}.pdf`,
+                    filename: `${reference}.pdf`,
                     contentType: 'application/pdf',
                 },
             ],

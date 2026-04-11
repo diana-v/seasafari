@@ -44,7 +44,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                             method: 'POST',
                         },
                         notification_url: {
-                            url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/payment-success?${params}&x-vercel-protection-bypass=${process.env.VERCEL_AUTOMATION_BYPASS_SECRET}`,
+                            url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/payment-success?email=${encodeURIComponent(
+                                body.email
+                            )}&x-vercel-protection-bypass=${process.env.VERCEL_AUTOMATION_BYPASS_SECRET}`,
                             method: 'POST',
                         },
                     },
