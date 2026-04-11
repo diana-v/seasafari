@@ -1,6 +1,27 @@
 import { SanityClient } from '@sanity/client';
 
-export const fetchBlogsSectionData = (client: SanityClient, locale?: string, defaultLocale?: string) =>
+export interface BlogCardResponse {
+    _createdAt: string;
+    backgroundColor?: string;
+    description: string;
+    image: string;
+    orderRank?: number;
+    slug: string;
+    title: string;
+}
+
+export interface BlogsSectionResponse {
+    cards: BlogCardResponse[];
+    description: string;
+    slug: string;
+    title: string;
+}
+
+export const fetchBlogsSectionData = (
+    client: SanityClient,
+    locale = 'lt',
+    defaultLocale = 'lt'
+): Promise<BlogsSectionResponse> =>
     client.fetch(
         `
     *[_type == "blogs"] {
@@ -18,5 +39,11 @@ export const fetchBlogsSectionData = (client: SanityClient, locale?: string, def
         } | order(orderRank)
     }[0]
 `,
-        { locale, defaultLocale }
+        { defaultLocale, locale },
+        {
+            next: {
+                revalidate: 60,
+                tags: ['blogs']
+            }
+        }
     );

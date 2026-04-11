@@ -1,6 +1,6 @@
+import EnTemplate from '@/templates/en-template';
 import LtTemplate from '@/templates/lt-template';
 import RuTemplate from '@/templates/ru-template';
-import EnTemplate from '@/templates/en-template';
 
 export const getTemplate = (
     locale: string,

@@ -1,7 +1,7 @@
-import React from 'react';
-import { Page, Text, View, Document, Image, Font, StyleSheet, renderToStream } from '@react-pdf/renderer';
-import * as path from 'node:path';
+import { Document, Font, Image, Page, renderToStream, StyleSheet, Text, View } from '@react-pdf/renderer';
+import path from 'node:path';
 import QRCode from 'qrcode';
+import React from 'react';
 
 import { languages, LocaleType } from '@/translations/paymentSuccessPdf';
 import { createGiftCardToken } from '@/utils/jwt';
@@ -10,184 +10,184 @@ Font.register({
     family: 'Roboto',
     fonts: [
         {
-            src: path.resolve('public/fonts/Roboto-Regular.ttf'),
             fontWeight: 400,
+            src: path.resolve('public/fonts/Roboto-Regular.ttf'),
         },
         {
-            src: path.resolve('public/fonts/Roboto-Medium.ttf'),
             fontWeight: 500,
+            src: path.resolve('public/fonts/Roboto-Medium.ttf'),
         },
         {
-            src: path.resolve('public/fonts/Roboto-Bold.ttf'),
             fontWeight: 700,
+            src: path.resolve('public/fonts/Roboto-Bold.ttf'),
         },
         {
-            src: path.resolve('public/fonts/Roboto-Black.ttf'),
             fontWeight: 900,
+            src: path.resolve('public/fonts/Roboto-Black.ttf'),
         },
     ],
 });
 
 const styles = StyleSheet.create({
-    pageContainer: {
-        fontFamily: 'Roboto',
-        letterSpacing: 0.5,
-        paddingTop: 20,
-        paddingRight: 50,
-        paddingLeft: 50,
-        paddingBottom: 60,
-        display: 'flex',
-        flex: 1,
-    },
-    pageImage: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        height: 1123,
-        width: 794,
-        maxWidth: '100%',
-        maxHeight: '100%',
-    },
     backgroundImage: {
-        objectFit: 'cover',
         height: '100%',
         maxHeight: '100%',
+        objectFit: 'cover',
         transform: 'scale(1.3)',
         transformOrigin: 'right bottom',
     },
-    logo: {
-        width: 172,
-        height: 76,
-        alignSelf: 'center',
-        marginBottom: 20,
+    bullet: {
+        color: '#a8b3bd',
+        fontSize: 8,
+        textAlign: 'right',
+    },
+    column: {
+        flex: 1,
+        flexDirection: 'column',
     },
     container: {
         backgroundColor: '#ffffff',
-        paddingTop: 16,
         paddingBottom: 40,
-        paddingRight: 16,
         paddingLeft: 16,
-    },
-    header: {
-        fontSize: 28,
-        fontWeight: 900,
-        marginBottom: 16,
-        textTransform: 'uppercase',
-        color: '#15496b',
-        textAlign: 'center',
-    },
-    titleContainer: {
-        marginBottom: 16,
-    },
-    title: {
-        fontSize: 16,
-        textAlign: 'center',
-        color: '#15496b',
-    },
-    section: {
-        marginBottom: 8,
-    },
-    sectionTitle: {
-        fontSize: 12,
-        fontWeight: 700,
-        color: '#15496b',
-        marginBottom: 2,
-    },
-    sectionDescription: {
-        fontSize: 10,
-        lineHeight: 1.2,
-        fontWeight: 400,
-        color: '#15496b',
-        whiteSpace: 'pre-line',
+        paddingRight: 16,
+        paddingTop: 16,
     },
     details: {
+        alignItems: 'center',
         color: '#15496b',
-        fontSize: 10,
-        fontWeight: 400,
         display: 'flex',
         flexDirection: 'row',
+        fontSize: 10,
+        fontWeight: 400,
         gap: 4,
-        alignItems: 'center',
-    },
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        gap: 16,
-        marginBottom: 12,
-    },
-    column: {
-        flexDirection: 'column',
-        flex: 1,
-    },
-    footer: {
-        paddingTop: 10,
-        borderTop: '2px solid #A8352E',
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        justifyContent: 'space-between',
-        gap: 12,
-    },
-    qrImage: {
-        width: 60,
-        height: 60,
-        flexShrink: 0,
-    },
-    infoColumn: {
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        gap: 4,
-        flexShrink: 1,
-        flex: 1,
-    },
-    footerLeft: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 12,
-        flex: 1,
-    },
-    footerRight: {
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        flex: 1,
-        gap: 4,
-    },
-    textCenter: {
-        textAlign: 'center',
     },
     detailsTitle: {
         fontWeight: 'bold',
     },
-    bullet: {
-        color: '#a8b3bd',
-        textAlign: 'right',
-        fontSize: 8,
+    footer: {
+        alignItems: 'flex-start',
+        borderTop: '2px solid #A8352E',
+        flexDirection: 'row',
+        gap: 12,
+        justifyContent: 'space-between',
+        paddingTop: 10,
+    },
+    footerLeft: {
+        alignItems: 'center',
+        flex: 1,
+        flexDirection: 'row',
+        gap: 12,
+    },
+    footerRight: {
+        flex: 1,
+        flexDirection: 'column',
+        gap: 4,
+        justifyContent: 'flex-start',
+    },
+    header: {
+        color: '#15496b',
+        fontSize: 28,
+        fontWeight: 900,
+        marginBottom: 16,
+        textAlign: 'center',
+        textTransform: 'uppercase',
+    },
+    infoColumn: {
+        flex: 1,
+        flexDirection: 'column',
+        flexShrink: 1,
+        gap: 4,
+        justifyContent: 'flex-start',
+    },
+    logo: {
+        alignSelf: 'center',
+        height: 76,
+        marginBottom: 20,
+        width: 172,
+    },
+    pageContainer: {
+        display: 'flex',
+        flex: 1,
+        fontFamily: 'Roboto',
+        letterSpacing: 0.5,
+        paddingBottom: 60,
+        paddingLeft: 50,
+        paddingRight: 50,
+        paddingTop: 20,
+    },
+    pageImage: {
+        height: 1123,
+        left: 0,
+        maxHeight: '100%',
+        maxWidth: '100%',
+        position: 'absolute',
+        top: 0,
+        width: 794,
     },
     photo: {
         flex: 1,
         objectFit: 'cover',
     },
+    qrImage: {
+        flexShrink: 0,
+        height: 60,
+        width: 60,
+    },
+    row: {
+        flexDirection: 'row',
+        gap: 16,
+        justifyContent: 'space-between',
+        marginBottom: 12,
+    },
+    section: {
+        marginBottom: 8,
+    },
+    sectionDescription: {
+        color: '#15496b',
+        fontSize: 10,
+        fontWeight: 400,
+        lineHeight: 1.2,
+        whiteSpace: 'pre-line',
+    },
+    sectionTitle: {
+        color: '#15496b',
+        fontSize: 12,
+        fontWeight: 700,
+        marginBottom: 2,
+    },
     space: {
-        marginTop: 8,
         marginBottom: 6,
+        marginTop: 8,
+    },
+    textCenter: {
+        textAlign: 'center',
+    },
+    title: {
+        color: '#15496b',
+        fontSize: 16,
+        textAlign: 'center',
+    },
+    titleContainer: {
+        marginBottom: 16,
     },
 });
 
 interface PaymentSuccessPDFProps {
-    orderRef: string;
     count?: string;
+    locale: string;
+    orderRef: string;
+    qrDataUrl?: string;
     validFrom: Date;
     validTo: Date;
-    locale: string;
-    qrDataUrl?: string;
 }
 
 const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({
-    orderRef,
     count,
+    locale,
+    orderRef,
+    qrDataUrl,
     validFrom,
     validTo,
-    locale,
-    qrDataUrl,
 }) => {
     const localisedString = languages[locale as LocaleType];
     const formattedValidFrom = validFrom.toISOString().split('T')[0];
@@ -199,11 +199,11 @@ const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({
                 <View style={styles.pageContainer}>
                     <View style={styles.pageImage}>
                         <Image
-                            style={styles.backgroundImage}
                             source={path.join(process.cwd(), 'public', 'images', 'background.jpg')}
+                            style={styles.backgroundImage}
                         />
                     </View>
-                    <Image style={styles.logo} source={path.join(process.cwd(), 'public', 'images', 'logo.png')} />
+                    <Image source={path.join(process.cwd(), 'public', 'images', 'logo.png')} style={styles.logo} />
                     <View style={styles.container}>
                         <Text style={styles.header}>{localisedString.giftCard}</Text>
                         <View style={styles.titleContainer}>
@@ -223,8 +223,8 @@ const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({
                         <View style={styles.row}>
                             <View style={styles.column}>
                                 <Image
-                                    style={styles.photo}
                                     source={path.join(process.cwd(), 'public', 'images', 'offer.png')}
+                                    style={styles.photo}
                                 />
                             </View>
                             <View style={styles.column}>
@@ -291,7 +291,7 @@ const PaymentSuccessPDF: React.FC<PaymentSuccessPDFProps> = ({
     );
 };
 
-export const generatePdfDoc = async ({ orderRef, validFrom, validTo, count, locale }: PaymentSuccessPDFProps) => {
+export const generatePdfDoc = async ({ count, locale, orderRef, validFrom, validTo }: PaymentSuccessPDFProps) => {
     const decodedCount = count ? decodeURIComponent(count) : undefined;
     const token = createGiftCardToken(orderRef, validTo);
     const qrUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/api/verify-qr?token=${encodeURIComponent(
@@ -301,12 +301,12 @@ export const generatePdfDoc = async ({ orderRef, validFrom, validTo, count, loca
 
     return renderToStream(
         <PaymentSuccessPDF
-            orderRef={orderRef}
             count={decodedCount}
+            locale={locale}
+            orderRef={orderRef}
+            qrDataUrl={qrDataUrl}
             validFrom={validFrom}
             validTo={validTo}
-            locale={locale}
-            qrDataUrl={qrDataUrl}
         />
     );
 };

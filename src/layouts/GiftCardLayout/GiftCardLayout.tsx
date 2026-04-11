@@ -1,26 +1,26 @@
-import * as React from 'react';
 import { TypedObject } from '@portabletext/types';
+import * as React from 'react';
 
-import { GiftCardForm, type OptionType } from '@/forms/GiftCardForm';
 import { IconComponent } from '@/components/Icon/IconComponent';
-import { ImageContainer } from '@/containers/Image/ImageContainer';
 import { RichTextComponent } from '@/components/RichText/RichTextComponent';
+import { ImageContainer } from '@/containers/Image/ImageContainer';
+import { GiftCardForm, type OptionType } from '@/forms/GiftCardForm';
 
 export interface GiftcardProps {
-    title?: string;
-    description?: TypedObject | TypedObject[];
     bullets?: { text: string }[];
+    description?: TypedObject | TypedObject[];
     image?: string;
     options?: OptionType[];
+    title?: string;
 }
 
-export const GiftCardLayout: React.FC<GiftcardProps> = ({ title, description, bullets, image, options }) => {
+export const GiftCardLayout: React.FC<GiftcardProps> = ({ bullets, description, image, options, title }) => {
     if (!options?.length) return null;
 
     return (
         <div
-            id="gift-cards"
             className="xl:container mx-auto px-4 my-12 md:my-20 lg:my-28 flex flex-col gap-10 relative"
+            id="gift-cards"
         >
             <div className="flex flex-col max-w-5xl">
                 {title && <h2>{title}</h2>}
@@ -29,10 +29,10 @@ export const GiftCardLayout: React.FC<GiftcardProps> = ({ title, description, bu
                 {bullets && bullets.length > 0 && (
                     <div className="flex flex-col gap-3 mt-4">
                         {bullets.map((bullet, index) => (
-                            <div key={index} className="flex items-center gap-3">
+                            <div className="flex items-center gap-3" key={index}>
                                 <IconComponent
-                                    name="check"
                                     className="h-8 w-8 rounded-full bg-blue-100 p-2 shadow-sm"
+                                    name="check"
                                 />
                                 <p>{bullet.text}</p>
                             </div>
@@ -45,11 +45,11 @@ export const GiftCardLayout: React.FC<GiftcardProps> = ({ title, description, bu
                 {image && (
                     <div className="relative w-full sm:w-1/2 h-56 sm:h-auto">
                         <ImageContainer
+                            alt={title}
+                            classNames={{ image: 'object-cover w-full h-full', root: 'h-full' }}
+                            height={580}
                             src={image}
                             width={752}
-                            height={580}
-                            alt={title}
-                            classNames={{ root: 'h-full', image: 'object-cover w-full h-full' }}
                         />
                     </div>
                 )}
@@ -60,8 +60,8 @@ export const GiftCardLayout: React.FC<GiftcardProps> = ({ title, description, bu
             </div>
 
             <IconComponent
-                name="propeller"
                 className="hidden xl:block absolute -z-20 -top-48 -right-20 h-[720px] -rotate-12 text-[#f5f6ff]"
+                name="propeller"
             />
         </div>
     );

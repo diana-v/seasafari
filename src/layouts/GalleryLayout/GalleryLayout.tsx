@@ -1,21 +1,21 @@
-import * as React from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
 import Link from 'next/link';
-
+import * as React from 'react';
+import { Navigation } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/grid';
 import 'swiper/css/navigation';
+
 import { IconComponent } from '@/components/Icon/IconComponent';
 import { ImageContainer } from '@/containers/Image/ImageContainer';
 
-type CardsType = {
-    image?: string;
-    url?: string;
-};
-
 export interface GalleryProps {
     cards?: CardsType[];
+}
+
+interface CardsType {
+    image?: string;
+    url?: string;
 }
 
 export const GalleryLayout: React.FC<GalleryProps> = ({ cards }) => {
@@ -29,46 +29,46 @@ export const GalleryLayout: React.FC<GalleryProps> = ({ cards }) => {
                 {cards.length > 0 && (
                     <div className="flex-grow w-full">
                         <Swiper
-                            navigation={{
-                                nextEl: '.next',
-                                prevEl: '.prev',
-                            }}
-                            spaceBetween={20}
-                            modules={[Navigation]}
-                            className="w-full"
-                            slidesPerView={1}
                             breakpoints={{
                                 768: {
                                     slidesPerView: 'auto',
                                 },
                             }}
+                            className="w-full"
+                            modules={[Navigation]}
+                            navigation={{
+                                nextEl: '.next',
+                                prevEl: '.prev',
+                            }}
+                            slidesPerView={1}
+                            spaceBetween={20}
                         >
                             {cards.map((card, index) => (
-                                <SwiperSlide key={index} className="!h-96 md:!w-auto shadow-md rounded-3xl">
+                                <SwiperSlide className="!h-96 md:!w-auto shadow-md rounded-3xl" key={index}>
                                     {card.url ? (
-                                        <Link href={card.url} target="_blank" aria-label={card.url}>
+                                        <Link aria-label={card.url} href={card.url} target="_blank">
                                             {card.image && (
                                                 <ImageContainer
+                                                    classNames={{
+                                                        image: 'h-full w-full flex-grow object-cover rounded-3xl',
+                                                        root: 'h-full',
+                                                    }}
+                                                    height={500}
                                                     src={card.image}
                                                     width={500}
-                                                    height={500}
-                                                    classNames={{
-                                                        root: 'h-full',
-                                                        image: 'h-full w-full flex-grow object-cover rounded-3xl',
-                                                    }}
                                                 />
                                             )}
                                         </Link>
                                     ) : (
                                         card.image && (
                                             <ImageContainer
+                                                classNames={{
+                                                    image: 'h-full w-full flex-grow rounded-3xl',
+                                                    root: 'h-full',
+                                                }}
+                                                height={500}
                                                 src={card.image}
                                                 width={500}
-                                                height={500}
-                                                classNames={{
-                                                    root: 'h-full',
-                                                    image: 'h-full w-full flex-grow rounded-3xl',
-                                                }}
                                             />
                                         )
                                     )}
@@ -76,15 +76,15 @@ export const GalleryLayout: React.FC<GalleryProps> = ({ cards }) => {
                             ))}
                             <div className="prev absolute left-4 top-0 z-10 flex h-full items-center justify-center sm:left-8 lg:left-10 [&.swiper-button-disabled_>_svg]:opacity-30 [&.swiper-button-disabled_>_svg]:cursor-default">
                                 <IconComponent
-                                    name="arrow"
                                     className="rotate-180 opacity-70 bg-grey-50 shadow-md rounded-full p-4 lg:p-6 h-12 w-12 lg:h-16 lg:w-16 text-blue-800 cursor-pointer"
+                                    name="arrow"
                                 />
                             </div>
 
                             <div className="next absolute right-4 top-0 z-10 flex h-full items-center justify-center sm:right-8 lg:right-10 [&.swiper-button-disabled_>_svg]:opacity-30 [&.swiper-button-disabled_>_svg]:cursor-default">
                                 <IconComponent
-                                    name="arrow"
                                     className="opacity-70 bg-grey-50 shadow-md rounded-full p-4 lg:p-6 h-12 w-12 lg:h-16 lg:w-16 text-blue-800 cursor-pointer"
+                                    name="arrow"
                                 />
                             </div>
                         </Swiper>

@@ -1,13 +1,12 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import Cookies from 'cookies';
+import { cookies } from 'next/headers';
 
-export function checkAdminAuth(req: NextApiRequest, res: NextApiResponse) {
-    const cookies = new Cookies(req, res);
-    const authCookie = cookies.get('auth');
+export async function checkAdminAuth() {
+    const cookieStore = await cookies();
+    const authCookie = cookieStore.get('auth');
 
-    if (!authCookie) return false;
+    if (!authCookie?.value) return false;
 
-    const decoded = Buffer.from(authCookie, 'base64').toString('utf8');
+    const decoded = Buffer.from(authCookie.value, 'base64').toString('utf8');
     const [username, password] = decoded.split(':');
 
     return username === process.env.BASIC_AUTH_USER && password === process.env.BASIC_AUTH_PASSWORD;

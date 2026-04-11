@@ -1,7 +1,38 @@
+import { TypedObject } from '@portabletext/types';
 import { SanityClient } from '@sanity/client';
 
-// Not fetched, but used for reference
-export const fetchCommonData = (client: SanityClient, locale?: string, defaultLocale?: string) =>
+export interface CommonSectionResponse {
+    address: string;
+    companyDetails: CompanyDetails;
+    email: string;
+    logo: string;
+    phone: string;
+    privacyPolicy: PrivacyPolicy;
+    socialLinks: SocialLink[];
+}
+
+export interface CompanyDetails {
+    address: string;
+    companyCode: string;
+    name: string;
+}
+
+export interface PrivacyPolicy {
+    content: TypedObject | TypedObject[];
+    slug: string;
+}
+
+export interface SocialLink {
+    icon: string;
+    link: string;
+    platform: string;
+}
+
+export const fetchCommonData = (
+    client: SanityClient,
+    locale = 'lt',
+    defaultLocale = 'lt'
+): Promise<CommonSectionResponse> =>
     client.fetch(
         `
     *[_type == "common"]{
@@ -25,5 +56,11 @@ export const fetchCommonData = (client: SanityClient, locale?: string, defaultLo
          }
     }[0]
 `,
-        { locale, defaultLocale }
+        { defaultLocale, locale },
+        {
+            next: {
+                revalidate: 3600,
+                tags: ['common']
+            }
+        }
     );

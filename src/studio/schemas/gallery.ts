@@ -1,17 +1,11 @@
 import { defineField, defineType } from 'sanity';
 
 export default defineType({
-    name: 'gallery',
-    title: 'Gallery',
-    type: 'document',
     fields: [
         defineField({
             name: 'cards',
-            title: 'Cards',
-            type: 'array',
             of: [
                 {
-                    type: 'object',
                     fields: [
                         defineField({ name: 'image', title: 'Image', type: 'image' }),
                         defineField({ name: 'url', title: 'Url', type: 'string' }),
@@ -21,10 +15,14 @@ export default defineType({
                             media: 'image',
                         },
                     },
+                    type: 'object',
                 },
             ],
+            title: 'Cards',
+            type: 'array',
         }),
     ],
+    name: 'gallery',
     preview: {
         prepare() {
             return {
@@ -32,4 +30,6 @@ export default defineType({
             };
         },
     },
+    title: 'Gallery',
+    type: 'document',
 });

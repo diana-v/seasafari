@@ -1,6 +1,24 @@
+import { TypedObject } from '@portabletext/types';
 import { SanityClient } from '@sanity/client';
 
-export const fetchAboutSectionData = (client: SanityClient, locale?: string, defaultLocale?: string) =>
+export interface AboutSectionResponse {
+    benefits?: Benefit[];
+    description?: TypedObject | TypedObject[];
+    image: string;
+    title: string;
+}
+
+export interface Benefit {
+    description: TypedObject | TypedObject[];
+    image: string;
+    title: string;
+}
+
+export const fetchAboutSectionData = (
+    client: SanityClient,
+    locale = 'lt',
+    defaultLocale = 'lt'
+): Promise<AboutSectionResponse> =>
     client.fetch(
         `
     *[_type == "about"]{
@@ -14,5 +32,11 @@ export const fetchAboutSectionData = (client: SanityClient, locale?: string, def
         }
     }[0]
 `,
-        { locale, defaultLocale }
+        { defaultLocale, locale },
+        {
+            next: {
+                revalidate: 60,
+                tags: ['about']
+            }
+        }
     );

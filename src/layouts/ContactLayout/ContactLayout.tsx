@@ -1,22 +1,26 @@
-import * as React from 'react';
+'use client';
+
 import { TypedObject } from '@portabletext/types';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
+import * as React from 'react';
 
+import { IconComponent } from '@/components/Icon/IconComponent';
 import { RichTextComponent } from '@/components/RichText/RichTextComponent';
 import ContactForm from '@/forms/ContactForm';
-import { IconComponent } from '@/components/Icon/IconComponent';
 import { languages, LocaleType } from '@/translations/navigation';
 
 export interface ContactProps {
-    title?: string;
     description?: TypedObject | TypedObject[];
-    phone?: string;
     formTitle?: string;
+    phone?: string;
+    title?: string;
 }
 
-export const ContactLayout: React.FC<ContactProps> = ({ title, description, phone, formTitle }) => {
-    const { locale, defaultLocale } = useRouter();
+export const ContactLayout: React.FC<ContactProps> = ({ description, formTitle, phone, title }) => {
+    const params = useParams();
+    const locale = params.locale as string;
+    const defaultLocale = 'lt';
     const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
 
     return (
@@ -35,12 +39,12 @@ export const ContactLayout: React.FC<ContactProps> = ({ title, description, phon
                             )}
                         </div>
                         <Link
-                            href={`tel:${phone}`}
                             aria-label={localisedString.contactUs}
                             className="flex items-center gap-2 px-6 py-3 border border-blue-900 rounded-full text-blue-900 hover:bg-blue-900 hover:text-white transition-colors duration-200 w-fit"
+                            href={`tel:${phone}`}
                         >
                             {localisedString.contactUs}
-                            <IconComponent name="arrowRightUp" className="h-2.5 w-3" />
+                            <IconComponent className="h-2.5 w-3" name="arrowRightUp" />
                         </Link>
                     </div>
 

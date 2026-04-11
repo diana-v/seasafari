@@ -1,5 +1,5 @@
 export const supportedLanguages = [
-    { id: 'lt', title: 'Lithuanian', isDefault: true },
+    { id: 'lt', isDefault: true, title: 'Lithuanian' },
     { id: 'en', title: 'English' },
     { id: 'ru', title: 'Russian' },
 ];

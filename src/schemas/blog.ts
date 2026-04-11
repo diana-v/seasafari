@@ -1,11 +1,22 @@
+import { TypedObject } from '@portabletext/types';
 import { SanityClient } from '@sanity/client';
+
+export interface BlogSectionResponse {
+    _createdAt: string;
+    backgroundColor?: string;
+    content: TypedObject | TypedObject[];
+    description: string;
+    image: string;
+    slug: string;
+    title: string;
+}
 
 export const fetchBlogSectionData = (
     client: SanityClient,
-    blogId?: string | string[],
-    locale?: string,
-    defaultLocale?: string
-) =>
+    blogId: string | string[],
+    locale = 'lt',
+    defaultLocale = 'lt'
+): Promise<BlogSectionResponse> =>
     client.fetch(
         `
     *[_type == "blog" && slug.current == $blogId]{
@@ -18,5 +29,11 @@ export const fetchBlogSectionData = (
         _createdAt
     }[0]
 `,
-        { locale, defaultLocale, blogId }
+        { blogId, defaultLocale, locale },
+        {
+            next: {
+                revalidate: 60,
+                tags: ['blog', typeof blogId === 'string' ? blogId : 'list']
+            }
+        }
     );

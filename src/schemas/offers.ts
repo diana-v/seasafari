@@ -1,6 +1,26 @@
+import { TypedObject } from '@portabletext/types';
 import { SanityClient } from '@sanity/client';
 
-export const fetchOffersSectionData = (client: SanityClient, locale?: string, defaultLocale?: string) =>
+export interface OfferListingCard {
+    description: string;
+    imageCompressed: string;
+    linkTitle: string;
+    orderRank?: number;
+    slug: string;
+    title: string;
+}
+
+export interface OffersSectionResponse {
+    cards: OfferListingCard[];
+    description: TypedObject | TypedObject[];
+    title: string;
+}
+
+export const fetchOffersSectionData = (
+    client: SanityClient,
+    locale = 'lt',
+    defaultLocale = 'lt'
+): Promise<OffersSectionResponse> =>
     client.fetch(
         `
     *[_type == "offers"] {
@@ -16,5 +36,11 @@ export const fetchOffersSectionData = (client: SanityClient, locale?: string, de
         } | order(orderRank)
     }[0]
 `,
-        { locale, defaultLocale }
+        { defaultLocale, locale },
+        {
+            next: {
+                revalidate: 60,
+                tags: ['offers', 'offer-list']
+            }
+        }
     );

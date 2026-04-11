@@ -1,33 +1,34 @@
-import * as React from 'react';
+'use client';
+
 import cn from 'clsx';
+import * as React from 'react';
 import { CSSProperties, MutableRefObject } from 'react';
-
 import { getScrollbarSize, hasScrollbar } from 'src/utils/dimensions';
-import styles from './modalContainer.module.scss';
-import { ClientOnlyPortalContainer } from '@/containers/ClientOnlyPortal/ClientOnlyPortalContainer';
 
-interface ComponentProps {
-    scrollbarSize?: number;
-    animate?: boolean;
-    type?: ModalType;
-    className?: string;
-    style?: CSSProperties;
-    onClose?: () => void;
-}
+import { ClientOnlyPortalContainer } from '@/containers/ClientOnlyPortal/ClientOnlyPortalContainer';
 
 export enum ModalType {
     sideBar,
     centered,
 }
 
+interface ComponentProps {
+    animate?: boolean;
+    className?: string;
+    onClose?: () => void;
+    scrollbarSize?: number;
+    style?: CSSProperties;
+    type?: ModalType;
+}
+
 interface MyInputHandles {
-    open(): void;
     close(): void;
     isOpen: boolean;
+    open(): void;
 }
 
 export const ModalContainer = React.forwardRef<MyInputHandles, React.PropsWithChildren<ComponentProps>>(
-    ({ children, type = ModalType.sideBar, className, style, onClose, animate = true }, ref) => {
+    ({ animate = true, children, className, onClose, style, type = ModalType.sideBar }, ref) => {
         const [isOpen, setIsOpen] = React.useState(false);
         const [scrollbarWidth, setScrollbarWidth] = React.useState(0);
 
@@ -37,18 +38,17 @@ export const ModalContainer = React.forwardRef<MyInputHandles, React.PropsWithCh
         React.useImperativeHandle(
             ref,
             () => ({
-                open,
                 close,
                 isOpen,
+                open,
             }),
             [close, isOpen, open]
         );
 
-        const classNames = cn({
-            [styles.modal]: true,
-            [styles.modalFade]: animate,
-            [styles.right]: type === ModalType.sideBar,
-            [styles.center]: type === ModalType.centered,
+        const classNames = cn("fixed overflow-hidden top-0 right-0 bottom-0 left-0 w-full h-full flex z-50 bg-[#00000033]", {
+            "content-center items-center justify-center": type === ModalType.centered,
+            "justify-end": type === ModalType.sideBar,
+            "opacity-0 animate-[fade-in_0.3s_linear_forwards]": animate,
         });
 
         const handleEscape = React.useCallback(
@@ -80,17 +80,17 @@ export const ModalContainer = React.forwardRef<MyInputHandles, React.PropsWithCh
         const renderModal = () => (
             <ClientOnlyPortalContainer>
                 <style
-                    // eslint-disable-next-line react/no-danger
+                     
                     dangerouslySetInnerHTML={{
                         __html: `.modal { overflow: hidden; padding-right: ${scrollbarWidth}px }`,
                     }}
                 />
                 <div className={classNames}>
-                    <div className={styles.modalOverlay} onClick={close} />
+                    <div className="w-full h-full absolute top-0 left-0" onClick={close} />
                     <div
                         className={cn(
-                            styles.modalBody,
-                            { [styles.modalBodyCentered]: type === ModalType.centered },
+                            "shadow-xl bg-white relative overflow-x-hidden overflow-y-auto max-h-full",
+                            { "border rounded-xl shadow-xl sm:my-8 sm:align-middle sm:max-w-5xl sm:w-full": type === ModalType.centered },
                             className
                         )}
                         style={style}

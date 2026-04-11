@@ -3,9 +3,6 @@ import { defineField, defineType } from 'sanity';
 import { baseLanguage } from '../constants';
 
 export default defineType({
-    name: 'blogs',
-    title: 'Blogs',
-    type: 'document',
     fields: [
         defineField({
             name: 'title',
@@ -18,9 +15,12 @@ export default defineType({
             type: 'localeString',
         }),
     ],
+    name: 'blogs',
     preview: {
         select: {
             title: `title.${baseLanguage?.id}`,
         },
     },
+    title: 'Blogs',
+    type: 'document',
 });

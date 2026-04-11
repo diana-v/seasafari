@@ -1,6 +1,42 @@
 import { SanityClient } from '@sanity/client';
 
-export const fetchFooterSectionData = (client: SanityClient, locale?: string, defaultLocale?: string) =>
+export interface FooterCommon {
+    address: string;
+    companyDetails: {
+        address: string;
+        companyCode: string;
+        name: string;
+    };
+    email: string;
+    logo: string;
+    phone: string;
+    privacyPolicy: {
+        slug: string;
+    };
+    purchaseRules: {
+        slug: string;
+    };
+    socialLinks: {
+        icon: string;
+        link: string;
+        platform: string;
+    }[];
+}
+
+export interface FooterFAQ {
+    title: string;
+}
+
+export interface FooterSectionResponse {
+    common: FooterCommon;
+    faq: FooterFAQ;
+}
+
+export const fetchFooterSectionData = (
+    client: SanityClient,
+    locale = 'lt',
+    defaultLocale = 'lt'
+): Promise<FooterSectionResponse> =>
     client.fetch(
         `
     *[_type == "footer"] {
@@ -31,5 +67,11 @@ export const fetchFooterSectionData = (client: SanityClient, locale?: string, de
       }[0],
     }[0]
 `,
-        { locale, defaultLocale }
+        { defaultLocale, locale },
+        {
+            next: {
+                revalidate: 3600,
+                tags: ['footer', 'common', 'faq']
+            }
+        }
     );
