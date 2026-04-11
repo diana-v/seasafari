@@ -13,7 +13,7 @@ export function verifyGiftCardToken(token: string): { expired?: boolean; orderRe
         return jwt.verify(token, JWT_SECRET) as { orderRef: string };
     } catch (error) {
         if (error instanceof jwt.TokenExpiredError) {
-            const payload = jwt.decode(token) as { orderRef: string } | null;
+            const payload = jwt.decode(token) as null | { orderRef: string };
 
             if (payload?.orderRef) {
                 return { expired: true, orderRef: payload.orderRef };

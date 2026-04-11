@@ -1,6 +1,30 @@
 import { SanityClient } from '@sanity/client';
 
-export const fetchHomeSectionData = (client: SanityClient, locale?: string, defaultLocale?: string) =>
+export interface HeroMedia {
+    desktopContent?: 'image' | 'video' | undefined;
+    mobileContent?: 'image' | 'video' | undefined;
+}
+
+export interface HomeCTA {
+    label: string;
+    link: string;
+}
+
+export interface HomeSectionResponse {
+    cta?: HomeCTA;
+    heroMedia?: HeroMedia;
+    image?: string;
+    subtitle?: string;
+    title: string;
+    videoMp4?: string;
+    videoWebm?: string;
+}
+
+export const fetchHomeSectionData = (
+    client: SanityClient,
+    locale = 'lt',
+    defaultLocale = 'lt'
+): Promise<HomeSectionResponse> =>
     client.fetch(
         `
     *[_type == "home"]{
@@ -19,5 +43,11 @@ export const fetchHomeSectionData = (client: SanityClient, locale?: string, defa
         }
     }[0]
 `,
-        { locale, defaultLocale }
+        { defaultLocale, locale },
+        {
+            next: {
+                revalidate: 600,
+                tags: ['home']
+            }
+        }
     );

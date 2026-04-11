@@ -1,6 +1,15 @@
 import { SanityClient } from '@sanity/client';
 
-export const fetchNavigationData = (client: SanityClient, locale?: string, defaultLocale?: string) =>
+export interface NavigationProps {
+    logo: string;
+    phone: string;
+}
+
+export const fetchNavigationData = (
+    client: SanityClient,
+    locale = 'lt',
+    defaultLocale = 'lt'
+): Promise<NavigationProps> =>
     client.fetch(
         `
     *[_type == "common"]{
@@ -8,5 +17,11 @@ export const fetchNavigationData = (client: SanityClient, locale?: string, defau
         phone
     }[0]
 `,
-        { locale, defaultLocale }
+        { defaultLocale, locale },
+        {
+            next: {
+                revalidate: 3600,
+                tags: ['navigation', 'common']
+            }
+        }
     );

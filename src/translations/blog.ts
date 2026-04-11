@@ -2,15 +2,15 @@ export type LocaleType = 'en' | 'lt' | 'ru';
 
 export const languages = {
     en: {
-        showMore: 'Show all',
         continueReading: 'Continue reading',
+        showMore: 'Show all',
     },
     lt: {
-        showMore: 'Rodyti visus',
         continueReading: 'Skaityti toliau',
+        showMore: 'Rodyti visus',
     },
     ru: {
-        showMore: 'Показать больше',
         continueReading: 'Продолжить чтение',
+        showMore: 'Показать больше',
     },
 };

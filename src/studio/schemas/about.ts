@@ -3,9 +3,6 @@ import { defineField, defineType } from 'sanity';
 import { baseLanguage } from '../constants';
 
 export default defineType({
-    name: 'about',
-    title: 'About',
-    type: 'document',
     fields: [
         defineField({
             name: 'title',
@@ -14,24 +11,21 @@ export default defineType({
         }),
         defineField({
             name: 'image',
-            title: 'image',
-            type: 'image',
             options: {
                 hotspot: true,
             },
+            title: 'image',
+            type: 'image',
         }),
         defineField({
             name: 'description',
-            type: 'localeBlock',
             title: 'Description',
+            type: 'localeBlock',
         }),
         defineField({
             name: 'benefits',
-            type: 'array',
-            title: 'Benefits',
             of: [
                 {
-                    type: 'object',
                     fields: [
                         defineField({ name: 'title', title: 'Title', type: 'localeString' }),
                         defineField({ name: 'description', title: 'Description', type: 'localeBlock' }),
@@ -39,20 +33,26 @@ export default defineType({
                     ],
                     preview: {
                         select: {
-                            title: `title.${baseLanguage?.id}`,
-                            subtitle: `description.${baseLanguage?.id}`,
                             media: 'image',
+                            subtitle: `description.${baseLanguage?.id}`,
+                            title: `title.${baseLanguage?.id}`,
                         },
                     },
+                    type: 'object',
                 },
             ],
+            title: 'Benefits',
+            type: 'array',
         }),
     ],
+    name: 'about',
     preview: {
         select: {
-            title: `title.${baseLanguage?.id}`,
-            subtitle: `description.${baseLanguage?.id}`,
             media: 'image',
+            subtitle: `description.${baseLanguage?.id}`,
+            title: `title.${baseLanguage?.id}`,
         },
     },
+    title: 'About',
+    type: 'document',
 });

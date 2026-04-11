@@ -3,9 +3,6 @@ import { defineField, defineType } from 'sanity';
 import { baseLanguage } from '../constants';
 
 export default defineType({
-    name: 'partners',
-    title: 'Partners',
-    type: 'document',
     fields: [
         defineField({
             name: 'title',
@@ -19,19 +16,16 @@ export default defineType({
         }),
         defineField({
             name: 'logos',
-            title: 'Logos',
-            type: 'array',
             of: [
                 {
-                    type: 'object',
                     fields: [
                         defineField({
                             name: 'image',
-                            title: 'image',
-                            type: 'image',
                             options: {
                                 hotspot: true,
                             },
+                            title: 'image',
+                            type: 'image',
                         }),
                     ],
                     preview: {
@@ -39,13 +33,19 @@ export default defineType({
                             media: 'image',
                         },
                     },
+                    type: 'object',
                 },
             ],
+            title: 'Logos',
+            type: 'array',
         }),
     ],
+    name: 'partners',
     preview: {
         select: {
             title: `title.${baseLanguage?.id}`,
         },
     },
+    title: 'Partners',
+    type: 'document',
 });

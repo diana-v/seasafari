@@ -1,33 +1,36 @@
-import * as React from 'react';
+'use client';
+
 import { TypedObject } from '@portabletext/types';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
+import * as React from 'react';
 
 import { CardComponent, CardType } from '@/components/Card/CardComponent';
 import { RichTextComponent } from '@/components/RichText/RichTextComponent';
 
-type OffersCardType = {
-    slug?: string;
-    title?: string;
-    imageCompressed?: string;
-    description?: string;
-    linkTitle?: string;
-};
-
 export interface OffersProps {
-    title?: string;
-    description?: TypedObject | TypedObject[];
     cards?: OffersCardType[];
+    description?: TypedObject | TypedObject[];
+    title?: string;
 }
 
-export const OffersLayout: React.FC<OffersProps> = ({ title, description, cards }) => {
+interface OffersCardType {
+    description?: string;
+    imageCompressed?: string;
+    linkTitle?: string;
+    slug?: string;
+    title?: string;
+}
+
+export const OffersLayout: React.FC<OffersProps> = ({ cards, description, title }) => {
+    const params = useParams();
+    const locale = params.locale as string;
+
     if (!cards?.length) {
         return null;
     }
 
-    const { locale } = useRouter();
-
     return (
-        <div id="offers" className="bg-blue-50 pt-8 md:pt-16 lg:pt-24">
+        <div className="bg-blue-50 pt-8 md:pt-16 lg:pt-24" id="offers">
             <div className="xl:container mx-auto px-4 flex flex-col gap-6 md:gap-10 lg:gap-16">
                 {(title || description) && (
                     <div className="max-w-5xl">
@@ -36,21 +39,18 @@ export const OffersLayout: React.FC<OffersProps> = ({ title, description, cards 
                     </div>
                 )}
 
-                <div className="flex flex-col divide-y">
+                <div className="flex flex-col divide-y divide-gray-200">
                     {cards?.map((card, index) => (
                         <CardComponent
-                            key={index}
-                            classNames={{ root: 'mb-12 pt-12 h-full w-full' }}
-                            type={CardType.Image}
-                            title={card.title}
+                            classNames={{ root: 'py-12 h-full w-full' }}
                             description={card.description}
                             image={card.imageCompressed}
-                            linkUrl={{
-                                pathname: '/[locale]/[offerId]',
-                                query: { offerId: card.slug, locale },
-                            }}
-                            linkTitle={card.linkTitle}
                             index={index}
+                            key={index}
+                            linkTitle={card.linkTitle}
+                            linkUrl={`/${locale}/${card?.slug}`}
+                            title={card.title}
+                            type={CardType.Image}
                         />
                     ))}
                 </div>

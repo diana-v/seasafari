@@ -1,17 +1,19 @@
-import * as React from 'react';
-import Image, { ImageProps } from 'next/image';
+'use client';
+
 import cn from 'clsx';
+import Image, { ImageProps } from 'next/image';
+import * as React from 'react';
 
 import { imagePlaceHolder } from '@/lib/imagePlaceHolder';
 
 export interface ImageContainerProps extends Partial<ImageProps> {
     classNames?: {
-        root?: string;
         image?: string;
+        root?: string;
     };
 }
 
-export const ImageContainer: React.FC<ImageContainerProps> = ({ src, alt, classNames, className, ...restProps }) => {
+export const ImageContainer: React.FC<ImageContainerProps> = ({ alt, className, classNames, src, ...restProps }) => {
     const imageErrorHandler = React.useCallback((e: React.BaseSyntheticEvent) => {
         e.target.parentNode.parentNode.classList.add('none');
     }, []);
@@ -23,13 +25,13 @@ export const ImageContainer: React.FC<ImageContainerProps> = ({ src, alt, classN
     return (
         <div className={cn('select-none flex relative', classNames?.root)}>
             <Image
-                src={src}
                 alt={alt ?? ''}
-                loading="lazy"
-                placeholder="blur"
                 blurDataURL={src?.toString().includes('http') ? imagePlaceHolder() : undefined}
-                onError={imageErrorHandler}
                 className={cn(classNames?.image, className)}
+                loading="lazy"
+                onError={imageErrorHandler}
+                placeholder="blur"
+                src={src}
                 {...restProps}
             />
         </div>

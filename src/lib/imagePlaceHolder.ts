@@ -13,6 +13,6 @@ const shimmer = (w: number | string, h: number | string) => `
 </svg>`;
 
 const toBase64 = (str: string) =>
-    typeof window === 'undefined' ? Buffer.from(str).toString('base64') : window.btoa(str);
+    typeof globalThis === 'undefined' ? Buffer.from(str).toString('base64') : globalThis.btoa(str);
 
 export const imagePlaceHolder = (w = '100%', h = '100%') => `data:image/svg+xml;base64,${toBase64(shimmer(w, h))}`;

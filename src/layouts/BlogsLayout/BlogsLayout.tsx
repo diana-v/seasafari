@@ -1,33 +1,37 @@
-import * as React from 'react';
+'use client';
+
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
+import * as React from 'react';
 
 import { CardComponent, CardType } from '@/components/Card/CardComponent';
-import { languages, LocaleType } from '@/translations/blog';
 import { IconComponent } from '@/components/Icon/IconComponent';
-
-type BlogCardType = {
-    slug?: string;
-    title?: string;
-    image?: string;
-    description?: string;
-    _createdAt?: string;
-    backgroundColor?: string;
-};
+import { languages, LocaleType } from '@/translations/blog';
 
 export interface BlogsProps {
-    title?: string;
-    description?: string;
     cards?: BlogCardType[];
+    description?: string;
+    title?: string;
 }
 
-export const BlogsLayout: React.FC<BlogsProps> = ({ title, description, cards }) => {
+interface BlogCardType {
+    _createdAt?: string;
+    backgroundColor?: string;
+    description?: string;
+    image?: string;
+    slug?: string;
+    title?: string;
+}
+
+export const BlogsLayout: React.FC<BlogsProps> = ({ cards, description, title }) => {
+    const params = useParams();
+    const locale = params.locale as string;
+    const defaultLocale = 'lt';
+    const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
+
     if (!cards?.length) {
         return null;
     }
-
-    const { locale, defaultLocale } = useRouter();
-    const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
 
     return (
         <div className="pt-8 md:pt-16 lg:pt-24">
@@ -40,39 +44,33 @@ export const BlogsLayout: React.FC<BlogsProps> = ({ title, description, cards })
                         </div>
                     )}
                     <Link
-                        className="flex shrink-0 text-white bg-blue-900 rounded-full items-center gap-2 px-6 py-3 "
-                        href={{
-                            pathname: '/[locale]/blogs',
-                            query: { locale },
-                        }}
-                        scroll={true}
                         aria-label={localisedString.showMore}
+                        className="flex shrink-0 text-white bg-blue-900 rounded-full items-center gap-2 px-6 py-3"
+                        href={`/${locale}/blogs`}
+                        scroll={true}
                     >
                         {localisedString.showMore}
-                        <IconComponent name="arrowRightUp" className="h-2.5 w-3" />
+                        <IconComponent className="h-2.5 w-3" name="arrowRightUp" />
                     </Link>
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-4 lg:gap-8">
                     {cards?.slice(0, 2)?.map((card, index) => {
                         return (
-                            <div key={index} className="flex-1">
+                            <div className="flex-1" key={index}>
                                 <CardComponent
                                     classNames={{
-                                        root: `h-full w-full`,
                                         image: 'brightness-50',
+                                        root: `h-full w-full`,
                                     }}
-                                    style={{ backgroundColor: card.backgroundColor }}
-                                    type={CardType.Blog}
-                                    title={card.title}
-                                    description={card.description}
                                     createdAt={card._createdAt}
+                                    description={card.description}
                                     image={card.image}
-                                    linkUrl={{
-                                        pathname: '/[locale]/blogs/[blogId]',
-                                        query: { blogId: card.slug, locale },
-                                    }}
                                     linkTitle={localisedString.continueReading}
+                                    linkUrl={`/${locale}/blogs/${card.slug}`}
+                                    style={{ backgroundColor: card.backgroundColor }}
+                                    title={card.title}
+                                    type={CardType.Blog}
                                 />
                             </div>
                         );

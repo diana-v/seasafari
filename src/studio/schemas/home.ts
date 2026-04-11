@@ -3,9 +3,6 @@ import { defineField, defineType } from 'sanity';
 import { baseLanguage } from '../constants';
 
 export default defineType({
-    name: 'home',
-    title: 'Home',
-    type: 'document',
     fields: [
         defineField({
             name: 'title',
@@ -18,9 +15,6 @@ export default defineType({
             type: 'localeString',
         }),
         defineField({
-            name: 'cta',
-            title: 'CTA',
-            type: 'object',
             fields: [
                 defineField({
                     name: 'label',
@@ -33,6 +27,9 @@ export default defineType({
                     type: 'localeString',
                 }),
             ],
+            name: 'cta',
+            title: 'CTA',
+            type: 'object',
         }),
         defineField({
             name: 'videoWebm',
@@ -50,43 +47,46 @@ export default defineType({
             type: 'file',
         }),
         defineField({
-            name: 'heroMedia',
-            title: 'Hero Media',
-            type: 'object',
             fields: [
                 defineField({
                     name: 'desktopContent',
-                    title: 'Desktop Content Type',
-                    type: 'string',
                     options: {
+                        direction: 'horizontal',
+                        layout: 'radio',
                         list: [
                             { title: 'Image', value: 'image' },
                             { title: 'Video', value: 'video' },
                         ],
-                        layout: 'radio',
-                        direction: 'horizontal',
                     },
+                    title: 'Desktop Content Type',
+                    type: 'string',
                 }),
                 defineField({
                     name: 'mobileContent',
-                    title: 'Mobile Content Type',
-                    type: 'string',
                     options: {
+                        direction: 'horizontal',
+                        layout: 'radio',
                         list: [
                             { title: 'Image', value: 'image' },
                             { title: 'Video', value: 'video' },
                         ],
-                        layout: 'radio',
-                        direction: 'horizontal',
                     },
+                    title: 'Mobile Content Type',
+                    type: 'string',
                 }),
             ],
+            name: 'heroMedia',
+            title: 'Hero Media',
+            type: 'object',
         }),
     ],
+    name: 'home',
     preview: {
         select: {
-            title: `title.${baseLanguage?.id}`,
             subtitle: `subtitle.${baseLanguage?.id}`,
+            title: `title.${baseLanguage?.id}`,
         },
     },
+    title: 'Home',
+    type: 'document',
 });

@@ -1,6 +1,28 @@
+import { TypedObject } from '@portabletext/types';
 import { SanityClient } from '@sanity/client';
 
-export const fetchGiftCardSectionData = (client: SanityClient, locale?: string, defaultLocale?: string) =>
+export interface GiftCardBullet {
+    text: string;
+}
+
+export interface GiftCardOption {
+    label: string;
+    value: number;
+}
+
+export interface GiftCardSectionResponse {
+    bullets: GiftCardBullet[];
+    description: TypedObject | TypedObject[];
+    image: string;
+    options: GiftCardOption[];
+    title: string;
+}
+
+export const fetchGiftCardSectionData = (
+    client: SanityClient,
+    locale = 'lt',
+    defaultLocale = 'lt'
+): Promise<GiftCardSectionResponse> =>
     client.fetch(
         `
     *[_type == "giftCard"]{
@@ -16,5 +38,11 @@ export const fetchGiftCardSectionData = (client: SanityClient, locale?: string, 
         }
     }[0]
 `,
-        { locale, defaultLocale }
+        { defaultLocale, locale },
+        {
+            next: {
+                revalidate: 3600,
+                tags: ['giftCard']
+            }
+        }
     );
