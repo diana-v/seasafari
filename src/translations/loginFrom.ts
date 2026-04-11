@@ -2,31 +2,31 @@ export type LocaleType = 'en' | 'lt' | 'ru';
 
 export const languages = {
     en: {
-        usernameLabel: 'Username:',
-        passwordLabel: 'Password:',
+        errorMessage: 'Ooops, something went wrong... Please try again later',
         loggingIn: 'Logging in...',
         login: 'Login',
-        errorMessage: 'Ooops, something went wrong... Please try again later',
+        passwordLabel: 'Password:',
+        usernameLabel: 'Username:',
         yup: {
             required: 'Required',
         },
     },
     lt: {
-        usernameLabel: 'Vartotojo vardas:',
-        passwordLabel: 'Slaptažodis:',
+        errorMessage: 'Oi, kažkas nutiko... Bandykite vėliau',
         loggingIn: 'Prisijungiama...',
         login: 'Prisijungti',
-        errorMessage: 'Oi, kažkas nutiko... Bandykite vėliau',
+        passwordLabel: 'Slaptažodis:',
+        usernameLabel: 'Vartotojo vardas:',
         yup: {
             required: 'Privaloma',
         },
     },
     ru: {
-        usernameLabel: 'Имя пользователя:',
-        passwordLabel: 'Пароль:',
+        errorMessage: 'Упс, что-то пошло не так... Пожалуйста, попробуйте позже',
         loggingIn: 'Вход...',
         login: 'Войти',
-        errorMessage: 'Упс, что-то пошло не так... Пожалуйста, попробуйте позже',
+        passwordLabel: 'Пароль:',
+        usernameLabel: 'Имя пользователя:',
         yup: {
             required: 'Обязательно',
         },

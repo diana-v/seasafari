@@ -3,20 +3,20 @@ import { defineType } from 'sanity';
 import { supportedLanguages } from '../constants';
 
 export default defineType({
-    title: 'Localized string',
-    name: 'localeString',
-    type: 'object',
+    fields: supportedLanguages.map((locale) => ({
+        fieldset: locale.isDefault ? undefined : 'translations',
+        name: locale.id,
+        title: locale.title,
+        type: 'string',
+    })),
     fieldsets: [
         {
-            title: 'Translations',
             name: 'translations',
             options: { collapsible: true },
+            title: 'Translations',
         },
     ],
-    fields: supportedLanguages.map((lang) => ({
-        title: lang.title,
-        name: lang.id,
-        type: 'string',
-        fieldset: lang.isDefault ? undefined : 'translations',
-    })),
+    name: 'localeString',
+    title: 'Localized string',
+    type: 'object',
 });

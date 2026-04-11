@@ -1,6 +1,19 @@
 import { SanityClient } from '@sanity/client';
 
-export const fetchGallerySectionData = (client: SanityClient, locale?: string, defaultLocale?: string) =>
+export interface GalleryCard {
+    image: string;
+    url?: string;
+}
+
+export interface GallerySectionResponse {
+    cards: GalleryCard[];
+}
+
+export const fetchGallerySectionData = (
+    client: SanityClient,
+    locale = 'lt',
+    defaultLocale = 'lt'
+): Promise<GallerySectionResponse> =>
     client.fetch(
         `
     *[_type == "gallery"]{
@@ -10,5 +23,11 @@ export const fetchGallerySectionData = (client: SanityClient, locale?: string, d
         },
     }[0]
 `,
-        { locale, defaultLocale }
+        { defaultLocale, locale },
+        {
+            next: {
+                revalidate: 600,
+                tags: ['gallery']
+            }
+        }
     );

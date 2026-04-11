@@ -1,20 +1,20 @@
-import blockContent from './blockContent';
-import localeString from './localeString';
-import localeBlock from './localeBlock';
-import home from './home';
 import about from './about';
-import offers from './offers';
+import blockContent from './blockContent';
+import blog from './blog';
+import blogs from './blogs';
+import common from './common';
+import contact from './contact';
 import faq from './faq';
 import gallery from './gallery';
-import blogs from './blogs';
-import blog from './blog';
-import reviews from './reviews';
-import contact from './contact';
-import offer from './offer';
-import giftCardWidget from './giftCardWidget';
 import giftCard from './giftCard';
-import common from './common';
+import giftCardWidget from './giftCardWidget';
+import home from './home';
+import localeBlock from './localeBlock';
+import localeString from './localeString';
+import offer from './offer';
+import offers from './offers';
 import partners from './partners';
+import reviews from './reviews';
 
 export const schemaTypes = [
     blockContent,

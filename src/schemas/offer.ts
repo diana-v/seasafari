@@ -1,11 +1,37 @@
+import { TypedObject } from '@portabletext/types';
 import { SanityClient } from '@sanity/client';
+
+export interface OfferCard {
+    icon: string;
+    title: string;
+}
+
+export interface OfferChip {
+    label: string;
+    value: string;
+}
+
+export interface OfferSectionResponse {
+    cards?: OfferCard[];
+    chips?: OfferChip[];
+    description?: string;
+    giftcardInfo?: TypedObject | TypedObject[];
+    image: string;
+    imageCompressed?: string;
+    isGiftcard?: boolean;
+    longDescription?: TypedObject | TypedObject[];
+    phoneReservationLabel: string;
+    phoneReservationLink: string;
+    slug: string;
+    title: string;
+}
 
 export const fetchOfferSectionData = (
     client: SanityClient,
-    offerId?: string | string[],
-    locale?: string,
-    defaultLocale?: string
-) =>
+    offerId: string | string[],
+    locale = 'lt',
+    defaultLocale = 'lt'
+): Promise<OfferSectionResponse> =>
     client.fetch(
         `
     *[_type == "offer" && slug.current == $offerId]{
@@ -29,5 +55,11 @@ export const fetchOfferSectionData = (
         "phoneReservationLabel": coalesce(phoneReservationLabel.[$locale], phoneReservationLabel.[$defaultLocale], "Missing translation"),
     }[0]
 `,
-        { locale, defaultLocale, offerId }
+        { defaultLocale, locale, offerId },
+        {
+            next: {
+                revalidate: 60,
+                tags: ['offer', typeof offerId === 'string' ? offerId : 'detail']
+            }
+        }
     );

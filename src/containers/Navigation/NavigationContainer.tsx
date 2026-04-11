@@ -1,24 +1,35 @@
-import * as React from 'react';
-import { useRouter } from 'next/router';
-import cn from 'clsx';
+'use client';
 
+import cn from 'clsx';
+import Link from 'next/link';
+import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
+import * as React from 'react';
+
+import { DropdownComponent } from '@/components/Dropdown/DropdownComponent';
+import { IconComponent } from '@/components/Icon/IconComponent';
 import { ImageContainer } from '@/containers/Image/ImageContainer';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { languages, LocaleType } from '@/translations/navigation';
-import { DropdownComponent } from '@/components/Dropdown/DropdownComponent';
-import { IconComponent } from '@/components/Icon/IconComponent';
 
 export interface NavigationProps {
+    isAuthenticated?: boolean;
+    isSimple?: boolean;
     logo?: string;
     phone?: string;
     showLocales?: boolean;
-    isAuthenticated?: boolean;
-    isSimple?: boolean;
 }
 
-export const NavigationContainer: React.FC<NavigationProps> = ({ logo, phone, isAuthenticated, isSimple }) => {
-    const { locales, locale, defaultLocale, asPath, push, reload } = useRouter();
-    const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
+export const NavigationContainer: React.FC<NavigationProps> = ({ isAuthenticated, isSimple, logo, phone }) => {
+    const router = useRouter();
+    const pathname = usePathname();
+    const params = useParams();
+    const searchParams = useSearchParams();
+
+    const locale = (params?.locale as string) || 'lt';
+    const locales = ['lt', 'en', 'ru'];
+
+    const localisedString = languages[locale as LocaleType] || languages['lt'];
+
     const [showMenu, setShowMenu] = React.useState(false);
     const menuRef = React.useRef(null);
 
@@ -32,82 +43,101 @@ export const NavigationContainer: React.FC<NavigationProps> = ({ logo, phone, is
 
     useClickOutside(menuRef, closeMenu);
 
+
     const switchToLocale = React.useCallback(
-        (newLocale: string) => push(asPath, undefined, { locale: newLocale, scroll: false }),
-        [asPath, push]
+        (newLocale: string) => {
+            if (!pathname) return;
+
+            const segments = pathname.split('/');
+
+            segments[1] = newLocale;
+
+            let newPath = segments.join('/');
+
+            const currentParams = searchParams.toString();
+
+            if (currentParams) {
+                newPath += `?${currentParams}`;
+            }
+
+            router.push(newPath);
+            router.refresh();
+        },
+        [pathname, router, searchParams]
     );
 
     const handleLogout = React.useCallback(() => {
         fetch('/api/admin-logout', { method: 'POST' })
             .then((res) => {
                 if (res.status === 200) {
-                    return reload();
+                    router.refresh();
+                    
+                    return;
                 }
-
-                return;
             })
             .catch((error) => {
                 console.error(error);
             });
-    }, []);
+    }, [router]);
 
     return (
         <nav
-            className={cn('z-20 relative mx-auto flex flex-wrap justify-between items-center px-4 py-3 gap-x-5', {
+            className={cn('z-20 relative flex flex-wrap justify-between items-center px-4 py-3 gap-x-5', {
                 'bg-slate-900': isSimple,
             })}
             ref={menuRef}
         >
-            <a href="/" className="flex gap-8" aria-label="SeaSafari">
+            <Link aria-label="SeaSafari" className="flex gap-8" href={`/${locale}`}>
                 {logo ? (
                     <ImageContainer
+                        classNames={{
+                            image: cn('w-[100px] h-[50px]', {
+                                'lg:w-[100px] lg:h-[50px]': isSimple,
+                                'lg:w-[160px] lg:h-[80px]': !isSimple,
+                            }),
+                            root: 'h-full',
+                        }}
+                        height={80}
                         src={logo}
                         width={180}
-                        height={80}
-                        classNames={{
-                            root: 'h-full',
-                            image: cn('w-[100px] h-[50px]', {
-                                'lg:w-[160px] lg:h-[80px]': !isSimple,
-                                'lg:w-[100px] lg:h-[50px]': isSimple,
-                            }),
-                        }}
                     />
                 ) : (
                     'SeaSafari'
                 )}
-            </a>
+            </Link>
+
             <div className="flex gap-2 lg:gap-3 text-sm lg:text-lg text-center">
                 {!isAuthenticated && (
                     <a
-                        href={`tel:${phone}`}
                         className="rounded-full bg-white py-1.5 lg:py-2.5 px-3 lg:px-6 flex gap-2 items-center shadow-lg"
+                        href={`tel:${phone}`}
                     >
-                        {localisedString.contactUs}
-                        <IconComponent name="phone" className="w-6 h-6" />
+                        {localisedString?.contactUs}
+                        <IconComponent className="w-6 h-6" name="phone" />
                     </a>
                 )}
                 {isAuthenticated && (
                     <button
-                        onClick={handleLogout}
                         className="uppercase rounded-full bg-white py-1.5 lg:py-2.5 px-3 lg:px-6 shadow-lg"
+                        onClick={handleLogout}
                     >
-                        {localisedString.logout}
+                        {localisedString?.logout}
                     </button>
                 )}
-                {locales && locales.length > 1 && (
+                {locales.length > 1 && (
                     <div className="relative">
                         <button
-                            onClick={toggleMenu}
                             className="uppercase rounded-full bg-white py-2 lg:py-2.5 px-2.5 lg:px-3.5 shadow-lg"
+                            onClick={toggleMenu}
                         >
                             {locale}
                         </button>
                         {showMenu && (
                             <DropdownComponent
-                                ref={menuRef}
+                                classNames={{ root: 'absolute rounded-lg top-[60px] right-[-8px] w-[60px] p-3' }}
                                 items={locales}
                                 onSelect={switchToLocale}
-                                classNames={{ root: 'absolute rounded-lg top-[60px] right-[-8px] w-[60px] p-3' }}
+                                ref={menuRef}
                             />
                         )}
                     </div>

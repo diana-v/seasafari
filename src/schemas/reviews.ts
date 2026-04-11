@@ -1,11 +1,25 @@
 import { SanityClient } from '@sanity/client';
 
-export const fetchReviewsSectionData = (client: SanityClient, locale?: string, defaultLocale?: string) =>
+export interface ReviewsSectionResponse {
+    title: string;
+}
+
+export const fetchReviewsSectionData = (
+    client: SanityClient,
+    locale = 'lt',
+    defaultLocale = 'lt'
+): Promise<ReviewsSectionResponse> =>
     client.fetch(
         `
     *[_type == "reviews"]{
-        "title": coalesce(title.[$locale], title.[$defaultLocale]),
+        "title": coalesce(title[$locale], title[$defaultLocale], "Missing translation"),
     }[0]
 `,
-        { locale, defaultLocale }
+        { defaultLocale, locale },
+        {
+            next: {
+                revalidate: 3600,
+                tags: ['reviews']
+            }
+        }
     );

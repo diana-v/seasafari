@@ -3,9 +3,6 @@ import { defineField, defineType } from 'sanity';
 import { baseLanguage } from '../constants';
 
 export default defineType({
-    name: 'giftCard',
-    title: 'Gift Card',
-    type: 'document',
     fields: [
         defineField({
             name: 'title',
@@ -19,25 +16,22 @@ export default defineType({
         }),
         defineField({
             name: 'bullets',
+            of: [{ type: 'localeString' }],
             title: 'Bullets',
             type: 'array',
-            of: [{ type: 'localeString' }],
         }),
         defineField({
             name: 'image',
-            title: 'image',
-            type: 'image',
             options: {
                 hotspot: true,
             },
+            title: 'image',
+            type: 'image',
         }),
         defineField({
             name: 'options',
-            title: 'Options',
-            type: 'array',
             of: [
                 {
-                    type: 'object',
                     fields: [
                         defineField({ name: 'label', title: 'Label', type: 'localeString' }),
                         defineField({ name: 'value', title: 'Value', type: 'number' }),
@@ -47,15 +41,21 @@ export default defineType({
                             title: `label.${baseLanguage?.id}`,
                         },
                     },
+                    type: 'object',
                 },
             ],
+            title: 'Options',
+            type: 'array',
         }),
     ],
+    name: 'giftCard',
     preview: {
         select: {
-            title: `title.${baseLanguage?.id}`,
-            subtitle: `description.${baseLanguage?.id}`,
             media: 'image',
+            subtitle: `description.${baseLanguage?.id}`,
+            title: `title.${baseLanguage?.id}`,
         },
     },
+    title: 'Gift Card',
+    type: 'document',
 });

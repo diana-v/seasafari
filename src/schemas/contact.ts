@@ -1,6 +1,18 @@
+import { TypedObject } from '@portabletext/types';
 import { SanityClient } from '@sanity/client';
 
-export const fetchContactSectionData = (client: SanityClient, locale?: string, defaultLocale?: string) =>
+export interface ContactSectionResponse {
+    description: TypedObject | TypedObject[];
+    formTitle: string;
+    phone: string;
+    title: string;
+}
+
+export const fetchContactSectionData = (
+    client: SanityClient,
+    locale = 'lt',
+    defaultLocale = 'lt'
+): Promise<ContactSectionResponse> =>
     client.fetch(
         `
     *[_type == "contact"]{
@@ -10,5 +22,11 @@ export const fetchContactSectionData = (client: SanityClient, locale?: string, d
         "phone": *[_type == "common"].phone
     }[0]
 `,
-        { locale, defaultLocale }
+        { defaultLocale, locale },
+        {
+            next: {
+                revalidate: 3600,
+                tags: ['contact']
+            }
+        }
     );

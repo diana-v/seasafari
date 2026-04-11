@@ -1,6 +1,16 @@
 import { SanityClient } from '@sanity/client';
 
-export const fetchGiftCardWidgetSectionData = (client: SanityClient, locale?: string, defaultLocale?: string) =>
+export interface GiftCardWidgetResponse {
+    image: string;
+    link?: string;
+    title: string;
+}
+
+export const fetchGiftCardWidgetSectionData = (
+    client: SanityClient,
+    locale = 'lt',
+    defaultLocale = 'lt'
+): Promise<GiftCardWidgetResponse> =>
     client.fetch(
         `
     *[_type == "giftCardWidget"]{
@@ -9,5 +19,11 @@ export const fetchGiftCardWidgetSectionData = (client: SanityClient, locale?: st
         link,
     }[0]
 `,
-        { locale, defaultLocale }
+        { defaultLocale, locale },
+        {
+            next: {
+                revalidate: 3600,
+                tags: ['giftCardWidget']
+            }
+        }
     );

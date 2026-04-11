@@ -1,53 +1,54 @@
-import * as React from 'react';
-import cn from 'clsx';
-import { TypedObject } from '@portabletext/types';
-import Link from 'next/link';
 import type { UrlObject } from 'node:url';
+
+import { TypedObject } from '@portabletext/types';
+import cn from 'clsx';
+import Link from 'next/link';
+import * as React from 'react';
 import { ComponentPropsWithoutRef } from 'react';
 
-import { ImageContainer } from '@/containers/Image/ImageContainer';
 import { IconComponent } from '@/components/Icon/IconComponent';
+import { ImageContainer } from '@/containers/Image/ImageContainer';
 
 export enum CardType {
+    Blog = 'blog',
     Icon = 'icon',
     Image = 'image',
     Review = 'review',
-    Blog = 'blog',
 }
 
+export type ComponentProps = ComponentPropsWithoutRef<'div'> & CustomProps;
+
 interface CustomProps {
-    type: CardType;
-    title?: string;
-    richDescription?: TypedObject | TypedObject[];
+    classNames?: {
+        icon?: string;
+        image?: string;
+        root?: string;
+    };
+    createdAt?: string;
+    date?: string;
     description?: string;
     icon?: string;
     image?: string;
-    linkUrl?: string | UrlObject;
-    linkTitle?: string;
-    createdAt?: string;
-    onClick?: () => void;
-    isActive?: boolean;
-    location?: string;
-    date?: string;
-    rating?: number;
     index?: number;
-    classNames?: {
-        root?: string;
-        image?: string;
-        icon?: string;
-    };
+    isActive?: boolean;
+    linkTitle?: string;
+    linkUrl?: string | UrlObject;
+    location?: string;
+    onClick?: () => void;
+    rating?: number;
+    richDescription?: TypedObject | TypedObject[];
+    title?: string;
+    type: CardType;
 }
 
-export type ComponentProps = CustomProps & ComponentPropsWithoutRef<'div'>;
-
 const ImageCard = ({
-    title,
-    image,
-    description,
-    index,
     classNames,
-    linkUrl,
+    description,
+    image,
+    index,
     linkTitle,
+    linkUrl,
+    title,
     ...rest
 }: Partial<ComponentProps>) => {
     const formattedIndex = index === undefined ? null : String(index + 1).padStart(2, '0');
@@ -64,13 +65,13 @@ const ImageCard = ({
             <div className="flex flex-col md:flex-row gap-8 md:gap-12 xl:gap-16 flex-1 items-center">
                 {image && (
                     <ImageContainer
+                        classNames={{
+                            image: cn('w-full h-56 object-cover rounded-3xl', classNames?.image),
+                            root: 'h-full w-full md:w-auto flex-1',
+                        }}
+                        height={300}
                         src={image}
                         width={450}
-                        height={300}
-                        classNames={{
-                            root: 'h-full w-full md:w-auto flex-1',
-                            image: cn('w-full h-56 object-cover rounded-3xl', classNames?.image),
-                        }}
                     />
                 )}
 
@@ -78,13 +79,13 @@ const ImageCard = ({
                     <p>{description}</p>
                     {linkUrl && linkTitle && (
                         <Link
-                            href={linkUrl}
                             aria-label={linkTitle}
-                            scroll={true}
                             className="flex items-center gap-2 px-6 py-3 border border-blue-900 rounded-full text-blue-900 hover:bg-blue-900 hover:text-white transition-colors duration-200 w-fit"
+                            href={linkUrl}
+                            scroll={true}
                         >
                             {linkTitle}
-                            <IconComponent name="arrowRightUp" className="h-2.5 w-3" />
+                            <IconComponent className="h-2.5 w-3" name="arrowRightUp" />
                         </Link>
                     )}
                 </div>
@@ -93,23 +94,23 @@ const ImageCard = ({
     );
 };
 
-const IconCard = ({ title, icon, image, onClick, classNames, ...rest }: Partial<ComponentProps>) => (
+const IconCard = ({ classNames, icon, image, onClick, title, ...rest }: Partial<ComponentProps>) => (
     <div
-        onClick={image ? onClick : undefined}
         className={cn(
             'bg-white rounded shadow-xl p-6 md:p-8',
             { 'shadow-red-100 cursor-pointer': image },
             classNames?.root
         )}
+        onClick={image ? onClick : undefined}
         {...rest}
     >
         <div className="flex flex-col gap-2 items-center">
             {icon && (
                 <ImageContainer
+                    classNames={{ image: classNames?.icon, root: 'h-full' }}
+                    height={60}
                     src={icon}
                     width={60}
-                    height={60}
-                    classNames={{ root: 'h-full', image: classNames?.icon }}
                 />
             )}
             {title && <p className="m-0">{title}</p>}
@@ -118,13 +119,13 @@ const IconCard = ({ title, icon, image, onClick, classNames, ...rest }: Partial<
 );
 
 const ReviewCard = ({
-    title,
-    image,
-    description,
-    isActive,
-    date,
-    rating,
     classNames,
+    date,
+    description,
+    image,
+    isActive,
+    rating,
+    title,
     ...rest
 }: Partial<ComponentProps>) => {
     return (
@@ -141,14 +142,14 @@ const ReviewCard = ({
                     {image && (
                         <div className="w-16 h-16 mb-2 md:mb-3 lg:mb-4">
                             <ImageContainer
-                                src={image}
                                 alt={title || 'Client review'}
-                                width={64}
-                                height={64}
                                 classNames={{
-                                    root: 'h-full',
                                     image: cn('object-contain rounded-full', classNames?.image),
+                                    root: 'h-full',
                                 }}
+                                height={64}
+                                src={image}
+                                width={64}
                             />
                         </div>
                     )}
@@ -161,7 +162,7 @@ const ReviewCard = ({
                 {date && <p className="opacity-40">{date}</p>}
                 {rating && (
                     <div className={cn('flex items-center gap-1.5', { 'ml-auto': !date })}>
-                        <IconComponent name="star" className="w-4 h-4 text-yellow-500" />
+                        <IconComponent className="w-4 h-4 text-yellow-500" name="star" />
                         <p className="font-bold">{rating}</p>
                     </div>
                 )}
@@ -170,7 +171,7 @@ const ReviewCard = ({
     );
 };
 
-const BlogCard = ({ title, image, description, linkUrl, linkTitle, classNames, ...rest }: Partial<ComponentProps>) => (
+const BlogCard = ({ classNames, createdAt, description, image, linkTitle, linkUrl, title, ...rest }: Partial<ComponentProps>) => (
     <div
         className={cn(
             'w-full h-full flex flex-col xl:flex-row items-center gap-4 p-8 bg-white rounded-2xl transition-all duration-300',
@@ -185,13 +186,13 @@ const BlogCard = ({ title, image, description, linkUrl, linkTitle, classNames, .
 
             {linkUrl && (
                 <Link
-                    href={linkUrl}
                     aria-label={linkTitle}
-                    scroll={true}
                     className="flex items-center gap-2 px-6 py-3 border border-blue-900 rounded-full text-blue-900 hover:bg-blue-900 hover:text-white transition-colors duration-200 w-fit mt-auto"
+                    href={linkUrl}
+                    scroll={true}
                 >
                     {linkTitle && <div>{linkTitle}</div>}
-                    <IconComponent name="arrowRightUp" className="w-2.5 h-3" />
+                    <IconComponent className="w-2.5 h-3" name="arrowRightUp" />
                 </Link>
             )}
         </div>
@@ -199,13 +200,13 @@ const BlogCard = ({ title, image, description, linkUrl, linkTitle, classNames, .
         {image && (
             <div className="w-full h-48 xl:w-64 xl:h-full flex-shrink-0 order-first xl:order-none">
                 <ImageContainer
+                    classNames={{
+                        image: cn('w-full h-full object-cover rounded-2xl', classNames?.image),
+                        root: 'h-full',
+                    }}
+                    height={500}
                     src={image}
                     width={500}
-                    height={500}
-                    classNames={{
-                        root: 'h-full',
-                        image: cn('w-full h-full object-cover rounded-2xl', classNames?.image),
-                    }}
                 />
             </div>
         )}
@@ -213,32 +214,32 @@ const BlogCard = ({ title, image, description, linkUrl, linkTitle, classNames, .
 );
 
 export const CardComponent: React.FC<ComponentProps> = ({
-    type,
-    title,
+    classNames = {},
+    createdAt,
     description,
     icon,
     image,
-    linkUrl,
-    linkTitle,
-    createdAt,
-    onClick,
     index,
     isActive,
-    classNames = {},
+    linkTitle,
+    linkUrl,
+    onClick,
+    title,
+    type,
     ...rest
 }) => {
     const renderCardType = () => {
         switch (type) {
-            case CardType.Image: {
+            case CardType.Blog: {
                 return (
-                    <ImageCard
-                        title={title}
+                    <BlogCard
+                        classNames={classNames}
+                        createdAt={createdAt}
                         description={description}
                         image={image}
-                        classNames={classNames}
-                        linkUrl={linkUrl}
                         linkTitle={linkTitle}
-                        index={index}
+                        linkUrl={linkUrl}
+                        title={title}
                         {...rest}
                     />
                 );
@@ -246,11 +247,25 @@ export const CardComponent: React.FC<ComponentProps> = ({
             case CardType.Icon: {
                 return (
                     <IconCard
-                        title={title}
+                        classNames={classNames}
                         icon={icon}
                         image={image}
                         onClick={onClick}
+                        title={title}
+                        {...rest}
+                    />
+                );
+            }
+            case CardType.Image: {
+                return (
+                    <ImageCard
                         classNames={classNames}
+                        description={description}
+                        image={image}
+                        index={index}
+                        linkTitle={linkTitle}
+                        linkUrl={linkUrl}
+                        title={title}
                         {...rest}
                     />
                 );
@@ -258,25 +273,11 @@ export const CardComponent: React.FC<ComponentProps> = ({
             case CardType.Review: {
                 return (
                     <ReviewCard
-                        title={title}
-                        image={image}
-                        description={description}
                         classNames={classNames}
+                        description={description}
+                        image={image}
                         isActive={isActive}
-                        {...rest}
-                    />
-                );
-            }
-            case CardType.Blog: {
-                return (
-                    <BlogCard
                         title={title}
-                        image={image}
-                        description={description}
-                        linkUrl={linkUrl}
-                        linkTitle={linkTitle}
-                        createdAt={createdAt}
-                        classNames={classNames}
                         {...rest}
                     />
                 );

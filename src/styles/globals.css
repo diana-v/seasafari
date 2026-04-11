@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+@theme {
+    /* Fonts */
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --font-serif: "Helvetica", ui-serif, Georgia, serif;
+    --font-display: "Homemade Apple", cursive;
+
+    /* System Colors */
+    --color-error: #e50303;
+    --color-warning: #ffd100;
+    --color-success: #00e686;
+    --color-info: #0067c5;
+
+    /* Grey Shades */
+    --color-grey-50: #f8f9fa;
+    --color-grey-100: #e4e7eb;
+    --color-grey-200: #ccd2d8;
+    --color-grey-300: #9ca5b0;
+    --color-grey-400: #7d8793;
+    --color-grey-500: #636e7b;
+    --color-grey-600: #55606c;
+    --color-grey-700: #414c58;
+    --color-grey-800: #353f4a;
+    --color-grey-900: #212932;
+
+    /* Blue Shades */
+    --color-blue-50: #ebf9ff;
+    --color-blue-100: #c5ebfe;
+    --color-blue-200: #a0dcfd;
+    --color-blue-300: #7bcdfc;
+    --color-blue-400: #56bfff;
+    --color-blue-500: #3854f8;
+    --color-blue-600: #2f46d4;
+    --color-blue-700: #2538b0;
+    --color-blue-800: #1c2a8c;
+    --color-blue-900: #121e68;
+    --color-blue-950: #dae8ff;
+
+    /* Utility Colors */
+    --color-white: #ffffff;
+    --color-black: #000000;
+}
+
+@layer base {
+    html {
+        box-sizing: border-box;
+        overflow-x: hidden;
+        overflow-y: auto;
+        @apply scroll-smooth scroll-pt-10 lg:scroll-pt-0;
+    }
+
+    #app-root {
+        h1 {
+            @apply text-2xl md:text-5xl lg:text-7xl mb-2 md:mb-4 lg:mb-6 font-bold;
+        }
+
+        h2 {
+            @apply text-xl md:text-2xl lg:text-4xl mb-2 md:mb-3 lg:mb-4 font-bold;
+        }
+
+        h3 {
+            @apply text-lg md:text-xl lg:text-2xl mb-2 md:mb-3 lg:mb-4 font-bold;
+        }
+
+        h4 {
+            @apply text-lg lg:text-xl mb-2 md:mb-3 lg:mb-4 font-bold;
+        }
+
+        p {
+            @apply text-sm md:text-base;
+
+            em {
+                @apply text-sm md:text-base italic;
+            }
+        }
+
+        ul {
+            @apply list-disc text-sm md:text-base ml-8 mb-2 md:mb-3 lg:mb-4;
+        }
+
+        span {
+            @apply text-sm md:text-base mb-2 md:mb-4;
+        }
+
+        a {
+            @apply text-sm md:text-base;
+        }
+    }
+
+    .blog,
+    .content {
+        p {
+            @apply mb-2 md:mb-3 lg:mb-4;
+
+            em {
+                @apply mb-2 md:mb-4;
+            }
+
+            &:empty {
+                @apply mb-0;
+
+                &::before {
+                    content: "\00a0";
+                }
+            }
+        }
+
+        span {
+            @apply mb-2 md:mb-4;
+        }
+    }
+}

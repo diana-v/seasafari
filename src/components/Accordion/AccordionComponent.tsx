@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import cn from 'clsx';
 import { TypedObject } from '@portabletext/types';
+import cn from 'clsx';
+import React, { useState } from 'react';
 
-import { RichTextComponent } from '@/components/RichText/RichTextComponent';
 import { IconComponent } from '@/components/Icon/IconComponent';
+import { RichTextComponent } from '@/components/RichText/RichTextComponent';
 
 interface ComponentProps {
     items: {
-        title: string;
         content: TypedObject | TypedObject[];
+        title: string;
     }[];
 }
 
@@ -29,23 +29,23 @@ export const AccordionComponent: React.FC<ComponentProps> = ({ items }) => {
         <div className="w-full bg-white">
             {items.map((item, index) => (
                 <div
-                    key={index}
                     className="border border-b-0 last:border-b rounded first:rounded-t rounded-t-none rounded-b-none last:rounded-b border-neutral-300"
+                    key={index}
                 >
                     <button
-                        className="flex w-full items-center justify-between px-5 py-4 text-neutral-800 font-bold focus:outline-none"
-                        type="button"
-                        onClick={handleClick(index)}
-                        aria-expanded={activeIndexes.includes(index)}
                         aria-controls={`collapse-${index}`}
+                        aria-expanded={activeIndexes.includes(index)}
+                        className="flex w-full items-center justify-between px-5 py-4 text-neutral-800 font-bold focus:outline-none"
+                        onClick={handleClick(index)}
+                        type="button"
                     >
                         {item.title}
                         <IconComponent
-                            name="arrow"
                             className={cn('w-4 h-4 transition-all ease-in duration-200 transform', {
                                 '-rotate-90': activeIndexes.includes(index),
                                 'rotate-90': !activeIndexes.includes(index),
                             })}
+                            name="arrow"
                         />
                     </button>
                     <div

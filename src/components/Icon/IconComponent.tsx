@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react';
 
 /**
@@ -6,20 +8,20 @@ import * as React from 'react';
 export enum Icons {
     arrow = 'arrow',
     arrowRightUp = 'arrow-right-up',
-    checkCircle = 'check-circle',
+    calendar = 'calendar',
     check = 'check',
+    checkCircle = 'check-circle',
     cross = 'cross',
-    print = 'print',
     email = 'email',
     hamburger = 'hamburger',
+    makeCommerce = 'makecommerce-logo',
     phone = 'phone',
     pin = 'pin',
-    calendar = 'calendar',
-    star = 'star',
-    securePayment = 'secure-payment',
-    makeCommerce = 'makecommerce-logo',
+    print = 'print',
     propeller = 'propeller',
+    securePayment = 'secure-payment',
     spinner = 'spinner',
+    star = 'star',
 }
 
 interface ComponentProps {
@@ -27,14 +29,16 @@ interface ComponentProps {
 }
 
 export const IconComponent: React.FC<ComponentProps & React.SVGProps<SVGSVGElement>> = ({ name, ...rest }) => {
-    const ImportedIconRef = React.useRef<React.FC<React.SVGProps<SVGSVGElement>>>();
+    const ImportedIconRef = React.useRef<React.FC<React.SVGProps<SVGSVGElement>>>(null);
     const [loading, setLoading] = React.useState(true);
 
     const importIcon = React.useCallback(async () => {
         try {
             const importedIcon = await import(`./icons/${Icons[name]}.svg`);
 
-            ImportedIconRef.current = importedIcon.ReactComponent;
+            ImportedIconRef.current = importedIcon.default || importedIcon.ReactComponent;
+        } catch (error) {
+            console.error(`Failed to load icon: ${name}`, error);
         } finally {
             setLoading(false);
         }

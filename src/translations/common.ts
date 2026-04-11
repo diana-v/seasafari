@@ -2,27 +2,27 @@ export type LocaleType = 'en' | 'lt' | 'ru';
 
 export const languages = {
     en: {
+        companyDetails: 'Company Details',
+        next: 'Next',
+        previous: 'Previous',
         privacyPolicy: 'Privacy Policy',
         purchaseRules: 'Purchase Rules',
-        companyDetails: 'Company Details',
-        previous: 'Previous',
-        next: 'Next',
         scrollDown: 'Scroll down to offers',
     },
     lt: {
+        companyDetails: 'Įmonės rekvizitai',
+        next: 'Toliau',
+        previous: 'Atgal',
         privacyPolicy: 'Privatumo politika',
         purchaseRules: 'Pirkimo taisyklės',
-        companyDetails: 'Įmonės rekvizitai',
-        previous: 'Atgal',
-        next: 'Toliau',
         scrollDown: 'Slinkite žemyn iki pasiūlymų',
     },
     ru: {
+        companyDetails: 'Сведения о компании',
+        next: 'Следующий',
+        previous: 'Предыдущий',
         privacyPolicy: 'Политика Конфиденциальности',
         purchaseRules: 'Политика Конфиденциальности',
-        companyDetails: 'Сведения о компании',
-        previous: 'Предыдущий',
-        next: 'Следующий',
         scrollDown: 'Прокрутите вниз до предложений',
     },
 };

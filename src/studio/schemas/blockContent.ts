@@ -1,13 +1,30 @@
-import { defineType, defineArrayMember } from 'sanity';
+import { defineArrayMember, defineType } from 'sanity';
 
 export default defineType({
-    title: 'Block Content',
     name: 'blockContent',
-    type: 'array',
     of: [
         defineArrayMember({
-            title: 'Block',
-            type: 'block',
+            lists: [{ title: 'Bullet', value: 'bullet' }],
+            marks: {
+                annotations: [
+                    {
+                        fields: [
+                            {
+                                name: 'href',
+                                title: 'URL',
+                                type: 'url',
+                            },
+                        ],
+                        name: 'link',
+                        title: 'URL',
+                        type: 'object',
+                    },
+                ],
+                decorators: [
+                    { title: 'Strong', value: 'strong' },
+                    { title: 'Emphasis', value: 'em' },
+                ],
+            },
             styles: [
                 { title: 'Normal', value: 'normal' },
                 { title: 'H1', value: 'h1' },
@@ -16,78 +33,61 @@ export default defineType({
                 { title: 'H4', value: 'h4' },
                 { title: 'Quote', value: 'blockquote' },
             ],
-            lists: [{ title: 'Bullet', value: 'bullet' }],
-            marks: {
-                decorators: [
-                    { title: 'Strong', value: 'strong' },
-                    { title: 'Emphasis', value: 'em' },
-                ],
-                annotations: [
-                    {
-                        title: 'URL',
-                        name: 'link',
-                        type: 'object',
-                        fields: [
-                            {
-                                title: 'URL',
-                                name: 'href',
-                                type: 'url',
-                            },
-                        ],
-                    },
-                ],
-            },
+            title: 'Block',
+            type: 'block',
         }),
         defineArrayMember({
-            type: 'image',
-            options: { hotspot: true },
             fields: [
                 {
                     name: 'position',
-                    title: 'Position',
-                    type: 'string',
                     options: {
+                        layout: 'radio',
                         list: [
                             { title: 'Left', value: 'left' },
                             { title: 'Right', value: 'right' },
                             { title: 'Center', value: 'center' },
                         ],
-                        layout: 'radio',
                     },
+                    title: 'Position',
+                    type: 'string',
                 },
                 {
                     name: 'alt',
-                    type: 'string',
                     title: 'Alt Text',
+                    type: 'string',
                 },
             ],
+            options: { hotspot: true },
+            type: 'image',
         }),
         defineArrayMember({
-            type: 'file',
-            title: 'Video',
+            fields: [
+                {
+                    name: 'position',
+                    options: {
+                        layout: 'radio',
+                        list: [
+                            { title: 'Left', value: 'left' },
+                            { title: 'Right', value: 'right' },
+                            { title: 'Center', value: 'center' },
+                        ],
+                    },
+                    title: 'Position',
+                    type: 'string',
+                },
+                {
+                    name: 'alt',
+                    title: 'Alt Text',
+                    type: 'string',
+                },
+            ],
             options: {
                 accept: 'video/mp4',
             },
-            fields: [
-                {
-                    name: 'position',
-                    title: 'Position',
-                    type: 'string',
-                    options: {
-                        list: [
-                            { title: 'Left', value: 'left' },
-                            { title: 'Right', value: 'right' },
-                            { title: 'Center', value: 'center' },
-                        ],
-                        layout: 'radio',
-                    },
-                },
-                {
-                    name: 'alt',
-                    type: 'string',
-                    title: 'Alt Text',
-                },
-            ],
+            title: 'Video',
+            type: 'file',
         }),
     ],
+    title: 'Block Content',
+    type: 'array',
 });
