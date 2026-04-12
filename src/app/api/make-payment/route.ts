@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 
+import { db } from '@/server/db';
+import { orders, Status } from '@/server/db/schema';
+
 export async function POST(req: Request) {
     try {
         const body = await req.json();
@@ -9,16 +12,20 @@ export async function POST(req: Request) {
         ).toString('base64');
 
         const { searchParams } = new URL(req.url);
-        const clientIp = searchParams.get('clientIp');
         const clientCountry = searchParams.get('clientCountry');
 
-        const response = NextResponse.json(null, { status: 200 });
+        const clientIp =
+            req.headers.get('x-forwarded-for')?.split(',')[0] ||
+            req.headers.get('x-real-ip') ||
+            '';
 
-        response.cookies.set('paymentRef', body.reference, {
-            httpOnly: true,
-            maxAge: 60 * 60,
-            path: '/',
-            sameSite: 'lax',
+        await db.insert(orders).values({
+            orderAmount: Number(body.amount),
+            orderEmail: body.email,
+            orderRef: body.reference,
+            status: Status.UNPAID,
+            validFrom: new Date(),
+            validTo: new Date(Date.now() + 1000 * 60 * 60 * 6)
         });
 
         const apiResponse = await fetch(
@@ -63,17 +70,23 @@ export async function POST(req: Request) {
 
         const responseData = await apiResponse.json();
 
-        console.log('MAKECOMMERCE RESPONSE:', responseData);
+        const redirectUrl =
+            `${process.env.MAKECOMMERCE_GATEWAY_URL}/pay.html?trx=${responseData.id}`;
 
-        return new NextResponse(
-            `${process.env.MAKECOMMERCE_GATEWAY_URL}/pay.html?trx=${responseData.id}`,
-            {
-                headers: {
-                    'content-type': 'text/plain',
-                },
-                status: 200,
-            }
-        );
+        const res = new NextResponse(redirectUrl, {
+            headers: {
+                'content-type': 'text/plain',
+            },
+        });
+
+        res.cookies.set('paymentRef', body.reference, {
+            httpOnly: true,
+            maxAge: 60 * 60,
+            path: '/',
+            sameSite: 'lax',
+        });
+
+        return res;
     } catch {
         return new NextResponse('Error setting up payment', { status: 500 });
     }
