@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 import * as React from 'react';
 
 import { IconComponent } from '@/components/Icon/IconComponent';
+import { ClearPaymentContainer } from '@/containers/ClearPayment/ClearPaymentContainer';
 import { FooterContainer } from '@/containers/Footer/FooterContainer';
 import { NavigationContainer } from '@/containers/Navigation/NavigationContainer';
 import { fetchFooterSectionData } from '@/schemas/footer';
@@ -29,6 +30,8 @@ interface PageProps {
     searchParams: Promise<{ ref?: string }>;
 }
 
+export const dynamic = 'force-dynamic';
+
 export default async function PaymentSuccessPage({ params, searchParams }: PageProps) {
     const { locale } = await params;
     const { ref } = await searchParams;
@@ -37,6 +40,7 @@ export default async function PaymentSuccessPage({ params, searchParams }: PageP
     const secureRef = cookieStore.get('paymentRef')?.value;
 
     if (!ref || !secureRef || secureRef !== ref) {
+        // eslint-disable-next-line no-console
         console.warn(`Unauthorized attempt to view order ${ref} with cookie ${secureRef}`);
         redirect(`/${locale}`);
     }
@@ -81,6 +85,7 @@ export default async function PaymentSuccessPage({ params, searchParams }: PageP
 
     return (
         <div className="flex flex-col min-h-screen">
+            <ClearPaymentContainer />
             <NavigationContainer isSimple logo={navigation?.logo} phone={navigation?.phone} />
             <div className="xl:container mx-auto min-h-[calc(100vh-130px)] flex flex-col">
                 <div className="self-end m-8">

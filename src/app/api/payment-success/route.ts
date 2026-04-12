@@ -14,16 +14,24 @@ export async function POST(req: Request) {
     const { searchParams } = new URL(req.url);
     const email = searchParams.get('email');
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let body: any;
+    let rawText = '';
 
     try {
-        body = await req.json();
+        rawText = await req.text();
     } catch {
-        return new NextResponse('Invalid JSON body', { status: 400 });
+        return new NextResponse('Invalid body', { status: 400 });
     }
 
-    const { json, mac } = body;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let payload: any = {};
+
+    try {
+        payload = JSON.parse(rawText);
+    } catch {
+        payload = Object.fromEntries(new URLSearchParams(rawText));
+    }
+
+    const { json, mac } = payload;
 
     if (!json || !mac) {
         return new NextResponse('Missing data', { status: 400 });
@@ -56,23 +64,25 @@ export async function POST(req: Request) {
     const resend = new Resend(process.env.RESEND_API_KEY ?? '');
 
     try {
-        const existingOrder = await db
+        const existing = await db
             .select()
             .from(orders)
-            .where(eq(orders.orderRef, reference));
+            .where(eq(orders.orderRef, reference))
+            .limit(1);
 
-        if (existingOrder.length > 0) {
-            return new NextResponse('Order already processed', { status: 200 });
+        if (existing.length === 0) {
+            // eslint-disable-next-line no-console
+            console.warn('Unknown orderRef:', reference);
+
+            return NextResponse.json(
+                { ok: false },
+                { status: 404 }
+            );
         }
 
-        const parsedAmount = Number.parseInt(amount, 10);
-
         const [order] = await db
-            .insert(orders)
-            .values({
-                orderAmount: parsedAmount,
-                orderEmail: email,
-                orderRef: reference,
+            .update(orders)
+            .set({
                 status: Status.CREATED,
                 validFrom: new Date(),
                 validTo: new Date(
@@ -81,11 +91,13 @@ export async function POST(req: Request) {
                     new Date().getDate()
                 ),
             })
+            .where(eq(orders.orderRef, reference))
             .returning({
                 validFrom: orders.validFrom,
                 validTo: orders.validTo,
             });
 
+        const parsedAmount = Number.parseInt(amount, 10);
         const validFrom = new Date(order.validFrom);
         const validTo = new Date(order.validTo);
 
@@ -133,6 +145,7 @@ export async function POST(req: Request) {
 
         return NextResponse.json({ success: true }, { status: 200 });
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('Webhook Error:', error);
 
         return new NextResponse('Internal Server Error', { status: 500 });
