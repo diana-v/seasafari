@@ -1,19 +1,27 @@
 import { eq } from 'drizzle-orm';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 import { db } from '@/server/db';
 import { orders } from '@/server/db/schema';
+import { isString } from '@/utils/isString';
 
-const getOrderStatus = async (req: NextRequest) => {
-    const { searchParams } = req.nextUrl;
+export async function GET(req: Request) {
+    const { searchParams } = new URL(req.url);
     const ref = searchParams.get('ref');
 
-    if (!ref) {
-        return NextResponse.json({ message: 'Missing reference' }, { status: 400 });
+    if (!isString(ref)) {
+        return NextResponse.json(
+            { message: 'Missing reference' },
+            { status: 400 }
+        );
     }
 
     try {
-        const result = await db.select({ status: orders.status }).from(orders).where(eq(orders.orderRef, ref)).limit(1);
+        const result = await db
+            .select({ status: orders.status })
+            .from(orders)
+            .where(eq(orders.orderRef, ref))
+            .limit(1);
 
         const order = result[0];
 
@@ -21,22 +29,26 @@ const getOrderStatus = async (req: NextRequest) => {
             return NextResponse.json({
                 paid: false,
                 status: 'pending',
-            }, { status: 200 });
+            });
         }
 
         if (order.status === 'created') {
             return NextResponse.json({
                 paid: true,
                 status: 'created',
-            }, { status: 200 });
+            });
         }
 
-        return NextResponse.json({ paid: false, status: 'pending' }, { status: 200 });
+        return NextResponse.json({
+            paid: false,
+            status: 'pending',
+        });
     } catch (error) {
         console.error('Drizzle/Neon Error:', error);
 
-        return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+        return NextResponse.json(
+            { message: 'Internal Server Error' },
+            { status: 500 }
+        );
     }
 }
-
-export { getOrderStatus as GET };

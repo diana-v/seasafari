@@ -1,21 +1,24 @@
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-const adminLogout = async () => {
+export async function POST() {
     try {
-        const cookieStore = await cookies();
+        const response = NextResponse.json(
+            { message: 'Logout successful' },
+            { status: 200 }
+        );
 
-        cookieStore.set('auth', '', {
+        response.cookies.set('auth', '', {
             httpOnly: true,
             maxAge: 0,
             path: '/',
             sameSite: 'strict',
         });
 
-        return NextResponse.json({ message: 'Logout successful' }, { status: 200 });
+        return response;
     } catch {
-        return NextResponse.json({ message: 'Logout failed' }, { status: 500 });
+        return NextResponse.json(
+            { message: 'Logout failed' },
+            { status: 500 }
+        );
     }
-};
-
-export { adminLogout as POST };
+}

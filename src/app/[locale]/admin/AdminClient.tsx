@@ -100,7 +100,10 @@ export default function AdminClient({ initialOrders, lang, navigation }: AdminCl
         });
 
         try {
-            const res = await fetch(`/api/order-update?orderRef=${encodeURIComponent(item.orderRef)}&status=${item.status === Status.COMPLETED ? 'created' : 'completed'}&${params.toString()}`);
+            const res = await fetch(`/api/order-update?orderRef=${encodeURIComponent(item.orderRef)}&status=${item.status === Status.COMPLETED ? 'created' : 'completed'}&${params.toString()}`,
+                {
+                    method: 'PATCH',
+                });
 
             if (!res.ok) throw new Error('Failed to update order');
             const data = await res.json();
