@@ -1,5 +1,7 @@
 import withPWAInit from "next-pwa";
 
+const domain = process.env.NEXT_PUBLIC_DOMAIN ?? '';
+
 const withPWA = withPWAInit({
     dest: 'public',
     disable: process.env.NODE_ENV !== "production",
@@ -7,6 +9,9 @@ const withPWA = withPWAInit({
 
 const nextConfig = {
     reactStrictMode: true,
+    allowedDevOrigins: [
+        new URL(domain).host
+    ],
     images: {
         remotePatterns: [
             { protocol: 'https', hostname: 'cdn.sanity.io' },

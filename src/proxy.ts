@@ -20,6 +20,10 @@ export async function proxy(req: AuthenticatedNextRequest) {
         (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
     );
 
+    if (nextUrl.searchParams.toString()) {
+        return NextResponse.next();
+    }
+
     if (!pathnameHasLocale) {
         nextUrl.pathname = `/${defaultLocale}${pathname}`;
 

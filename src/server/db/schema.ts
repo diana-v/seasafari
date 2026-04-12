@@ -3,6 +3,7 @@ import { bigserial, date, index, integer, pgEnum, pgTable, text, timestamp } fro
 export enum Status {
     COMPLETED = 'completed',
     CREATED = 'created',
+    UNPAID = 'unpaid',
 }
 
 export interface Order {
