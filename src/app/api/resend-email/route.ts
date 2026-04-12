@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { Buffer } from 'node:buffer';
 import { Resend } from 'resend';
 
@@ -6,18 +6,29 @@ import { generatePdfDoc } from '@/templates/payment-success';
 import { languages, LocaleType } from '@/translations/success';
 import { getTemplate } from '@/utils/getTemplate';
 
+export const runtime = 'nodejs';
+
 const resend = new Resend(process.env.RESEND_API_KEY ?? '');
 
-const resendEmail = async (req: NextRequest) => {
+export async function POST(req: Request) {
     try {
-        const body = await req.json();
-        const { amount, email, locale = 'lt', orderRef, validFrom, validTo } = body;
+        const {
+            amount,
+            email,
+            locale = 'lt',
+            orderRef,
+            validFrom,
+            validTo,
+        } = await req.json();
 
         const validFromDate = new Date(validFrom);
         const validToDate = new Date(validTo);
 
         if (!email || !orderRef || !amount || !validFromDate || !validToDate) {
-            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+            return NextResponse.json(
+                { error: 'Missing required fields' },
+                { status: 400 }
+            );
         }
 
         const localisedString = languages[locale as LocaleType];
@@ -35,6 +46,7 @@ const resendEmail = async (req: NextRequest) => {
         for await (const chunk of pdfStream) {
             chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
         }
+
         const pdfBuffer = Buffer.concat(chunks);
         const attachment = pdfBuffer.toString('base64');
 
@@ -47,19 +59,30 @@ const resendEmail = async (req: NextRequest) => {
                 },
             ],
             from: process.env.NEXT_PUBLIC_RESEND_FROM_EMAIL ?? '',
-            html: getTemplate(locale, orderRef, email, amount, validFromDate, validToDate),
+            html: getTemplate(
+                locale,
+                orderRef,
+                email,
+                amount,
+                validFromDate,
+                validToDate
+            ),
             subject: `${localisedString.giftCardEmailSubject} - ${orderRef}`,
             to: email,
         });
 
         console.log('Email sent successfully!');
 
-        return NextResponse.json({ message: 'Email sent successfully' }, { status: 200 });
+        return NextResponse.json(
+            { message: 'Email sent successfully' },
+            { status: 200 }
+        );
     } catch (error) {
         console.error('Error sending email:', error);
 
-        return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
+        return NextResponse.json(
+            { error: 'Failed to send email' },
+            { status: 500 }
+        );
     }
-};
-
-export { resendEmail as POST };
+}

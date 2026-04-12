@@ -71,7 +71,7 @@ export const NavigationContainer: React.FC<NavigationProps> = ({ isAuthenticated
             .then((res) => {
                 if (res.status === 200) {
                     router.refresh();
-                    
+
                     return;
                 }
             })
@@ -91,7 +91,7 @@ export const NavigationContainer: React.FC<NavigationProps> = ({ isAuthenticated
                 {logo ? (
                     <ImageContainer
                         classNames={{
-                            image: cn('w-[100px] h-[50px]', {
+                            image: cn('w-[100px] h-[50px] !bg-none', {
                                 'lg:w-[100px] lg:h-[50px]': isSimple,
                                 'lg:w-[160px] lg:h-[80px]': !isSimple,
                             }),
