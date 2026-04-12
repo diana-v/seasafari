@@ -1,6 +1,7 @@
 import { eq } from 'drizzle-orm';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { Buffer } from 'node:buffer';
+import crypto from 'node:crypto';
 import { Resend } from 'resend';
 
 import { db } from '@/server/db';
@@ -9,59 +10,89 @@ import { generatePdfDoc } from '@/templates/payment-success';
 import { languages, LocaleType } from '@/translations/success';
 import { getTemplate } from '@/utils/getTemplate';
 
-const paymentSuccess = async (req: NextRequest) => {
-    const { searchParams } = req.nextUrl;
-
-    const amount = searchParams.get('amount');
-    const defaultLocale = searchParams.get('defaultLocale');
+export async function POST(req: Request) {
+    const { searchParams } = new URL(req.url);
     const email = searchParams.get('email');
-    const locale = searchParams.get('locale');
-    const ref = searchParams.get('ref');
 
-    let body: any = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let body: any;
 
     try {
         body = await req.json();
     } catch {
-        // Fallback for requests without a body
+        return new NextResponse('Invalid JSON body', { status: 400 });
     }
 
-    const effectiveLocale = (locale as string) || (body?.locale as string) || 'lt';
+    const { json, mac } = body;
 
-    const localisedString = languages[(effectiveLocale ?? defaultLocale) as LocaleType];
+    if (!json || !mac) {
+        return new NextResponse('Missing data', { status: 400 });
+    }
+
+    const secret = process.env.MAKECOMMERCE_SECRET_KEY ?? '';
+    const calculatedMac = crypto
+        .createHash('sha512')
+        .update(json + secret)
+        .digest('hex')
+        .toUpperCase();
+
+    if (calculatedMac !== String(mac).toUpperCase()) {
+        return new NextResponse('Invalid signature', { status: 401 });
+    }
+
+    const data = JSON.parse(json);
+    const { amount, locale, reference, status } = data;
+
+    if (status !== 'COMPLETED') {
+        return new NextResponse('Notification received', { status: 200 });
+    }
+
+    if (!email) {
+        return new NextResponse('Customer email missing', { status: 400 });
+    }
+
+    const effectiveLocale = locale || 'lt';
+    const localisedString = languages[effectiveLocale as LocaleType];
     const resend = new Resend(process.env.RESEND_API_KEY ?? '');
 
-    if (!ref || !email || !amount) {
-        return new NextResponse('Invalid parameters', { status: 400 });
-    }
-
     try {
-        const existingOrder = await db.select().from(orders).where(eq(orders.orderRef, ref));
+        const existingOrder = await db
+            .select()
+            .from(orders)
+            .where(eq(orders.orderRef, reference));
 
         if (existingOrder.length > 0) {
             return new NextResponse('Order already processed', { status: 200 });
         }
 
         const parsedAmount = Number.parseInt(amount, 10);
+
         const [order] = await db
             .insert(orders)
             .values({
                 orderAmount: parsedAmount,
                 orderEmail: email,
-                orderRef: ref,
+                orderRef: reference,
                 status: Status.CREATED,
                 validFrom: new Date(),
-                validTo: new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate()),
+                validTo: new Date(
+                    new Date().getFullYear() + 1,
+                    new Date().getMonth(),
+                    new Date().getDate()
+                ),
             })
-            .returning({ validFrom: orders.validFrom, validTo: orders.validTo });
+            .returning({
+                validFrom: orders.validFrom,
+                validTo: orders.validTo,
+            });
 
         const validFrom = new Date(order.validFrom);
         const validTo = new Date(order.validTo);
 
         const pdfStream = await generatePdfDoc({
-            count: (parsedAmount / 25).toString(),
+            count: (parsedAmount / 28).toString(),
             locale: effectiveLocale,
-            orderRef: ref,
+            orderRef: reference,
             validFrom,
             validTo,
         });
@@ -75,6 +106,7 @@ const paymentSuccess = async (req: NextRequest) => {
                 chunks.push(Buffer.from(chunk));
             }
         }
+
         const pdfBuffer = Buffer.concat(chunks);
         const attachment = pdfBuffer.toString('base64');
 
@@ -83,12 +115,19 @@ const paymentSuccess = async (req: NextRequest) => {
                 {
                     content: attachment,
                     contentType: 'application/pdf',
-                    filename: `${ref}.pdf`,
+                    filename: `${reference}.pdf`,
                 },
             ],
             from: process.env.NEXT_PUBLIC_RESEND_FROM_EMAIL ?? '',
-            html: getTemplate(effectiveLocale, ref, email, amount, validFrom, validTo),
-            subject: `${localisedString.giftCardEmailSubject} - ${ref}`,
+            html: getTemplate(
+                effectiveLocale,
+                reference,
+                email,
+                amount.toString(),
+                validFrom,
+                validTo
+            ),
+            subject: `${localisedString.giftCardEmailSubject} - ${reference}`,
             to: email,
         });
 
@@ -98,6 +137,4 @@ const paymentSuccess = async (req: NextRequest) => {
 
         return new NextResponse('Internal Server Error', { status: 500 });
     }
-};
-
-export { paymentSuccess as POST };
+}

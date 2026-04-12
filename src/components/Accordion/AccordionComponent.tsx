@@ -1,3 +1,5 @@
+'use client'
+
 import { TypedObject } from '@portabletext/types';
 import cn from 'clsx';
 import React, { useState } from 'react';

@@ -132,7 +132,7 @@ export const FooterContainer: React.FC<FooterProps> = ({ common, faq }) => {
                         <ul className="space-y-3 !ml-0">
                             <li className="flex items-center gap-3">
                                 <IconComponent className="w-5 h-5 shrink-0 text-slate-400" name="pin" />
-                                <p>{address}</p>
+                                <p className="mb-0">{address}</p>
                             </li>
                             <li className="flex items-center gap-3">
                                 <IconComponent className="w-5 h-5 shrink-0 text-slate-400" name="email" />

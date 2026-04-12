@@ -1,30 +1,39 @@
-import { cookies } from 'next/headers';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-const adminLogin = async (req: NextRequest) => {
-    const { password, username } = await req.json();
-
+export async function POST(req: Request) {
     try {
-        if (username === process.env.BASIC_AUTH_USER && password === process.env.BASIC_AUTH_PASSWORD) {
+        const { password, username } = await req.json();
+
+        if (
+            username === process.env.BASIC_AUTH_USER &&
+            password === process.env.BASIC_AUTH_PASSWORD
+        ) {
             const authValue = `${username}:${password}`;
             const encodedValue = Buffer.from(authValue).toString('base64');
 
-            const cookieStore = await cookies();
+            const response = NextResponse.json(
+                { message: 'Login successful' },
+                { status: 200 }
+            );
 
-            cookieStore.set('auth', encodedValue, {
+            response.cookies.set('auth', encodedValue, {
                 httpOnly: true,
                 maxAge: 60 * 60 * 24,
                 path: '/',
                 sameSite: 'strict',
             });
 
-            return NextResponse.json({ message: 'Login successful' }, { status: 200 });
+            return response;
         } else {
-            return NextResponse.json({ message: 'Invalid credentials' }, { status: 401 });
+            return NextResponse.json(
+                { message: 'Invalid credentials' },
+                { status: 401 }
+            );
         }
     } catch {
-        return NextResponse.json({ message: 'Login failed' }, { status: 500 });
+        return NextResponse.json(
+            { message: 'Login failed' },
+            { status: 500 }
+        );
     }
-};
-
-export { adminLogin as POST };
+}
