@@ -4,18 +4,17 @@ import { drizzle } from 'drizzle-orm/neon-serverless';
 
 import * as schema from './schema';
 
-const isProduction = process.env.NODE_ENV === 'production';
-const { parsed } = dotenv.config({ path: '.env.local' });
+dotenv.config({ path: '.env.local' });
 
 const connectionString = [
     'postgresql://',
-    isProduction ? process.env.PGUSER : parsed?.PGUSER,
+      process.env.PGUSER,
     ':',
-    isProduction ? process.env.PGPASSWORD : parsed?.PGPASSWORD,
+      process.env.PGPASSWORD,
     '@',
-    isProduction ? process.env.PGHOST : parsed?.PGHOST,
+      process.env.PGHOST,
     '/',
-    isProduction ? process.env.PGDATABASE : parsed?.PGDATABASE,
+      process.env.PGDATABASE,
     '?sslmode=require',
 ].join('');
 
