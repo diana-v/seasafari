@@ -1,3 +1,4 @@
+import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 import { db } from '@/server/db';
@@ -11,13 +12,18 @@ export async function POST(req: Request) {
             `${process.env.MAKECOMMERCE_SHOP_ID}:${process.env.MAKECOMMERCE_SECRET_KEY}`
         ).toString('base64');
 
-        const { searchParams } = new URL(req.url);
-        const clientCountry = searchParams.get('clientCountry');
+        const headerList = await headers();
 
         const clientIp =
-            req.headers.get('x-forwarded-for')?.split(',')[0] ||
-            req.headers.get('x-real-ip') ||
-            '';
+            headerList.get('x-client-ip') ||
+            headerList.get('x-forwarded-for')?.split(',')[0] ||
+            headerList.get('x-real-ip') ||
+            '127.0.0.1';
+
+        const clientCountry =
+            headerList.get('x-client-country') ||
+            headerList.get('x-vercel-ip-country') ||
+            'lt';
 
         await db.insert(orders).values({
             orderAmount: Number(body.amount),
