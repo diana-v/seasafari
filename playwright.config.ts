@@ -1,7 +1,4 @@
 import { defineConfig, devices } from '@playwright/test';
-import dotenv from 'dotenv';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 /**
  * Read environment variables from file.
@@ -12,11 +9,6 @@ import { fileURLToPath } from 'node:url';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-dotenv.config({ path: path.resolve(__dirname, '.env.local') });
 
 export default defineConfig({
     /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -86,10 +78,6 @@ export default defineConfig({
     // Run your local dev server before starting the tests
     webServer: {
         command: 'npm run dev',
-        env: {
-            ...process.env,
-            JWT_SECRET: process.env.JWT_SECRET || 'fallback-test-secret',
-        },
         reuseExistingServer: !process.env.CI,
         stderr: 'pipe',
         stdout: 'ignore',
