@@ -56,6 +56,13 @@ jobs:
         run: npm ci
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+               - name: Verify Env Debug
+               run: |
+                 echo "Length of Project ID: ${#PGHOST}"
+                 if [ "${#PGHOST}" -lt 5 ]; then
+                   echo "❌ Secret is too short or empty!"
+                   exit 1
+                 fi
       - name: Run Playwright tests
         run: npm run test:e2e
       - uses: actions/upload-artifact@v4
