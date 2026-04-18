@@ -1,9 +1,9 @@
 name: CI/CD
 on:
   push:
-    branches: [stage, master]
+    branches: [staging, master]
   pull_request:
-    branches: [stage, master]
+    branches: [staging, master]
 
 env:
   BASIC_AUTH_USER: ${{ secrets.BASIC_AUTH_USER }}
