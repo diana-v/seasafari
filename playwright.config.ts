@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
 
 /**
  * Read environment variables from file.
@@ -8,6 +9,8 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
+
+dotenv.config({ path: '.env.local' });
 
 export default defineConfig({
     /* Fail the build on CI if you accidentally left test.only in the source code. */
