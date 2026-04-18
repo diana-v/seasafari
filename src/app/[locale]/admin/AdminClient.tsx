@@ -51,13 +51,15 @@ export default function AdminClient({ initialOrders, lang, navigation }: AdminCl
             const data = await res.json();
 
             setUpdatedOrders(data);
+
+            return data;
         } catch {
             setAlert({ message: localisedString.sortError, type: AlertType.Error });
             setTimeout(() => setAlert({ message: '', type: AlertType.Error }), 5000);
         }
     }, [localisedString.sortError]);
 
-    const handleSort = (field: keyof Order) => {
+    const handleSort = async (field: keyof Order) => {
         const direction = sortBy.field === field ? (sortBy.direction === 'asc' ? 'desc' : 'asc') : 'desc';
 
         setSortBy({ direction, field });
@@ -66,10 +68,10 @@ export default function AdminClient({ initialOrders, lang, navigation }: AdminCl
             showCompleted: showCompleted.toString()
         });
 
-        fetchData(params);
+        await fetchData(params);
     };
 
-    const handleSearch = useDebouncedCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSearch = useDebouncedCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
         const searchBy = e.target.value;
 
         setSearchTerm(searchBy);
@@ -78,10 +80,10 @@ export default function AdminClient({ initialOrders, lang, navigation }: AdminCl
             searchTerm: searchBy, showCompleted: showCompleted.toString()
         });
 
-        fetchData(params);
+        await fetchData(params);
     }, 500);
 
-    const handleFilter = (e: React.MouseEvent<HTMLInputElement>) => {
+    const handleFilter = async (e: React.MouseEvent<HTMLInputElement>) => {
         const isChecked = e.currentTarget.checked;
 
         setShowCompleted(isChecked);
@@ -90,7 +92,7 @@ export default function AdminClient({ initialOrders, lang, navigation }: AdminCl
             searchTerm, showCompleted: isChecked.toString()
         });
 
-        fetchData(params);
+        await fetchData(params);
     };
 
     const handleUpdateStatus = async (item: Order) => {
@@ -152,9 +154,17 @@ export default function AdminClient({ initialOrders, lang, navigation }: AdminCl
             const res = await fetch(`/api/verify-qr?token=${encodeURIComponent(token)}&locale=${lang}`);
             const data = await res.json();
 
-            setUpdatedOrders(data.updatedOrders ?? []);
             setAlert({ message: data.reason, type: data.valid ? AlertType.Success : AlertType.Error });
             setIsScannerOpen(false);
+
+            const params = new URLSearchParams({
+                direction: sortBy.direction,
+                field: sortBy.field,
+                searchTerm,
+                showCompleted: showCompleted.toString()
+            });
+
+            await fetchData(params);
         } catch {
             setAlert({ message: localisedString.scanError, type: AlertType.Error });
             setIsScannerOpen(false);
@@ -162,6 +172,13 @@ export default function AdminClient({ initialOrders, lang, navigation }: AdminCl
             setTimeout(() => setAlert({ message: '', type: AlertType.Error }), 15_000);
         }
     };
+
+    React.useEffect(() => {
+        if (process.env.NODE_ENV !== 'production') {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (globalThis as any).__testScan = handleScan;
+        }
+    }, []);
 
     return (
         <>
@@ -180,6 +197,7 @@ export default function AdminClient({ initialOrders, lang, navigation }: AdminCl
                             </label>
                             <input
                                 className="border border-gray-800 rounded focus:outline-none px-2 py-1 bg-white"
+                                data-testid="search-input"
                                 id="search"
                                 onChange={handleSearch}
                                 type="text"
@@ -189,6 +207,7 @@ export default function AdminClient({ initialOrders, lang, navigation }: AdminCl
                         <div className="flex flex-wrap items-center gap-2">
                             <input
                                 className="h-6 w-6 text-gray-800 focus:ring-gray-800 border-gray-300 rounded accent-[#15496b] cursor-pointer"
+                                data-testid="filter-checkbox"
                                 defaultChecked={showCompleted}
                                 id="filter"
                                 onClick={handleFilter}
@@ -206,6 +225,7 @@ export default function AdminClient({ initialOrders, lang, navigation }: AdminCl
                     <div className="flex items-center md:justify-end mb-6">
                         <button
                             className="flex justify-center text-white bg-orange-500 hover:bg-orange-600 transition-colors items-center gap-2 px-6 py-3 font-semibold rounded-sm"
+                            data-testid="scan-qr-button"
                             onClick={() => setIsScannerOpen(!isScannerOpen)}
                         >
                             {localisedString.scanQR}
@@ -213,7 +233,7 @@ export default function AdminClient({ initialOrders, lang, navigation }: AdminCl
                     </div>
 
                     {isScannerOpen && (
-                        <div className="fixed inset-0 z-[60] flex flex-col bg-black bg-opacity-90">
+                        <div className="fixed inset-0 z-[60] flex flex-col bg-black bg-opacity-90" data-testid="qr-scanner">
                             <button
                                 className="absolute flex items-center gap-2 top-4 right-4 text-white md:text-lg bg-gray-800 bg-opacity-60 px-4 py-2 rounded-md hover:bg-opacity-80 z-[70]"
                                 onClick={() => setIsScannerOpen(false)}
@@ -246,6 +266,7 @@ export default function AdminClient({ initialOrders, lang, navigation }: AdminCl
                                         return (
                                             <th
                                                 className="p-0 cursor-pointer"
+                                                data-testid={`sort-${field}`}
                                                 key={field}
                                                 onClick={() => handleSort(field)}
                                             >
@@ -274,6 +295,7 @@ export default function AdminClient({ initialOrders, lang, navigation }: AdminCl
                                 {updatedOrders.map((item, index) => (
                                     <tr
                                         className="block min-[1285px]:table-row mb-6 bg-white rounded-lg shadow-md min-[1285px]:shadow-none border border-gray-100 min-[1285px]:border-none p-4 min-[1285px]:p-0"
+                                        data-testid={`${item.orderRef}-row`}
                                         key={index}
                                     >
                                         <td className={tableCellBase} data-label={localisedString.reference}>
@@ -302,6 +324,7 @@ export default function AdminClient({ initialOrders, lang, navigation }: AdminCl
                                         <td className={tableCellBase} data-label={localisedString.actions}>
                                             <button
                                                 className="bg-blue-900 text-white px-4 py-2 text-sm"
+                                                data-testid="resend-email-button"
                                                 onClick={() => handleResendEmail(item)}
                                             >
                                                 {localisedString.resendEmail}

@@ -22,7 +22,7 @@ export const AlertComponent: React.FC<ComponentProps> = ({ classNames, color, me
     );
 
     return (
-        <div className={wrapperClass} data-testid="alertComponent">
+        <div className={wrapperClass} data-testid={`alert-${color}`}>
             {message}
         </div>
     );

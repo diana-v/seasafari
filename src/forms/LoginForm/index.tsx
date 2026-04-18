@@ -62,13 +62,14 @@ const LoginForm = () => {
     return (
         <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={loginSchema}>
             {({ dirty, errors, isSubmitting, touched }) => (
-                <Form className="container flex flex-col gap-4 max-w-lg mx-auto py-16">
+                <Form className="container flex flex-col gap-4 max-w-lg mx-auto py-16" data-testid="login-form">
                     <div>
                         <label htmlFor="username">
                             <p>{localisedString.usernameLabel}</p>
                         </label>
                         <Field
                             className={cn("rounded border w-full p-2 bg-transparent text-sm md:text-base disabled:text-grey-300 disabled:border-grey-100 disabled:cursor-not-allowed focus-visible:outline-none", { "text-red-900 border-red-900": errors.username })}
+                            data-testid="username-input"
                             disabled={isSubmitting}
                             name="username"
                             type="text"
@@ -83,6 +84,7 @@ const LoginForm = () => {
                         </label>
                         <Field
                             className={cn("rounded border w-full p-2 bg-transparent text-sm md:text-base disabled:text-grey-300 disabled:border-grey-100 disabled:cursor-not-allowed focus-visible:outline-none", { "text-red-900 border-red-900": errors.password })}
+                            data-testid="password-input"
                             disabled={isSubmitting}
                             name="password"
                             type="password"
@@ -93,6 +95,7 @@ const LoginForm = () => {
                     </div>
                     <button
                         className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-900 rounded-full text-white hover:shadow-xl transition-shadow duration-200 w-full cursor-pointer"
+                        data-testid="login-button"
                         disabled={isSubmitting || !dirty}
                         type="submit"
                     >

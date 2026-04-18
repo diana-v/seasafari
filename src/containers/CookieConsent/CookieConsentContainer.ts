@@ -479,6 +479,8 @@ const state: State = {
     },
 };
 
+let isInitialized = false;
+
 // ----------------------------------------------------------------
 // 3. Helpers
 // ----------------------------------------------------------------
@@ -857,20 +859,13 @@ const createModal = (): void => {
 // 7. Initialization & Exports
 // ----------------------------------------------------------------
 
-const destroyCookieBanner = (): void => {
-    if (state.elements.wrapper && state.elements.wrapper.parentNode) {
-        state.elements.wrapper.remove();
-    }
-    allowBodyScroll();
-    state.elements = { backdrop: null, banner: null, modal: null, wrapper: null };
-};
-
 const initCookieBanner = (): void => {
     if (typeof globalThis === 'undefined') return;
+    if (isInitialized) return;
+
+    isInitialized = true;
 
     injectStyles();
-
-    if (state.elements.wrapper) return;
     createWrapper();
     if (state.config.background?.showBackground) createBackdrop();
     createModal();
@@ -889,10 +884,28 @@ const initCookieBanner = (): void => {
 
 export const updateCookieBannerConfig = (userConfig: Partial<ConsentConfig> = {}): void => {
     if (typeof globalThis === 'undefined') return;
+
     state.config = { ...state.config, ...userConfig };
-    destroyCookieBanner();
-    if (document.body) initCookieBanner();
-    else document.addEventListener('DOMContentLoaded', initCookieBanner, { once: true });
+
+    if (!isInitialized) {
+        initCookieBanner();
+
+        return;
+    }
+
+    if (state.elements.backdrop && state.config.background?.showBackground) {
+        showBackdrop();
+    }
+
+    if (state.elements.banner && !shouldShowBanner()) {
+        removeBanner();
+    }
+
+    if (!state.elements.banner && shouldShowBanner()) {
+        createBanner();
+        showBackdrop();
+        preventBodyScroll();
+    }
 };
 
 const injectScript = (url: string, loadOption?: 'async' | 'defer'): void => {
@@ -911,13 +924,11 @@ const injectScript = (url: string, loadOption?: 'async' | 'defer'): void => {
 
 if (typeof globalThis !== 'undefined' && 'document' in globalThis) {
     // @ts-expect-error: typeof globalThis has no index signature.
-    globalThis.cookieConsentCookieBannerManager = { initCookieBanner, injectScript, updateCookieBannerConfig };
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initCookieBanner, { once: true });
-    } else {
-        initCookieBanner();
-    }
+    globalThis.cookieConsentCookieBannerManager = {
+        initCookieBanner,
+        injectScript,
+        updateCookieBannerConfig,
+    };
 }
 
 export {};

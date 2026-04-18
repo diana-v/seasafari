@@ -17,9 +17,11 @@ export async function GET(req: Request) {
         const shouldShowCompleted = showCompleted === 'true';
 
         const sortedOrders = await db.query.orders.findMany({
-            orderBy: field
-                ? sortDirection(orders[field as keyof Order])
-                : undefined,
+            orderBy: [
+                sortDirection(orders[field as keyof Order]),
+                asc(orders.orderRef),
+            ],
+
             where: (order) =>
                 and(
                     or(
@@ -42,6 +44,6 @@ export async function GET(req: Request) {
             status: 200,
         });
     } catch {
-        return new NextResponse('Error sending email', { status: 500 });
+        return new NextResponse('Error sorting orders', { status: 500 });
     }
 }

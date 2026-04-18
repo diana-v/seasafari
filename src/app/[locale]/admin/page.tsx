@@ -8,6 +8,7 @@ import { db } from '@/server/db';
 import { orders, Status } from '@/server/db/schema';
 
 import AdminClient from './AdminClient';
+import { checkAdminAuth } from '@/utils/checkAdminAuth';
 
 const client = createClient({
     apiVersion: process.env.SANITY_STUDIO_API_VERSION,
@@ -18,18 +19,9 @@ const client = createClient({
 
 export default async function AdminPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
+    const isAuthenticated = await checkAdminAuth()
 
-    const cookieStore = await nextCookies();
-    const authCookie = cookieStore.get('auth')?.value;
-
-    if (!authCookie) redirect('/login');
-
-    const decodedValue = Buffer.from(authCookie, 'base64').toString('utf8');
-    const [username, password] = decodedValue.split(':');
-
-    if (username !== process.env.BASIC_AUTH_USER || password !== process.env.BASIC_AUTH_PASSWORD) {
-        redirect('/login');
-    }
+    if (!isAuthenticated) redirect('/login');
 
     const [navigation, initialOrders] = await Promise.all([
         fetchNavigationData(client, locale, 'lt'),
