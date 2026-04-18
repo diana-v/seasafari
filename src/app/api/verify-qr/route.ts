@@ -66,7 +66,6 @@ export async function GET(req: Request) {
 
         return NextResponse.json({
             reason: `${localisedString.scanSuccess} - ${order.orderRef}`,
-            updatedOrders: [],
             valid: true,
         });
     } catch (error) {

@@ -120,6 +120,7 @@ export const GiftCardForm: React.FC<GiftCardFormProps> = ({ options }) => {
                                             className={cn("rounded border w-full p-2 bg-transparent text-sm md:text-base disabled:text-grey-300 disabled:border-grey-100 disabled:cursor-not-allowed focus-visible:outline-none", {
                                                 "text-red-900 border-red-900": touched.email && errors.email,
                                             })}
+                                            data-testid="gift-card-email-input"
                                             disabled={isSubmitting}
                                             id="email"
                                             name="email"
@@ -136,7 +137,7 @@ export const GiftCardForm: React.FC<GiftCardFormProps> = ({ options }) => {
 
                         <div className="mt-auto">
                             <label className="flex flex-wrap items-center gap-x-2">
-                                <Field name="agreeToTerms" type="checkbox" />
+                                <Field data-testid="gift-card-terms-checkbox" name="agreeToTerms" type="checkbox" />
                                 {localisedString.agreeWith}{' '}
                                 <Link
                                     aria-label={localisedString.privacyPolicy}
@@ -150,6 +151,7 @@ export const GiftCardForm: React.FC<GiftCardFormProps> = ({ options }) => {
                             <button
                                 aria-label="Submit form"
                                 className="flex w-full justify-center text-white bg-orange-500 rounded-full items-center gap-2 px-6 py-3 disabled:opacity-50 disabled:cursor-not-allowed mt-4"
+                                data-testid="gift-card-submit-button"
                                 disabled={isSubmitting}
                                 type="submit"
                             >

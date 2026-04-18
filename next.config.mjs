@@ -10,7 +10,8 @@ const withPWA = withPWAInit({
 const nextConfig = {
     reactStrictMode: true,
     allowedDevOrigins: [
-        new URL(domain).host
+        new URL(domain).host,
+        '127.0.0.1'
     ],
     images: {
         remotePatterns: [

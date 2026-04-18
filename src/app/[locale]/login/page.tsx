@@ -6,6 +6,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@/containers/Navigation/NavigationContainer';
 import LoginForm from '@/forms/LoginForm';
 import { fetchNavigationData } from '@/schemas/navigation';
+import { checkAdminAuth } from '@/utils/checkAdminAuth';
 
 const client = createClient({
     apiVersion: process.env.SANITY_STUDIO_API_VERSION,
@@ -20,9 +21,7 @@ interface PageParams {
 
 export default async function LoginPage({ params }: PageParams) {
     const { locale } = await params;
-
-    const cookieStore = await cookies();
-    const isAuthenticated = cookieStore.has('auth');
+    const isAuthenticated = await checkAdminAuth();
 
     if (isAuthenticated) {
         redirect(`/${locale}/admin`);

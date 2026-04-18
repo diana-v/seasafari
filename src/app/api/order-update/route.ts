@@ -29,9 +29,11 @@ export async function PATCH(req: Request) {
         const shouldShowCompleted = showCompleted === 'true';
 
         const updatedOrders = await db.query.orders.findMany({
-            orderBy: field
-                ? sortDirection(orders[field as keyof Order])
-                : undefined,
+            orderBy: [
+                sortDirection(orders[field as keyof Order]),
+                asc(orders.orderRef),
+            ],
+
             where: (order) =>
                 and(
                     or(
@@ -54,6 +56,6 @@ export async function PATCH(req: Request) {
             status: 200,
         });
     } catch {
-        return new NextResponse('Error sending email', { status: 500 });
+        return new NextResponse('Error updating order', { status: 500 });
     }
 }
