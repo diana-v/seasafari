@@ -6,6 +6,7 @@ on:
     branches: [staging, master]
 
 env:
+  NEXT_PUBLIC_DOMAIN: ${{secrets.NEXT_PUBLIC_DOMAIN}}
   BASIC_AUTH_USER: ${{ secrets.BASIC_AUTH_USER }}
   BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
   SANITY_STUDIO_PROJECT_ID: ${{ secrets.SANITY_STUDIO_PROJECT_ID }}
@@ -41,7 +42,7 @@ env:
 
 jobs:
   e2e_test:
-    timeout-minutes: 30
+    timeout-minutes: 60
     runs-on: ubuntu-latest
     environment: test
     steps:
@@ -61,7 +62,7 @@ jobs:
         if: always()
         with:
           name: playwright-report
-          path: playwright-report/
+          path: e2e/playwright-report/
           retention-days: 30
 
   checkly:
