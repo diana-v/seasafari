@@ -1,6 +1,6 @@
 import withPWAInit from "next-pwa";
 
-const domain = process.env.NEXT_PUBLIC_DOMAIN ?? '';
+const domain = process.env.NEXT_PUBLIC_DOMAIN ?? '127.0.0.1';
 
 const withPWA = withPWAInit({
     dest: 'public',
