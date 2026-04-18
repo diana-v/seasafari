@@ -5,6 +5,41 @@ on:
   pull_request:
     branches: [staging, master]
 
+env:
+  NEXT_PUBLIC_DOMAIN: ${{secrets.NEXT_PUBLIC_DOMAIN}}
+  BASIC_AUTH_USER: ${{ secrets.BASIC_AUTH_USER }}
+  BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
+  SANITY_STUDIO_PROJECT_ID: ${{ secrets.SANITY_STUDIO_PROJECT_ID }}
+  SANITY_STUDIO_DATASET: ${{ secrets.SANITY_STUDIO_DATASET }}
+  SANITY_STUDIO_API_VERSION: ${{ secrets.SANITY_STUDIO_API_VERSION }}
+  SANITY_STUDIO_TITLE: ${{ secrets.SANITY_STUDIO_TITLE }}
+  NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+  NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
+  NEXT_PUBLIC_SANITY_API_VERSION: ${{ secrets.NEXT_PUBLIC_SANITY_API_VERSION }}
+  NEXT_PUBLIC_SANITY_TITLE: ${{ secrets.NEXT_PUBLIC_SANITY_TITLE }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  PGHOST: ${{ secrets.PGHOST }}
+  PGDATABASE: ${{ secrets.PGDATABASE }}
+  PGUSER: ${{ secrets.PGUSER }}
+  PGPASSWORD: ${{ secrets.PGPASSWORD }}
+  MAKECOMMERCE_API_URL: ${{ vars.MAKECOMMERCE_API_URL }}
+  MAKECOMMERCE_GATEWAY_URL: ${{ vars.MAKECOMMERCE_GATEWAY_URL }}
+  MAKECOMMERCE_SHOP_ID: ${{ vars.MAKECOMMERCE_SHOP_ID }}
+  MAKECOMMERCE_SECRET_KEY: ${{ secrets.MAKECOMMERCE_SECRET_KEY }}
+  RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+  NEXT_PUBLIC_RESEND_FROM_EMAIL: ${{ secrets.NEXT_PUBLIC_RESEND_FROM_EMAIL }}
+  NEXT_PUBLIC_RESEND_TO_EMAIL: ${{ secrets.NEXT_PUBLIC_RESEND_TO_EMAIL }}
+  TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
+  GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+  GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+  GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+  GOOGLE_BUSINESS_ID: ${{ secrets.GOOGLE_BUSINESS_ID }}
+  GOOGLE_LOCATION_ID: ${{ secrets.GOOGLE_LOCATION_ID }}
+  NEXT_PUBLIC_META_PIXEL_ID: ${{ secrets.NEXT_PUBLIC_META_PIXEL_ID }}
+  VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+  CHECKLY_API_KEY: ${{ vars.CHECKLY_API_KEY }}
+  CHECKLY_ACCOUNT_ID: ${{ vars.CHECKLY_ACCOUNT_ID }}
+
 jobs:
   e2e_test:
     timeout-minutes: 60
@@ -15,44 +50,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 24
+      - name: Set env
+        run: export NODE_ENV=test
       - name: Install dependencies
         run: npm ci
-      - name: Build Next.js
-        run: npm run build
-        env:
-          NEXT_PUBLIC_DOMAIN: ${{secrets.NEXT_PUBLIC_DOMAIN}}
-          BASIC_AUTH_USER: ${{ secrets.BASIC_AUTH_USER }}
-          BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
-          SANITY_STUDIO_PROJECT_ID: ${{ secrets.SANITY_STUDIO_PROJECT_ID }}
-          SANITY_STUDIO_DATASET: ${{ secrets.SANITY_STUDIO_DATASET }}
-          SANITY_STUDIO_API_VERSION: ${{ secrets.SANITY_STUDIO_API_VERSION }}
-          SANITY_STUDIO_TITLE: ${{ secrets.SANITY_STUDIO_TITLE }}
-          NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
-          NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
-          NEXT_PUBLIC_SANITY_API_VERSION: ${{ secrets.NEXT_PUBLIC_SANITY_API_VERSION }}
-          NEXT_PUBLIC_SANITY_TITLE: ${{ secrets.NEXT_PUBLIC_SANITY_TITLE }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          PGHOST: ${{ secrets.PGHOST }}
-          PGDATABASE: ${{ secrets.PGDATABASE }}
-          PGUSER: ${{ secrets.PGUSER }}
-          PGPASSWORD: ${{ secrets.PGPASSWORD }}
-          MAKECOMMERCE_API_URL: ${{ vars.MAKECOMMERCE_API_URL }}
-          MAKECOMMERCE_GATEWAY_URL: ${{ vars.MAKECOMMERCE_GATEWAY_URL }}
-          MAKECOMMERCE_SHOP_ID: ${{ vars.MAKECOMMERCE_SHOP_ID }}
-          MAKECOMMERCE_SECRET_KEY: ${{ secrets.MAKECOMMERCE_SECRET_KEY }}
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          NEXT_PUBLIC_RESEND_FROM_EMAIL: ${{ secrets.NEXT_PUBLIC_RESEND_FROM_EMAIL }}
-          NEXT_PUBLIC_RESEND_TO_EMAIL: ${{ secrets.NEXT_PUBLIC_RESEND_TO_EMAIL }}
-          TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
-          GOOGLE_BUSINESS_ID: ${{ secrets.GOOGLE_BUSINESS_ID }}
-          GOOGLE_LOCATION_ID: ${{ secrets.GOOGLE_LOCATION_ID }}
-          NEXT_PUBLIC_META_PIXEL_ID: ${{ secrets.NEXT_PUBLIC_META_PIXEL_ID }}
-          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
-          CHECKLY_API_KEY: ${{ vars.CHECKLY_API_KEY }}
-          CHECKLY_ACCOUNT_ID: ${{ vars.CHECKLY_ACCOUNT_ID }}
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
