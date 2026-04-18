@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build && sanity build",
+    "build": "next build",
     "start": "next start",
     "sanity:dev": "sanity dev",
     "sanity:start": "sanity start",
