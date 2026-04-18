@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "dev:test": "next dev --turbo=false",
     "build": "next build",
     "start": "next start",
     "sanity:dev": "sanity dev",
