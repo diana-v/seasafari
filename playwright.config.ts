@@ -77,7 +77,7 @@ export default defineConfig({
 
     // Run your local dev server before starting the tests
     webServer: {
-        command: 'npx dotenv-cli -- npm run dev',
+        command: 'npm run dev',
         reuseExistingServer: !process.env.CI,
         stderr: 'pipe',
         stdout: 'ignore',
