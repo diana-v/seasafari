@@ -52,14 +52,6 @@ jobs:
           node-version: 24
       - name: Set env
         run: export NODE_ENV=test
-      - name: Verify Env
-        run: |
-          if [ -z "$SANITY_STUDIO_PROJECT_ID" ]; then
-            echo "❌ SANITY_STUDIO_PROJECT_ID is NOT in the shell"
-            exit 1
-          else
-            echo "✅ SANITY_STUDIO_PROJECT_ID is present"
-          fi
       - name: Install dependencies
         run: npm ci
       - name: Install Playwright Browsers
