@@ -9,7 +9,6 @@ import { loginAsAdmin } from './helpers/loginAsAdmin';
 const USER = process.env.BASIC_AUTH_USER ?? '';
 const PASS = process.env.BASIC_AUTH_PASSWORD ?? '';
 
-
 test.describe('Admin login', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/');
