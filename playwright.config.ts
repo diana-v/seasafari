@@ -77,7 +77,7 @@ export default defineConfig({
 
     // Run your local dev server before starting the tests
     webServer: {
-        command: process.env.CI ? 'npm run build && npm run start' : 'npm run dev',
+        command: process.env.CI ? 'npm run start' : 'npm run dev',
         env: { ...process.env as Record<string, string> },
         reuseExistingServer: !process.env.CI,
         stderr: 'pipe',
