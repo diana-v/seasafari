@@ -11,6 +11,8 @@ const PASS = process.env.BASIC_AUTH_PASSWORD ?? '';
 
 test.describe('Admin login', () => {
     test.beforeEach(async ({ page }) => {
+        await page.context().clearCookies();
+
         await page.goto('/');
 
         await acceptCookies(page);
@@ -36,6 +38,8 @@ test.describe('Admin login', () => {
 
 test.describe('Admin panel', () => {
     test.beforeEach(async ({ page }) => {
+        await page.context().clearCookies();
+
         await page.goto('/');
 
         await acceptCookies(page);
