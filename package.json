@@ -33,7 +33,6 @@
     "checkly": "^7.11.0",
     "clsx": "^2.1.1",
     "cookies": "^0.9.1",
-    "dotenv": "^17.3.1",
     "drizzle-orm": "^0.45.2",
     "formik": "^2.4.9",
     "google-auth-library": "^10.6.2",
