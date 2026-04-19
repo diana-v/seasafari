@@ -242,7 +242,6 @@ test.describe('Admin panel', () => {
 
         await context.addCookies([
             {
-                domain: process.env.NEXT_PUBLIC_DOMAIN,
                 name: 'auth',
                 path: '/',
                 value: badAuth,
