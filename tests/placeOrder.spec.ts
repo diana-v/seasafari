@@ -25,7 +25,8 @@ test.describe('Order & Payment Lifecycle', () => {
 
         await page.goto('/lt#gift-cards');
         await page.getByTestId('gift-card-email-input').fill(testEmail);
-        await page.getByTestId('gift-card-terms-checkbox').check();
+        await page.getByTestId('gift-card-terms-checkbox').scrollIntoViewIfNeeded();
+        await page.getByTestId('gift-card-terms-checkbox').check({ force: true });
 
         await page.getByTestId('gift-card-submit-button').click();
         await page.waitForResponse('**/api/make-payment');
@@ -72,7 +73,8 @@ test.describe('Order & Payment Lifecycle', () => {
 
         await page.goto('/lt#gift-cards');
         await page.getByTestId('gift-card-email-input').fill(testEmail);
-        await page.getByTestId('gift-card-terms-checkbox').check();
+        await page.getByTestId('gift-card-terms-checkbox').scrollIntoViewIfNeeded();
+        await page.getByTestId('gift-card-terms-checkbox').check({ force: true });
 
         await page.getByTestId('gift-card-submit-button').click();
         await page.waitForResponse('**/api/make-payment');

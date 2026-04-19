@@ -189,11 +189,17 @@ test.describe('Admin panel', () => {
         await page.getByTestId('scan-qr-button').click();
         await expect(page.getByTestId('qr-scanner')).toBeVisible();
 
+        const responsePromise = page.waitForResponse(res =>
+            res.url().includes('/api/order-sort') && res.ok()
+        );
+
         await page.evaluate((tokenValue) => {
             globalThis.dispatchEvent(new CustomEvent('playwright-test-scan', {
                 detail: { token: tokenValue }
             }));
         }, token);
+
+        await responsePromise;
 
         await expect(page.getByTestId('alert-error')).toBeVisible();
     });
@@ -222,11 +228,17 @@ test.describe('Admin panel', () => {
         await page.getByTestId('scan-qr-button').click();
         await expect(page.getByTestId('qr-scanner')).toBeVisible();
 
+        const responsePromise = page.waitForResponse(res =>
+            res.url().includes('/api/order-sort') && res.ok()
+        );
+
         await page.evaluate((tokenValue) => {
             globalThis.dispatchEvent(new CustomEvent('playwright-test-scan', {
                 detail: { token: tokenValue }
             }));
         }, token);
+
+        await responsePromise;
 
         await expect(page.getByTestId('alert-error')).toBeVisible();
     });
