@@ -150,16 +150,14 @@ test.describe('Admin panel', () => {
         await page.getByTestId('scan-qr-button').click();
         await expect(page.getByTestId('qr-scanner')).toBeVisible();
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        await page.waitForFunction(() => typeof (globalThis as any).__testScan === 'function');
-
         const responsePromise = page.waitForResponse(res =>
             res.url().includes('/api/order-sort') && res.ok()
         );
 
-        await page.evaluate((t) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (globalThis as any).__testScan(`https://test.com?token=${encodeURIComponent(t)}`);
+        await page.evaluate((tokenValue) => {
+            globalThis.dispatchEvent(new CustomEvent('playwright-test-scan', {
+                detail: { token: tokenValue }
+            }));
         }, token);
 
         await responsePromise;
@@ -191,12 +189,10 @@ test.describe('Admin panel', () => {
         await page.getByTestId('scan-qr-button').click();
         await expect(page.getByTestId('qr-scanner')).toBeVisible();
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        await page.waitForFunction(() => typeof (globalThis as any).__testScan === 'function');
-
-        await page.evaluate((t) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (globalThis as any).__testScan?.(`https://test.com?token=${t}`);
+        await page.evaluate((tokenValue) => {
+            globalThis.dispatchEvent(new CustomEvent('playwright-test-scan', {
+                detail: { token: tokenValue }
+            }));
         }, token);
 
         await expect(page.getByTestId('alert-error')).toBeVisible();
@@ -226,12 +222,10 @@ test.describe('Admin panel', () => {
         await page.getByTestId('scan-qr-button').click();
         await expect(page.getByTestId('qr-scanner')).toBeVisible();
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        await page.waitForFunction(() => typeof (globalThis as any).__testScan === 'function');
-
-        await page.evaluate((t) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (globalThis as any).__testScan?.(`https://test.com?token=${t}`);
+        await page.evaluate((tokenValue) => {
+            globalThis.dispatchEvent(new CustomEvent('playwright-test-scan', {
+                detail: { token: tokenValue }
+            }));
         }, token);
 
         await expect(page.getByTestId('alert-error')).toBeVisible();
