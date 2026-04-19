@@ -150,14 +150,15 @@ test.describe('Admin panel', () => {
         await page.getByTestId('scan-qr-button').click();
         await expect(page.getByTestId('qr-scanner')).toBeVisible();
 
-        await page.evaluate((t) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (globalThis as any).__testScan?.(`https://test.com?token=${encodeURIComponent(t)}`);
-        }, token);
-
-        await page.waitForResponse(res =>
-            res.url().includes('/api/order-sort') && res.ok()
-        );
+        await Promise.all([
+            page.waitForResponse(res =>
+                res.url().includes('/api/order-sort') && res.ok()
+            ),
+            page.evaluate((t) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (globalThis as any).__testScan?.(`https://test.com?token=${encodeURIComponent(t)}`);
+            }, token)
+        ]);
 
         await expect(page.getByTestId('alert-success')).toBeVisible();
 
@@ -241,6 +242,7 @@ test.describe('Admin panel', () => {
             {
                 name: 'auth',
                 path: '/',
+                url: 'http://127.0.0.1:3000',
                 value: badAuth,
             },
         ]);
