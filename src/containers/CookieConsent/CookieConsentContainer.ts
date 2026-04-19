@@ -893,12 +893,34 @@ export const updateCookieBannerConfig = (userConfig: Partial<ConsentConfig> = {}
         return;
     }
 
-    if (state.elements.backdrop && state.config.background?.showBackground) {
-        showBackdrop();
+    if (state.elements.banner) {
+        state.elements.banner.innerHTML = getBannerContent();
+
+        const acceptButton = state.elements.banner.querySelector('.accept-all');
+        const rejectButton = state.elements.banner.querySelector('.reject-all');
+        const preferencesButton = state.elements.banner.querySelector('.preferences');
+
+        acceptButton?.addEventListener('click', () => handleCookieChoice(true));
+        rejectButton?.addEventListener('click', () => handleCookieChoice(false));
+        preferencesButton?.addEventListener('click', () => {
+            showBackdrop();
+            toggleModal(true);
+        });
+    }
+
+    if (state.elements.modal) {
+        state.elements.modal.innerHTML = getModalContent();
+        const acceptAllButton = state.elements.modal.querySelector('.preferences-accept-all');
+        const rejectAllButton = state.elements.modal.querySelector('.preferences-reject-all');
+
+        acceptAllButton?.addEventListener('click', () => toggleModal(false));
+        rejectAllButton?.addEventListener('click', () => handleCookieChoice(false));
     }
 
     if (state.elements.banner && !shouldShowBanner()) {
         removeBanner();
+        allowBodyScroll();
+        hideBackdrop();
     }
 
     if (!state.elements.banner && shouldShowBanner()) {
