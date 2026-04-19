@@ -11,7 +11,8 @@ const nextConfig = {
     reactStrictMode: true,
     allowedDevOrigins: [
         new URL(domain).host,
-        '127.0.0.1'
+        '127.0.0.1',
+        'localhost',
     ],
     images: {
         remotePatterns: [
