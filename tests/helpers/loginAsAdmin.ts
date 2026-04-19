@@ -1,6 +1,5 @@
 import { expect, Page } from '@playwright/test';
 
-
 export async function loginAsAdmin(page: Page, user: string, pass: string) {
     await page.goto('/lt/login');
 
