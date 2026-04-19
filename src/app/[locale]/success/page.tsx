@@ -46,6 +46,7 @@ export default async function PaymentSuccessPage({ params, searchParams }: PageP
     }
 
     const existingOrder = await db
+        .instance
         .select()
         .from(orders)
         .where(eq(orders.orderRef, ref));
