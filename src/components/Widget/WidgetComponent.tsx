@@ -29,6 +29,7 @@ export const Widget: React.FC<WidgetProps> = ({ className, image, isVisible = tr
                 <div className="flex flex-shrink-0 items-center justify-center">
                     <ImageContainer
                         classNames={{ image: 'w-16 h-8', root: 'h-full' }}
+                        hasPlaceholder={false}
                         height={32}
                         src={image}
                         width={32}
