@@ -75,7 +75,7 @@ export default defineConfig({
         env: process.env as Record<string, string>,
         reuseExistingServer: !process.env.CI,
         stderr: 'pipe',
-        stdout: 'ignore',
+        stdout: 'pipe',
         url: 'http://127.0.0.1:3000',
     },
 
