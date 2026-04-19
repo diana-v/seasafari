@@ -18,6 +18,7 @@ export async function GET(req: Request) {
 
     try {
         const result = await db
+            .instance
             .select({ status: orders.status })
             .from(orders)
             .where(eq(orders.orderRef, ref))

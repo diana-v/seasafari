@@ -6,7 +6,7 @@ import { orders, Status } from '@/server/db/schema';
 export async function GET() {
     const now = new Date();
 
-    await db.delete(orders).where(
+    await db.instance.delete(orders).where(
         and(
             eq(orders.status, Status.UNPAID),
             lt(orders.validTo, now)

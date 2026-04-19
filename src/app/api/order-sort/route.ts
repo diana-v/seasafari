@@ -16,7 +16,7 @@ export async function GET(req: Request) {
         const sortDirection = direction === 'asc' ? asc : desc;
         const shouldShowCompleted = showCompleted === 'true';
 
-        const sortedOrders = await db.query.orders.findMany({
+        const sortedOrders = await db.instance.query.orders.findMany({
             orderBy: [
                 sortDirection(orders[field as keyof Order]),
                 asc(orders.orderRef),
