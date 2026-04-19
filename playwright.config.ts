@@ -81,7 +81,7 @@ export default defineConfig({
 
     // Run your local dev server before starting the tests
     webServer: {
-        command: 'echo "PGHOST=$PGHOST PGUSER=$PGUSER PGDATABASE=$PGDATABASE PGPASSWORD_LEN=${#PGPASSWORD}" && npm run dev',
+        command: 'npm run dev',
         env: process.env as Record<string, string>,
         reuseExistingServer: !process.env.CI,
         stderr: 'pipe',
