@@ -1,4 +1,11 @@
 import { defineConfig, devices } from '@playwright/test';
+import * as dotenv from 'dotenv';
+
+const isProduction = process.env.NODE_ENV === 'production';
+const isTest = process.env.NODE_ENV === 'test';
+const { parsed } = dotenv.config({ path: '.env.local' });
+const showParsed = !(isProduction || isTest)
+const env = showParsed ? { ...parsed } : { ...process.env } as Record<string, string>;
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -72,7 +79,7 @@ export default defineConfig({
     // Run your local dev server before starting the tests
     webServer: {
         command: 'npm run dev',
-        env: process.env as Record<string, string>,
+        env,
         reuseExistingServer: !process.env.CI,
         stderr: 'pipe',
         stdout: 'pipe',
