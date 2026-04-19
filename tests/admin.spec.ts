@@ -10,12 +10,13 @@ const USER = process.env.BASIC_AUTH_USER ?? '';
 const PASS = process.env.BASIC_AUTH_PASSWORD ?? '';
 
 
-test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-    await acceptCookies(page);
-});
-
 test.describe('Admin login', () => {
+    test.beforeEach(async ({ page }) => {
+        await page.goto('/');
+
+        await acceptCookies(page);
+    });
+
     test('user can log in via UI', async ({ page }) => {
         await page.goto('/lt/login');
 
@@ -36,6 +37,10 @@ test.describe('Admin login', () => {
 
 test.describe('Admin panel', () => {
     test.beforeEach(async ({ context, page }) => {
+        await page.goto('/');
+
+        await acceptCookies(page);
+
         await loginAsAdmin(context, USER, PASS);
 
         await page.goto('/lt/admin');
