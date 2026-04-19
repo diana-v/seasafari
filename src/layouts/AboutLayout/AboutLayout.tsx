@@ -46,6 +46,7 @@ export const AboutLayout: React.FC<AboutProps> = ({ benefits, description, image
                                                 image: 'block w-4.5 h-4.5 object-contain mx-auto',
                                                 root: 'flex items-center justify-center w-full h-full',
                                             }}
+                                            hasPlaceholder={false}
                                             height={16}
                                             src={benefit.image}
                                             width={16}

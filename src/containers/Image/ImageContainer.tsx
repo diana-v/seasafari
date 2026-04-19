@@ -11,9 +11,10 @@ export interface ImageContainerProps extends Partial<ImageProps> {
         image?: string;
         root?: string;
     };
+    hasPlaceholder?: boolean;
 }
 
-export const ImageContainer: React.FC<ImageContainerProps> = ({ alt, className, classNames, src, ...restProps }) => {
+export const ImageContainer: React.FC<ImageContainerProps> = ({ alt, className, classNames, hasPlaceholder = true, src, ...restProps }) => {
     const imageErrorHandler = React.useCallback((e: React.BaseSyntheticEvent) => {
         e.target.parentNode.parentNode.classList.add('none');
     }, []);
@@ -30,7 +31,7 @@ export const ImageContainer: React.FC<ImageContainerProps> = ({ alt, className, 
                 className={cn(classNames?.image, className)}
                 loading="lazy"
                 onError={imageErrorHandler}
-                placeholder="blur"
+                placeholder={hasPlaceholder ? "blur" : undefined}
                 src={src}
                 {...restProps}
             />

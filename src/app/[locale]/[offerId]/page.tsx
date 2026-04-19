@@ -124,6 +124,7 @@ export default async function OfferPage({ params }: PageParams) {
                                         {card.icon && (
                                             <ImageContainer
                                                 classNames={{ image: 'w-6 h-6' }}
+                                                hasPlaceholder={false}
                                                 height={40}
                                                 src={card.icon}
                                                 width={40}
