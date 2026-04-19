@@ -93,6 +93,8 @@ test.describe('Admin panel', () => {
     });
 
     test('can sort orders', async ({ page }) => {
+        console.log(await page.context().cookies());
+
         await page.getByTestId('sort-orderRef').click();
 
         const response = await page.waitForResponse(res =>
