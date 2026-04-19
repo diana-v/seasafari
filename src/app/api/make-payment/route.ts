@@ -25,7 +25,7 @@ export async function POST(req: Request) {
             headerList.get('x-vercel-ip-country') ||
             'lt';
 
-        await db.insert(orders).values({
+        await db.instance.insert(orders).values({
             orderAmount: Number(body.amount),
             orderEmail: body.email,
             orderRef: body.reference,

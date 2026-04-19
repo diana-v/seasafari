@@ -21,6 +21,7 @@ export async function PATCH(req: Request) {
 
     try {
         await db
+            .instance
             .update(orders)
             .set({ status: status })
             .where(eq(orders.orderRef, orderRef));
@@ -28,7 +29,7 @@ export async function PATCH(req: Request) {
         const sortDirection = direction === 'asc' ? asc : desc;
         const shouldShowCompleted = showCompleted === 'true';
 
-        const updatedOrders = await db.query.orders.findMany({
+        const updatedOrders = await db.instance.query.orders.findMany({
             orderBy: [
                 sortDirection(orders[field as keyof Order]),
                 asc(orders.orderRef),

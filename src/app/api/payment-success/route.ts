@@ -65,6 +65,7 @@ export async function POST(req: Request) {
 
     try {
         const existing = await db
+            .instance
             .select()
             .from(orders)
             .where(eq(orders.orderRef, reference))
@@ -81,6 +82,7 @@ export async function POST(req: Request) {
         }
 
         const [order] = await db
+            .instance
             .update(orders)
             .set({
                 status: Status.CREATED,

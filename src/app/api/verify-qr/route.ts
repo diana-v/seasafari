@@ -32,7 +32,7 @@ export async function GET(req: Request) {
     try {
         const decoded = verifyGiftCardToken(token);
 
-        const order = await db.query.orders.findFirst({
+        const order = await db.instance.query.orders.findFirst({
             where: (o) => eq(o.orderRef, decoded.orderRef),
         });
 
@@ -60,6 +60,7 @@ export async function GET(req: Request) {
         }
 
         await db
+            .instance
             .update(orders)
             .set({ status: Status.COMPLETED })
             .where(eq(orders.orderRef, order.orderRef));

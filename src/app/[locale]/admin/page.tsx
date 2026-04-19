@@ -1,14 +1,13 @@
 import { createClient } from '@sanity/client';
 import { asc, eq } from 'drizzle-orm';
-import { cookies as nextCookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import { fetchNavigationData } from '@/schemas/navigation';
 import { db } from '@/server/db';
 import { orders, Status } from '@/server/db/schema';
+import { checkAdminAuth } from '@/utils/checkAdminAuth';
 
 import AdminClient from './AdminClient';
-import { checkAdminAuth } from '@/utils/checkAdminAuth';
 
 const client = createClient({
     apiVersion: process.env.SANITY_STUDIO_API_VERSION,
@@ -25,7 +24,7 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
 
     const [navigation, initialOrders] = await Promise.all([
         fetchNavigationData(client, locale, 'lt'),
-        db.query.orders.findMany({
+        db.instance.query.orders.findMany({
             orderBy: asc(orders.orderRef),
             where: (order) => eq(order.status, Status.CREATED),
         })
