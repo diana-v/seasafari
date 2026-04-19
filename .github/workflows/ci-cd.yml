@@ -6,7 +6,7 @@ on:
     branches: [staging, master]
 
 concurrency:
-  group: ci-cd-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 env:
