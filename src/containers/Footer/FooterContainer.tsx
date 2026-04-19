@@ -79,6 +79,7 @@ export const FooterContainer: React.FC<FooterProps> = ({ common, faq }) => {
                                     {social.icon && (
                                         <ImageContainer
                                             classNames={{ image: 'w-5 h-5', root: 'w-5 h-5' }}
+                                            hasPlaceholder={false}
                                             height={20}
                                             src={social.icon}
                                             width={20}
