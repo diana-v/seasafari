@@ -3,11 +3,5 @@
   "rewrites": [{
     "source": "src/studio/(.*)",
     "destination": "src/studio/index.html"
-  }],
-  "crons": [
-    {
-      "path": "/api/cron/cleanup-orders",
-      "schedule": "0 3 * * *"
-    }
-  ]
+  }]
 }
