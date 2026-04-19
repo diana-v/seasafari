@@ -36,7 +36,7 @@ test.describe('Admin login', () => {
 
 test.describe('Admin panel', () => {
     test.beforeEach(async ({ context, page }) => {
-        loginAsAdmin(context, USER, PASS);
+        await loginAsAdmin(context, USER, PASS);
 
         await page.goto('/lt/admin');
     });
