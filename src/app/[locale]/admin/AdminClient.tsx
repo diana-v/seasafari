@@ -3,6 +3,7 @@
 import { Scanner } from '@yudiel/react-qr-scanner';
 import cn from 'clsx';
 import * as React from 'react';
+import { useCallback } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
 import { AlertComponent, AlertType } from '@/components/Alert/AlertComponent';
@@ -140,7 +141,7 @@ export default function AdminClient({ initialOrders, lang, navigation }: AdminCl
         }
     };
 
-    const handleScan = async (scannedValue: string) => {
+    const handleScan = useCallback(async (scannedValue: string) => {
         if (!scannedValue) return;
         try {
             const url = new URL(scannedValue);
@@ -171,18 +172,16 @@ export default function AdminClient({ initialOrders, lang, navigation }: AdminCl
         } finally {
             setTimeout(() => setAlert({ message: '', type: AlertType.Error }), 15_000);
         }
-    };
+    }, [fetchData, lang, localisedString.invalidQRCode, localisedString.scanError, searchTerm, showCompleted, sortBy.direction, sortBy.field]);
 
     React.useEffect(() => {
-        const bridgeListener = (event: Event) => {
-            const customEvent = event as CustomEvent;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (globalThis as any).__testScan = (token: string) => handleScan(token);
 
-            handleScan(customEvent.detail.token);
+        return () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            delete (globalThis as any).__testScan;
         };
-
-        globalThis.addEventListener('playwright-test-scan', bridgeListener);
-
-        return () => globalThis.removeEventListener('playwright-test-scan', bridgeListener);
     }, [handleScan]);
 
     return (
