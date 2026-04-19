@@ -78,7 +78,11 @@ export default defineConfig({
     // Run your local dev server before starting the tests
     webServer: {
         command: 'npm run dev',
-        env: { ...process.env as Record<string, string> },
+        env: {
+            ...process.env as Record<string, string>,
+            BASIC_AUTH_PASSWORD:'testpassword',
+            BASIC_AUTH_USER:'testuser'
+        },
         reuseExistingServer: !process.env.CI,
         stderr: 'pipe',
         stdout: 'pipe',
