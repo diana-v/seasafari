@@ -10,6 +10,4 @@ export async function loginAsAdmin(page: Page, user: string, pass: string) {
         page.waitForURL('**/lt/admin'),
         page.click('[data-testid="login-button"]'),
     ]);
-
-    await page.waitForLoadState('networkidle');
 }
