@@ -150,6 +150,9 @@ test.describe('Admin panel', () => {
         await page.getByTestId('scan-qr-button').click();
         await expect(page.getByTestId('qr-scanner')).toBeVisible();
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await page.waitForFunction(() => typeof (globalThis as any).__testScan === 'function');
+
         const responsePromise = page.waitForResponse(res =>
             res.url().includes('/api/order-sort') && res.ok()
         );
@@ -188,6 +191,9 @@ test.describe('Admin panel', () => {
         await page.getByTestId('scan-qr-button').click();
         await expect(page.getByTestId('qr-scanner')).toBeVisible();
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await page.waitForFunction(() => typeof (globalThis as any).__testScan === 'function');
+
         await page.evaluate((t) => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (globalThis as any).__testScan?.(`https://test.com?token=${t}`);
@@ -219,6 +225,9 @@ test.describe('Admin panel', () => {
 
         await page.getByTestId('scan-qr-button').click();
         await expect(page.getByTestId('qr-scanner')).toBeVisible();
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await page.waitForFunction(() => typeof (globalThis as any).__testScan === 'function');
 
         await page.evaluate((t) => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
