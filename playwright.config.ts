@@ -5,9 +5,9 @@ import dotenv from 'dotenv';
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-const isProduction = process.env.NODE_ENV === 'production';
+const isTest = process.env.NODE_ENV === 'test';
 const { parsed } = dotenv.config({ path: '.env.local' });
-const env = isProduction ? { ...process.env } : { ...parsed }
+const env = isTest ? { ...process.env } : { ...parsed }
 
 /**
  * See https://playwright.dev/docs/test-configuration.
