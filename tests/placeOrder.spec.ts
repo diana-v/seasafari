@@ -8,12 +8,12 @@ const USER = process.env.BASIC_AUTH_USER ?? '';
 const PASS = process.env.BASIC_AUTH_PASSWORD ?? '';
 const SECRET = process.env.MAKECOMMERCE_SECRET_KEY ?? '';
 
-test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-    await acceptCookies(page);
-});
-
 test.describe('Order & Payment Lifecycle', () => {
+    test.beforeEach(async ({ page }) => {
+        await page.goto('/');
+        await acceptCookies(page);
+    });
+
     test('Successful payment: UI redirect and Admin status update', async ({ context, page, request }) => {
         let capturedRef = '';
         const testEmail = process.env.TEST_EMAIL ?? '';
