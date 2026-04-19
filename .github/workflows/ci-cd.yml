@@ -53,6 +53,12 @@ jobs:
           node-version: 24
       - name: Set env
         run: export NODE_ENV=test
+      - name: Debug env vars
+        run: |
+          echo "PGHOST=$PGHOST"
+          echo "PGUSER=$PGUSER"
+          echo "PGDATABASE=$PGDATABASE"
+          echo "PGPASSWORD length=${#PGPASSWORD}"
       - name: Install dependencies
         run: npm ci --include=dev
       - name: Install Playwright Browsers
