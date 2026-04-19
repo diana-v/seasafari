@@ -21,4 +21,10 @@ const connectionString = [
 
 const pool = new Pool({ connectionString });
 
+console.log('🔥 DB INIT ENV CHECK');
+console.log('PGHOST', process.env.PGHOST);
+console.log('PGUSER', process.env.PGUSER);
+console.log('PGDATABASE', process.env.PGDATABASE);
+console.log('PGPASSWORD length', process.env.PGPASSWORD?.length);
+
 export const db = drizzle(pool, { schema });
