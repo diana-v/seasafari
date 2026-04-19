@@ -13,7 +13,6 @@ const env = isProduction ? { ...process.env } : { ...parsed }
  * See https://playwright.dev/docs/test-configuration.
  */
 
-
 export default defineConfig({
     /* Fail the build on CI if you accidentally left test.only in the source code. */
     forbidOnly: !!process.env.CI,
@@ -84,7 +83,7 @@ export default defineConfig({
         command: 'npm run dev',
         env: {
             ...env,
-            NODE_ENV: 'test',
+            NODE_ENV: process.env.NODE_ENV,
         },
         reuseExistingServer: !process.env.CI,
         stderr: 'pipe',
