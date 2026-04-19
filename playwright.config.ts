@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
  * https://github.com/motdotla/dotenv
  */
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'test') {
     dotenv.config({ path: '.env.local' });
 }
 
