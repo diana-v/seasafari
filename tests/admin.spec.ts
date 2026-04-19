@@ -44,6 +44,8 @@ test.describe('Admin panel', () => {
     });
 
     test('admin page loads orders table', async ({ page }) => {
+        console.log(await page.context().cookies());
+
         await expect(page.locator('table')).toBeVisible();
         await expect(page.getByTestId('search-input')).toBeVisible();
     });
@@ -93,8 +95,6 @@ test.describe('Admin panel', () => {
     });
 
     test('can sort orders', async ({ page }) => {
-        console.log(await page.context().cookies());
-
         await page.getByTestId('sort-orderRef').click();
 
         const response = await page.waitForResponse(res =>
