@@ -5,9 +5,10 @@ import dotenv from 'dotenv';
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-const isTest = process.env.NODE_ENV === 'test';
-const { parsed } = dotenv.config({ path: '.env.local' });
-const env = isTest ? { ...process.env } : { ...parsed }
+
+if (process.env.NODE_ENV !== 'production') {
+    dotenv.config({ path: '.env.local' });
+}
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -81,10 +82,6 @@ export default defineConfig({
     // Run your local dev server before starting the tests
     webServer: {
         command: 'npm run dev',
-        env: {
-            ...env,
-            NODE_ENV: process.env.NODE_ENV,
-        },
         reuseExistingServer: !process.env.CI,
         stderr: 'pipe',
         stdout: 'ignore',

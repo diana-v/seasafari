@@ -6,6 +6,7 @@ on:
     branches: [staging, master]
 
 env:
+  NODE_ENV: ${{secrets.NODE_ENV}}
   NEXT_PUBLIC_DOMAIN: ${{secrets.NEXT_PUBLIC_DOMAIN}}
   BASIC_AUTH_USER: ${{ secrets.BASIC_AUTH_USER }}
   BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
