@@ -6,7 +6,10 @@ export async function loginAsAdmin(page: Page, user: string, pass: string) {
     await page.getByTestId('username-input').fill(user);
     await page.getByTestId('password-input').fill(pass);
 
-    await page.getByTestId('login-button').click();
+    await Promise.all([
+        page.waitForURL('**/lt/admin'),
+        page.click('[data-testid="login-button"]'),
+    ]);
 
-    await expect(page).toHaveURL('/lt/admin');
+    await page.waitForLoadState('networkidle');
 }
