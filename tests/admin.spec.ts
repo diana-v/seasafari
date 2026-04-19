@@ -150,17 +150,15 @@ test.describe('Admin panel', () => {
         await page.getByTestId('scan-qr-button').click();
         await expect(page.getByTestId('qr-scanner')).toBeVisible();
 
-        const responsePromise = page.waitForResponse(res =>
-            res.url().includes('/api/order-sort') && res.ok()
-        );
-
-        await page.evaluate((tokenValue) => {
-            globalThis.dispatchEvent(new CustomEvent('playwright-test-scan', {
-                detail: { token: tokenValue }
-            }));
-        }, token);
-
-        await responsePromise;
+        await Promise.all([
+            page.waitForResponse(res =>
+                res.url().includes('/api/order-sort') && res.ok()
+            ),
+            page.evaluate((t) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (globalThis as any).__testScan?.(`https://test.com?token=${encodeURIComponent(t)}`);
+            }, token)
+        ]);
 
         await expect(page.getByTestId('alert-success')).toBeVisible();
 
@@ -189,17 +187,10 @@ test.describe('Admin panel', () => {
         await page.getByTestId('scan-qr-button').click();
         await expect(page.getByTestId('qr-scanner')).toBeVisible();
 
-        const responsePromise = page.waitForResponse(res =>
-            res.url().includes('/api/order-sort') && res.ok()
-        );
-
-        await page.evaluate((tokenValue) => {
-            globalThis.dispatchEvent(new CustomEvent('playwright-test-scan', {
-                detail: { token: tokenValue }
-            }));
+        await page.evaluate((t) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (globalThis as any).__testScan?.(`https://test.com?token=${t}`);
         }, token);
-
-        await responsePromise;
 
         await expect(page.getByTestId('alert-error')).toBeVisible();
     });
@@ -228,17 +219,10 @@ test.describe('Admin panel', () => {
         await page.getByTestId('scan-qr-button').click();
         await expect(page.getByTestId('qr-scanner')).toBeVisible();
 
-        const responsePromise = page.waitForResponse(res =>
-            res.url().includes('/api/order-sort') && res.ok()
-        );
-
-        await page.evaluate((tokenValue) => {
-            globalThis.dispatchEvent(new CustomEvent('playwright-test-scan', {
-                detail: { token: tokenValue }
-            }));
+        await page.evaluate((t) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (globalThis as any).__testScan?.(`https://test.com?token=${t}`);
         }, token);
-
-        await responsePromise;
 
         await expect(page.getByTestId('alert-error')).toBeVisible();
     });
@@ -250,15 +234,15 @@ test.describe('Admin panel', () => {
         await expect(page).toHaveURL(/\/login/);
     });
 
-    test('invalid auth cookie redirects to login', async ({ baseURL, context, page }) => {
+    test('invalid auth cookie redirects to login', async ({ context, page, }) => {
         await context.clearCookies();
         const badAuth = Buffer.from('wrong:creds').toString('base64');
 
         await context.addCookies([
             {
+                domain: '127.0.0.1',
                 name: 'auth',
                 path: '/',
-                url: baseURL ?? 'http://127.0.0.1:3000',
                 value: badAuth,
             },
         ]);
