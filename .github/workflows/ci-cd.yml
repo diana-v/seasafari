@@ -54,7 +54,7 @@ jobs:
       - name: Set env
         run: export NODE_ENV=test
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --include=dev
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
