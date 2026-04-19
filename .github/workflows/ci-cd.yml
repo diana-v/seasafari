@@ -5,6 +5,10 @@ on:
   pull_request:
     branches: [staging, master]
 
+concurrency:
+  group: ci-cd-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   NEXT_PUBLIC_DOMAIN: ${{secrets.NEXT_PUBLIC_DOMAIN}}
   BASIC_AUTH_USER: ${{ secrets.BASIC_AUTH_USER }}
