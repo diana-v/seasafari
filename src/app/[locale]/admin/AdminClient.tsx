@@ -174,11 +174,11 @@ export default function AdminClient({ initialOrders, lang, navigation }: AdminCl
     };
 
     React.useEffect(() => {
-        if (process.env.NODE_ENV !== 'production') {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (globalThis as any).__testScan = handleScan;
+        // Only expose this if we are explicitly in E2E mode
+        if (process.env.NEXT_PUBLIC_APP_MODE === 'e2e') {
+            (window as any).__testScan = handleScan;
         }
-    }, []);
+    }, [handleScan]);
 
     return (
         <>
