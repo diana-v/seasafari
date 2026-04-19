@@ -14,7 +14,7 @@ test.describe('Order & Payment Lifecycle', () => {
         await acceptCookies(page);
     });
 
-    test('Successful payment: UI redirect and Admin status update', async ({ context, page, request }) => {
+    test('Successful payment: UI redirect and Admin status update', async ({ page, request }) => {
         let capturedRef = '';
         const testEmail = process.env.TEST_EMAIL ?? '';
 
@@ -48,8 +48,7 @@ test.describe('Order & Payment Lifecycle', () => {
 
         expect(webhookResponse.status()).toBe(200);
 
-        await loginAsAdmin(context, USER, PASS);
-        await page.goto('/lt/admin');
+        await loginAsAdmin(page, USER, PASS);
 
         const searchInput = page.getByTestId('search-input');
 
@@ -80,8 +79,7 @@ test.describe('Order & Payment Lifecycle', () => {
 
         await page.goto('/lt/#gift-cards');
 
-        await loginAsAdmin(context, USER, PASS);
-        await page.goto('/lt/admin');
+        await loginAsAdmin(page, USER, PASS);
 
         const searchInput = page.getByTestId('search-input');
 

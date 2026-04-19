@@ -36,14 +36,12 @@ test.describe('Admin login', () => {
 });
 
 test.describe('Admin panel', () => {
-    test.beforeEach(async ({ context, page }) => {
+    test.beforeEach(async ({ page }) => {
         await page.goto('/');
 
         await acceptCookies(page);
 
-        await loginAsAdmin(context, USER, PASS);
-
-        await page.goto('/lt/admin');
+        await loginAsAdmin(page, USER, PASS);
     });
 
     test('admin page loads orders table', async ({ page }) => {
