@@ -174,10 +174,15 @@ export default function AdminClient({ initialOrders, lang, navigation }: AdminCl
     };
 
     React.useEffect(() => {
-        // Only expose this if we are explicitly in E2E mode
-        if (process.env.NEXT_PUBLIC_APP_MODE === 'e2e') {
-            (window as any).__testScan = handleScan;
-        }
+        const bridgeListener = (event: Event) => {
+            const customEvent = event as CustomEvent;
+
+            handleScan(customEvent.detail.token);
+        };
+
+        globalThis.addEventListener('playwright-test-scan', bridgeListener);
+
+        return () => globalThis.removeEventListener('playwright-test-scan', bridgeListener);
     }, [handleScan]);
 
     return (
