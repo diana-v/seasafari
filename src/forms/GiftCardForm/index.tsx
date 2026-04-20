@@ -4,7 +4,7 @@ import cn from 'clsx';
 import { Field, Form, Formik } from 'formik';
 import { nanoid } from 'nanoid';
 import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import * as React from 'react';
 import * as Yup from 'yup';
 

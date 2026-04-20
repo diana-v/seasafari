@@ -1,5 +1,4 @@
 import { createClient } from '@sanity/client';
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import * as React from 'react';
 
@@ -12,7 +11,7 @@ const client = createClient({
     apiVersion: process.env.SANITY_STUDIO_API_VERSION,
     dataset: process.env.SANITY_STUDIO_DATASET,
     projectId: process.env.SANITY_STUDIO_PROJECT_ID,
-    useCdn: false,
+    useCdn: true,
 });
 
 interface PageParams {

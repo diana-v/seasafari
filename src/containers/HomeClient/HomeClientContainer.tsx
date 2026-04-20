@@ -14,7 +14,6 @@ import { GiftCardLayout } from '@/layouts/GiftCardLayout/GiftCardLayout';
 import { HomeLayout } from '@/layouts/HomeLayout/HomeLayout';
 import { OffersLayout } from '@/layouts/OffersLayout/OffersLayout';
 import { PartnersLayout } from '@/layouts/PartnersLayout/PartnersLayout';
-import { GoogleReviewsResponse, ReviewsLayout } from '@/layouts/ReviewsLayout/ReviewsLayout';
 import { AboutSectionResponse } from '@/schemas/about';
 import { BlogsSectionResponse } from '@/schemas/blogs';
 import { ContactSectionResponse } from '@/schemas/contact';
@@ -26,27 +25,25 @@ import { HomeSectionResponse } from '@/schemas/home';
 import { NavigationProps } from '@/schemas/navigation';
 import { OffersSectionResponse } from '@/schemas/offers';
 import { PartnersSectionResponse } from '@/schemas/partners';
-import { ReviewsSectionResponse } from '@/schemas/reviews';
 
 interface HomeClientProps {
-    about: AboutSectionResponse;
-    blogs: BlogsSectionResponse;
-    contact: ContactSectionResponse;
-    footer: FooterSectionResponse;
-    gallery: GallerySectionResponse;
-    giftCard: GiftCardSectionResponse;
-    giftCardWidget: GiftCardWidgetResponse;
-    home: HomeSectionResponse;
-    navigation: NavigationProps;
-    offers: OffersSectionResponse;
-    partners: PartnersSectionResponse;
-    reviews: ReviewsSectionResponse;
-    reviewsData: GoogleReviewsResponse;
+    about?: AboutSectionResponse;
+    blogs?: BlogsSectionResponse;
+    contact?: ContactSectionResponse;
+    footer?: FooterSectionResponse;
+    gallery?: GallerySectionResponse;
+    giftCard?: GiftCardSectionResponse;
+    giftCardWidget?: GiftCardWidgetResponse;
+    home?: HomeSectionResponse;
+    navigation?: NavigationProps;
+    offers?: OffersSectionResponse;
+    partners?: PartnersSectionResponse;
+    reviewsSlot?: React.ReactNode;
 }
 
 export default function HomeClient({
    about, blogs, contact, footer, gallery, giftCard,
-   giftCardWidget, home, navigation, offers, partners, reviews, reviewsData
+   giftCardWidget, home, navigation, offers, partners, reviewsSlot
 }: HomeClientProps) {
     const [isWidgetVisible, setIsWidgetVisible] = useState(false);
 
@@ -97,7 +94,7 @@ export default function HomeClient({
             />
             <PartnersLayout logos={partners?.logos} title={partners?.title} />
             <OffersLayout cards={offers?.cards} description={offers?.description} title={offers?.title} />
-            <ReviewsLayout reviewsData={reviewsData} title={reviews?.title} />
+            {reviewsSlot}
             <ContactLayout
                 description={contact?.description}
                 formTitle={contact?.formTitle}
