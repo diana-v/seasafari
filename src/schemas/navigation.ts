@@ -5,6 +5,12 @@ export interface NavigationProps {
     phone: string;
 }
 
+export interface NavigationSectionResponse {
+    logo: string;
+    phone: string;
+}
+
+
 export const fetchNavigationData = (
     client: SanityClient,
     locale = 'lt',

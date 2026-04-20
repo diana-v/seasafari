@@ -26,7 +26,7 @@ test.describe('Order & Payment Lifecycle', () => {
         await page.goto('/lt#gift-cards');
         await page.getByTestId('gift-card-email-input').fill(testEmail);
         await page.getByTestId('gift-card-terms-checkbox').scrollIntoViewIfNeeded();
-        await page.getByTestId('gift-card-terms-checkbox').check({ force: true });
+        await page.getByTestId('gift-card-terms-checkbox').check({ force: true, position: { x: 1, y: 1 } });
 
         await page.getByTestId('gift-card-submit-button').click();
         await page.waitForResponse('**/api/make-payment');
@@ -62,7 +62,7 @@ test.describe('Order & Payment Lifecycle', () => {
         await expect(orderRow.locator('input[type="checkbox"]')).not.toBeChecked();
     });
 
-    test('Cancelled payment: Status remains UNPAID and hidden from Admin', async ({ context, page }) => {
+    test('Cancelled payment: Status remains UNPAID and hidden from Admin', async ({ page }) => {
         let capturedRef = '';
         const testEmail = process.env.TEST_EMAIL ?? '';
 
@@ -74,7 +74,7 @@ test.describe('Order & Payment Lifecycle', () => {
         await page.goto('/lt#gift-cards');
         await page.getByTestId('gift-card-email-input').fill(testEmail);
         await page.getByTestId('gift-card-terms-checkbox').scrollIntoViewIfNeeded();
-        await page.getByTestId('gift-card-terms-checkbox').check({ force: true });
+        await page.getByTestId('gift-card-terms-checkbox').check({ force: true, position: { x: 1, y: 1 } });
 
         await page.getByTestId('gift-card-submit-button').click();
         await page.waitForResponse('**/api/make-payment');

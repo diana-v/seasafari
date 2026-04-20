@@ -171,7 +171,7 @@ const ReviewCard = ({
     );
 };
 
-const BlogCard = ({ classNames, description, image, linkTitle, linkUrl, title, ...rest }: Partial<ComponentProps>) => (
+const BlogCard = ({ classNames, createdAt, description, image, linkTitle, linkUrl, title, ...rest }: Partial<ComponentProps>) => (
     <div
         className={cn(
             'w-full h-full flex flex-col xl:flex-row items-center gap-4 p-8 bg-white rounded-2xl transition-all duration-300',
