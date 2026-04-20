@@ -1,27 +1,28 @@
 import { createClient } from '@sanity/client';
-import { OAuth2Client } from 'google-auth-library';
 import { Metadata } from 'next';
 import * as React from 'react';
+import { Suspense } from 'react';
 
 import HomeClientContainer from '@/containers/HomeClient/HomeClientContainer';
-import { fetchAboutSectionData } from '@/schemas/about';
-import { fetchBlogsSectionData } from '@/schemas/blogs';
-import { fetchContactSectionData } from '@/schemas/contact';
-import { fetchFooterSectionData } from '@/schemas/footer';
-import { fetchGallerySectionData } from '@/schemas/gallery';
-import { fetchGiftCardSectionData } from '@/schemas/giftCard';
-import { fetchGiftCardWidgetSectionData } from '@/schemas/giftCardWidget';
-import { fetchHomeSectionData } from '@/schemas/home';
-import { fetchNavigationData } from '@/schemas/navigation';
-import { fetchOffersSectionData } from '@/schemas/offers';
-import { fetchPartnersSectionData } from '@/schemas/partners';
-import { fetchReviewsSectionData } from '@/schemas/reviews';
+import ReviewsServer from '@/containers/ReviewsServer/ReviewsServerContainer';
+import { AboutSectionResponse, fetchAboutSectionData } from '@/schemas/about';
+import { BlogsSectionResponse, fetchBlogsSectionData } from '@/schemas/blogs';
+import { ContactSectionResponse, fetchContactSectionData } from '@/schemas/contact';
+import { fetchFooterSectionData, FooterSectionResponse } from '@/schemas/footer';
+import { fetchGallerySectionData, GallerySectionResponse } from '@/schemas/gallery';
+import { fetchGiftCardSectionData, GiftCardSectionResponse } from '@/schemas/giftCard';
+import { fetchGiftCardWidgetSectionData, GiftCardWidgetResponse } from '@/schemas/giftCardWidget';
+import { fetchHomeSectionData, HomeSectionResponse } from '@/schemas/home';
+import { fetchNavigationData, NavigationSectionResponse } from '@/schemas/navigation';
+import { fetchOffersSectionData, OffersSectionResponse } from '@/schemas/offers';
+import { fetchPartnersSectionData, PartnersSectionResponse } from '@/schemas/partners';
+import { fetchReviewsSectionData, ReviewsSectionResponse } from '@/schemas/reviews';
 
 const client = createClient({
     apiVersion: process.env.SANITY_STUDIO_API_VERSION,
     dataset: process.env.SANITY_STUDIO_DATASET,
     projectId: process.env.SANITY_STUDIO_PROJECT_ID,
-    useCdn: false,
+    useCdn: true,
 });
 
 interface PageParams {
@@ -39,7 +40,7 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
         description,
         openGraph: {
             description,
-            images: home?.image ? [{ url: home.image }] : [],
+            images: home?.image ? [{ url: home?.image }] : [],
             siteName: 'Sea-Safari',
             title,
             type: 'website',
@@ -49,7 +50,7 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
         twitter: {
             card: 'summary',
             description,
-            images: home?.image ? [home.image] : [],
+            images: home?.image ? [home?.image] : [],
             title,
         },
     };
@@ -58,10 +59,7 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
 export default async function HomePage({ params }: PageParams) {
     const { locale } = await params;
 
-    const [
-        navigation, home, about, blogs, gallery, giftCard,
-        partners, offers, reviews, contact, footer, giftCardWidget
-    ] = await Promise.all([
+    const results = await Promise.allSettled([
         fetchNavigationData(client, locale, 'lt'),
         fetchHomeSectionData(client, locale, 'lt'),
         fetchAboutSectionData(client, locale, 'lt'),
@@ -76,26 +74,25 @@ export default async function HomePage({ params }: PageParams) {
         fetchGiftCardWidgetSectionData(client, locale, 'lt'),
     ]);
 
-    let reviewsData = null;
-
-    try {
-        const auth = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
-
-        auth.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN });
-        const { token } = await auth.getAccessToken();
-
-        const response = await fetch(
-            `https://mybusiness.googleapis.com/v4/accounts/${process.env.GOOGLE_BUSINESS_ID}/locations/${process.env.GOOGLE_LOCATION_ID}/reviews`,
-            {
-                headers: { Authorization: `Bearer ${token}` },
-                next: { revalidate: 86_400 }
-            }
-        );
-
-        if (response.ok) reviewsData = await response.json();
-    } catch (error) {
-        console.error('Google Reviews Fetch Failed:', error);
-    }
+    const [
+        navigation, home, about, blogs, gallery, giftCard,
+        partners, offers, reviews, contact, footer, giftCardWidget
+    ] = results.map(result =>
+        result.status === 'fulfilled' ? result.value : undefined
+    ) as [
+            NavigationSectionResponse | undefined,
+            HomeSectionResponse | undefined,
+            AboutSectionResponse | undefined,
+            BlogsSectionResponse | undefined,
+            GallerySectionResponse | undefined,
+            GiftCardSectionResponse | undefined,
+            PartnersSectionResponse | undefined,
+            OffersSectionResponse | undefined,
+            ReviewsSectionResponse | undefined,
+            ContactSectionResponse | undefined,
+            FooterSectionResponse | undefined,
+            GiftCardWidgetResponse | undefined
+    ];
 
     return (
         <HomeClientContainer
@@ -110,8 +107,14 @@ export default async function HomePage({ params }: PageParams) {
             navigation={navigation}
             offers={offers}
             partners={partners}
-            reviews={reviews}
-            reviewsData={reviewsData}
+            reviewsSlot={
+                <Suspense
+                    fallback={<div className="h-80 animate-pulse bg-gray-100" />}
+                    key="reviews-suspense-wrapper"
+                >
+                    <ReviewsServer title={reviews?.title} />
+                </Suspense>
+            }
         />
     );
 }

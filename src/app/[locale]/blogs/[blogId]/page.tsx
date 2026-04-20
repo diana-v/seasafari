@@ -17,7 +17,7 @@ const client = createClient({
     apiVersion: process.env.SANITY_STUDIO_API_VERSION,
     dataset: process.env.SANITY_STUDIO_DATASET,
     projectId: process.env.SANITY_STUDIO_PROJECT_ID,
-    useCdn: false,
+    useCdn: true,
 });
 
 interface PageParams {
@@ -96,21 +96,21 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
     if (!blog) return { title: 'Blog Not Found | SeaSafari' };
 
     return {
-        description: blog.description,
+        description: blog?.description,
         openGraph: {
-            description: blog.description,
-            images: blog.image ? [blog.image] : [],
+            description: blog?.description,
+            images: blog?.image ? [blog.image] : [],
             siteName: 'SeaSafari',
-            title: blog.title,
+            title: blog?.title,
             type: 'article',
-            url: `https://www.seasafari.lt/${locale}/blogs/${blog.slug}`,
+            url: `https://www.seasafari.lt/${locale}/blogs/${blog?.slug}`,
         },
-        title: `${blog.title} | SeaSafari`,
+        title: `${blog?.title} | SeaSafari`,
         twitter: {
             card: 'summary_large_image',
-            description: blog.description,
-            images: blog.image ? [blog.image] : [],
-            title: blog.title,
+            description: blog?.description,
+            images: blog?.image ? [blog.image] : [],
+            title: blog?.title,
         },
     };
 }
