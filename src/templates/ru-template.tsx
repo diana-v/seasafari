@@ -106,7 +106,7 @@ const RuTemplate = (ref: string, email: string, amount: string, validFrom: strin
 <body>
 <div class="container">
     <div class="header">
-        <img class="logo" src="www.seasafari.lt/images/logo.png" alt="logo" />
+        <img class="logo" src="https://www.seasafari.lt/images/logo.png" alt="logo" />
     </div>
     <div class="content">
         <h1 class="title"><a href="#" style="color: inherit;">Подтверждение покупки подарочной карты</a></h1>
