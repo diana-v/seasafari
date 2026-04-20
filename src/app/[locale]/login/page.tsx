@@ -1,5 +1,4 @@
 import { createClient } from '@sanity/client';
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import * as React from 'react';
 

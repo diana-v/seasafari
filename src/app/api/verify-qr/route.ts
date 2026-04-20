@@ -51,6 +51,14 @@ export async function GET(req: Request) {
             });
         }
 
+        if (order.status === Status.UNPAID) {
+            return NextResponse.json({
+                orderRef: order.orderRef,
+                reason: localisedString.unpaid,
+                valid: false,
+            });
+        }
+
         if (decoded.expired) {
             return NextResponse.json({
                 orderRef: order.orderRef,
