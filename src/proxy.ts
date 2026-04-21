@@ -38,6 +38,7 @@ export async function proxy(req: AuthenticatedNextRequest) {
 
 export const config = {
     matcher: [
-        String.raw`/((?!api|_next/static|_next/image|studio|.*\..*).*)`,
+        // eslint-disable-next-line unicorn/prefer-string-raw
+        '/((?!api|_next/static|_next/image|studio|.*\\..*).*)',
     ],
 };
