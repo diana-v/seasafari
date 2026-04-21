@@ -28,7 +28,7 @@ export const HomeLayout: React.FC<HomeProps> = ({ cta, heroMedia, image, subtitl
     const params = useParams();
     const locale = params.locale as string;
     const defaultLocale = 'lt';
-    const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
+    const localisedString = languages[(locale ?? defaultLocale) as LocaleType] || languages['lt'];
 
     const { desktopContent, mobileContent } = heroMedia ?? {};
 
@@ -81,7 +81,7 @@ export const HomeLayout: React.FC<HomeProps> = ({ cta, heroMedia, image, subtitl
             </div>
 
             <a
-                aria-label={localisedString.scrollDown}
+                aria-label={localisedString?.scrollDown ?? ''}
                 className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden flex-col items-center gap-2 text-sm uppercase tracking-widest md:flex animate-bounce z-10"
                 href="#offers"
             >

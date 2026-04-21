@@ -40,7 +40,7 @@ export const ReviewsLayout: React.FC<ReviewsProps> = ({ reviewsData, title }) =>
     const params = useParams();
     const locale = params.locale as string;
     const defaultLocale = 'lt';
-    const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
+    const localisedString = languages[(locale ?? defaultLocale) as LocaleType] || languages['lt'];
 
     if (!reviewsData?.reviews?.length) {
         return null;

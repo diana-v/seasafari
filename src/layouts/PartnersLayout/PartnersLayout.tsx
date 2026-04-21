@@ -21,7 +21,7 @@ export const PartnersLayout: React.FC<PartnersProps> = ({ logos, title }) => {
     const params = useParams();
     const locale = params.locale as string;
     const defaultLocale = 'lt';
-    const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
+    const localisedString = languages[(locale ?? defaultLocale) as LocaleType] || languages['lt'];
 
     if (!logos?.length) {
         return null;
