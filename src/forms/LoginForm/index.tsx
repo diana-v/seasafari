@@ -24,7 +24,7 @@ const LoginForm = () => {
     const params = useParams();
     const locale = params.locale as string;
     const defaultLocale = 'lt';
-    const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
+    const localisedString = languages[(locale ?? defaultLocale) as LocaleType] || languages['lt'];
     const [alert, setAlert] = React.useState<IAlert>({ message: '', type: AlertType.Success });
     const initialValues: Values = { password: '', username: '' };
     const loginSchema = Yup.object().shape({

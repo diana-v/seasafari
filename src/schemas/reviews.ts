@@ -12,7 +12,7 @@ export const fetchReviewsSectionData = (
     client.fetch(
         `
     *[_type == "reviews"]{
-        "title": coalesce(title[$locale], title[$defaultLocale], "Missing translation"),
+        "title": coalesce(title.[$locale], title.[$defaultLocale], "Missing translation"),
     }[0]
 `,
         { defaultLocale, locale },

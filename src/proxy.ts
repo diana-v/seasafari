@@ -16,13 +16,17 @@ export async function proxy(req: AuthenticatedNextRequest) {
     const { geo, ip, nextUrl } = req;
     const { pathname } = nextUrl;
 
+    if (
+        pathname.includes('.') ||
+        pathname.startsWith('/api') ||
+        pathname.startsWith('/_next')
+    ) {
+        return NextResponse.next();
+    }
+
     const pathnameHasLocale = locales.some(
         (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
     );
-
-    if (nextUrl.searchParams.toString()) {
-        return NextResponse.next();
-    }
 
     if (!pathnameHasLocale) {
         nextUrl.pathname = `/${defaultLocale}${pathname}`;
