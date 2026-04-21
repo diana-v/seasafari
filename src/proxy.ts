@@ -16,11 +16,7 @@ export async function proxy(req: AuthenticatedNextRequest) {
     const { geo, ip, nextUrl } = req;
     const { pathname } = nextUrl;
 
-    if (
-        pathname.includes('.') ||
-        pathname.startsWith('/api') ||
-        pathname.startsWith('/_next')
-    ) {
+    if (pathname.includes('.') || pathname.startsWith('/api')) {
         return NextResponse.next();
     }
 
@@ -42,6 +38,6 @@ export async function proxy(req: AuthenticatedNextRequest) {
 
 export const config = {
     matcher: [
-        '/((?!api|_next/static|_next/image|studio|favicon.ico|icons|images|manifest.json).*)',
+        String.raw`/((?!api|_next/static|_next/image|studio|.*\..*).*)`,
     ],
 };
