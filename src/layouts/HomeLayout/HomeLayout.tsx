@@ -70,7 +70,7 @@ export const HomeLayout: React.FC<HomeProps> = ({ cta, heroMedia, image, subtitl
                         {subtitle}
                     </div>
                 )}
-                {cta && (
+                {cta?.link && cta?.label && (
                     <a
                         className="mt-8 rounded bg-orange-500 px-10 py-3 text-sm md:text-lg lg:max-w-xl font-bold uppercase tracking-wider transition-transform hover:scale-105"
                         href={cta.link}
