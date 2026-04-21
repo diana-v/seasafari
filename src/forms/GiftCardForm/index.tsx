@@ -36,7 +36,7 @@ export const GiftCardForm: React.FC<GiftCardFormProps> = ({ options }) => {
     const params = useParams();
     const locale = params.locale as string;
     const defaultLocale = 'lt';
-    const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
+    const localisedString = languages[(locale ?? defaultLocale) as LocaleType] || languages['lt'];
     const [alert, setAlert] = React.useState<IAlert>({ message: '', type: AlertType.Success });
 
     const giftCardSchema = Yup.object().shape({

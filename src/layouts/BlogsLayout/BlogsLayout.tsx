@@ -27,7 +27,7 @@ export const BlogsLayout: React.FC<BlogsProps> = ({ cards, description, title })
     const params = useParams();
     const locale = params.locale as string;
     const defaultLocale = 'lt';
-    const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
+    const localisedString = languages[(locale ?? defaultLocale) as LocaleType] || languages['lt'];
 
     if (!cards?.length) {
         return null;

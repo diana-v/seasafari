@@ -21,7 +21,7 @@ export const ContactLayout: React.FC<ContactProps> = ({ description, formTitle, 
     const params = useParams();
     const locale = params.locale as string;
     const defaultLocale = 'lt';
-    const localisedString = languages[(locale ?? defaultLocale) as LocaleType];
+    const localisedString = languages[(locale ?? defaultLocale) as LocaleType] || languages['lt'];
 
     return (
         <div className="relative" id="kontaktai">

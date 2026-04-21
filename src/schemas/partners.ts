@@ -18,8 +18,8 @@ export const fetchPartnersSectionData = (
     client.fetch(
         `
     *[_type == "partners"]{
-        "title": coalesce(title[$locale], title[$defaultLocale], "Missing translation"),
-        "description": coalesce(description[$locale], description[$defaultLocale]),
+        "title": coalesce(title.[$locale], title.[$defaultLocale], "Missing translation"),
+        "description": coalesce(description.[$locale], description.[$defaultLocale]),
         "logos": logos[] {
             "image": image.asset->url,
         },
