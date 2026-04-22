@@ -49,7 +49,7 @@ export const fetchAllHomeSectionData = (
         "slug": slug.current,
         "title": coalesce(title.[$locale], title.[$defaultLocale]),
         "description": coalesce(description.[$locale], description.[$defaultLocale]),
-        "cards": *[_type == "blog"] {
+        "cards": *[_type == "blog"] | order(orderRank) [0...2] {
             "slug": slug.current,
             "image": image.asset->url,
             "title": coalesce(title.[$locale], title.[$defaultLocale], "Missing translation"),

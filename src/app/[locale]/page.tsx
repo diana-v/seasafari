@@ -36,7 +36,8 @@ export const dynamic = 'force-static';
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
     const { locale } = await params;
-    const home = await fetchHomeSectionData(client, locale, 'lt');
+    const data = await fetchAllHomeSectionData(client, locale, 'lt');
+    const home = data.home;
 
     const title = "Sea-Safari Lietuva | Nepamirštami įspūdžiai Jums";
     const description = "Plaukdami su „Sea Safari“ jūs priartėsite prie gamtos ir patirsite nepamirštamus įspūdžius. Mes siūlome du R.I.B. laivus, varomus 300 AG ir 600 AG varikliais.";
