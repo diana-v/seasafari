@@ -6,6 +6,7 @@ import { Suspense } from 'react';
 import HomeClientContainer from '@/containers/HomeClient/HomeClientContainer';
 import ReviewsServer from '@/containers/ReviewsServer/ReviewsServerContainer';
 import { AboutSectionResponse, fetchAboutSectionData } from '@/schemas/about';
+import { fetchAllHomeSectionData } from '@/schemas/all';
 import { BlogsSectionResponse, fetchBlogsSectionData } from '@/schemas/blogs';
 import { ContactSectionResponse, fetchContactSectionData } from '@/schemas/contact';
 import { fetchFooterSectionData, FooterSectionResponse } from '@/schemas/footer';
@@ -28,6 +29,10 @@ const client = createClient({
 interface PageParams {
     params: Promise<{ locale: string }>;
 }
+
+export const revalidate = 86_400; // 1 day
+
+export const dynamic = 'force-static';
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
     const { locale } = await params;
@@ -59,40 +64,9 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
 export default async function HomePage({ params }: PageParams) {
     const { locale } = await params;
 
-    const results = await Promise.allSettled([
-        fetchNavigationData(client, locale, 'lt'),
-        fetchHomeSectionData(client, locale, 'lt'),
-        fetchAboutSectionData(client, locale, 'lt'),
-        fetchBlogsSectionData(client, locale, 'lt'),
-        fetchGallerySectionData(client, locale, 'lt'),
-        fetchGiftCardSectionData(client, locale, 'lt'),
-        fetchPartnersSectionData(client, locale, 'lt'),
-        fetchOffersSectionData(client, locale, 'lt'),
-        fetchReviewsSectionData(client, locale, 'lt'),
-        fetchContactSectionData(client, locale, 'lt'),
-        fetchFooterSectionData(client, locale, 'lt'),
-        fetchGiftCardWidgetSectionData(client, locale, 'lt'),
-    ]);
-
-    const [
-        navigation, home, about, blogs, gallery, giftCard,
-        partners, offers, reviews, contact, footer, giftCardWidget
-    ] = results.map(result =>
-        result.status === 'fulfilled' ? result.value : undefined
-    ) as [
-            NavigationSectionResponse | undefined,
-            HomeSectionResponse | undefined,
-            AboutSectionResponse | undefined,
-            BlogsSectionResponse | undefined,
-            GallerySectionResponse | undefined,
-            GiftCardSectionResponse | undefined,
-            PartnersSectionResponse | undefined,
-            OffersSectionResponse | undefined,
-            ReviewsSectionResponse | undefined,
-            ContactSectionResponse | undefined,
-            FooterSectionResponse | undefined,
-            GiftCardWidgetResponse | undefined
-    ];
+    const { about, blogs, contact, footer, gallery, giftCard,
+        giftCardWidget, home, navigation, offers, partners, reviews
+    } = await fetchAllHomeSectionData(client, locale, 'lt')
 
     return (
         <HomeClientContainer

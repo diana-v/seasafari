@@ -13,30 +13,7 @@ interface AuthenticatedNextRequest extends NextRequest {
 }
 
 export async function proxy(req: AuthenticatedNextRequest) {
-    const { geo, ip, nextUrl } = req;
-    const { pathname } = nextUrl;
-
-    if (
-        pathname.startsWith('/studio') ||
-        pathname.startsWith('/images') ||
-        pathname.startsWith('/icons')
-    ) {
-        return NextResponse.next();
-    }
-
-    const hasLocale = locales.some(
-        (locale) =>
-            pathname === `/${locale}` ||
-            pathname.startsWith(`/${locale}/`)
-    );
-
-    if (!hasLocale) {
-        const url = nextUrl.clone();
-
-        url.pathname = `/${defaultLocale}${pathname}`;
-
-        return NextResponse.redirect(url);
-    }
+    const { geo, ip } = req;
 
     const requestHeaders = new Headers(req.headers);
 
@@ -50,5 +27,5 @@ export async function proxy(req: AuthenticatedNextRequest) {
 
 export const config = {
     // eslint-disable-next-line unicorn/prefer-string-raw
-    matcher: ['/((?!api|_next|.*\\..*).*)'],
+    matcher: ['/((?!_next|api|.*\\..*).*)'],
 };
