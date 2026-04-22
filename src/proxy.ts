@@ -16,34 +16,39 @@ export async function proxy(req: AuthenticatedNextRequest) {
     const { geo, ip, nextUrl } = req;
     const { pathname } = nextUrl;
 
-    const PUBLIC_FILE = /\.(.*)$/;
-
     if (
-        PUBLIC_FILE.test(pathname) ||
-        pathname.startsWith('/api') ||
-        pathname.startsWith('/_next')
+        pathname.startsWith('/studio') ||
+        pathname.startsWith('/images') ||
+        pathname.startsWith('/icons')
     ) {
         return NextResponse.next();
     }
 
-    const pathnameHasLocale = locales.some(
-        (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+    const hasLocale = locales.some(
+        (locale) =>
+            pathname === `/${locale}` ||
+            pathname.startsWith(`/${locale}/`)
     );
 
-    if (!pathnameHasLocale) {
-        nextUrl.pathname = `/${defaultLocale}${pathname}`;
+    if (!hasLocale) {
+        const url = nextUrl.clone();
 
-        return NextResponse.redirect(nextUrl);
+        url.pathname = `/${defaultLocale}${pathname}`;
+
+        return NextResponse.redirect(url);
     }
 
-    nextUrl.searchParams.set('clientIp', ip ?? '127.0.0.1');
-    nextUrl.searchParams.set('clientCountry', geo?.country ?? 'lt');
+    const requestHeaders = new Headers(req.headers);
 
-    return NextResponse.rewrite(nextUrl);
+    requestHeaders.set('x-client-ip', ip ?? '');
+    requestHeaders.set('x-client-country', geo?.country ?? '');
+
+    return NextResponse.next({
+        request: { headers: requestHeaders },
+    });
 }
 
 export const config = {
-    matcher: [
-        '/((?!api|_next/static|_next/image|studio|icons|images).*)',
-    ],
+    // eslint-disable-next-line unicorn/prefer-string-raw
+    matcher: ['/((?!api|_next|.*\\..*).*)'],
 };
