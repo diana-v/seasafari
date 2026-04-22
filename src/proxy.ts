@@ -16,8 +16,10 @@ export async function proxy(req: AuthenticatedNextRequest) {
     const { geo, ip, nextUrl } = req;
     const { pathname } = nextUrl;
 
+    const PUBLIC_FILE = /\.(.*)$/;
+
     if (
-        pathname.includes('.') ||
+        PUBLIC_FILE.test(pathname) ||
         pathname.startsWith('/api') ||
         pathname.startsWith('/_next')
     ) {
@@ -42,6 +44,6 @@ export async function proxy(req: AuthenticatedNextRequest) {
 
 export const config = {
     matcher: [
-        '/((?!api|_next/static|_next/image|studio|favicon.ico|icons|images|meta.json|sw.js).*)',
+        '/((?!api|_next/static|_next/image|studio|icons|images).*)',
     ],
 };
