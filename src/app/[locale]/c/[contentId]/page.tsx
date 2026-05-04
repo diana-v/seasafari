@@ -28,7 +28,6 @@ interface PageParams {
     }>;
 }
 
-// 2. The Server Component
 export default async function ContentPage({ params }: PageParams) {
     const { contentId, locale } = await params;
 
@@ -81,7 +80,6 @@ export default async function ContentPage({ params }: PageParams) {
     );
 }
 
-// 1. Dynamic Metadata Generation
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
     const { contentId, locale } = await params;
     const content = await fetchContentSectionData(client, contentId, locale, 'lt');
