@@ -2,6 +2,7 @@ import { createClient } from '@sanity/client';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import * as React from 'react';
+import { Suspense } from 'react';
 
 import { FooterContainer } from '@/containers/Footer/FooterContainer';
 import { NavigationContainer } from '@/containers/Navigation/NavigationContainer';
@@ -12,8 +13,10 @@ import { languages, LocaleType } from '@/translations/failed';
 const client = createClient({
     apiVersion: process.env.SANITY_STUDIO_API_VERSION,
     dataset: process.env.SANITY_STUDIO_DATASET,
+    maxRetries: 3,
     projectId: process.env.SANITY_STUDIO_PROJECT_ID,
-    useCdn: true, // This page can use CDN as the data is static common data
+    retryDelay: (attempt) => attempt * 1000,
+    useCdn: true,
 });
 
 interface PageProps {
@@ -39,11 +42,13 @@ export default async function PaymentFailedPage({ params }: PageProps) {
 
     return (
         <div className="flex flex-col min-h-screen bg-white">
-            <NavigationContainer
-                isSimple
-                logo={navigation?.logo}
-                phone={navigation?.phone}
-            />
+            <Suspense fallback={<div className="h-24" />}>
+                <NavigationContainer
+                    isSimple
+                    logo={navigation?.logo}
+                    phone={navigation?.phone}
+                />
+            </Suspense>
 
             <main className="xl:container mx-auto flex-grow flex flex-col justify-center px-4">
                 <div className="max-w-xl mx-auto text-center flex flex-col gap-6 items-center py-20">
