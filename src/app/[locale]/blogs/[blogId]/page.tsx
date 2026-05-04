@@ -13,6 +13,7 @@ import { fetchBlogSectionData } from '@/schemas/blog';
 import { fetchFooterSectionData } from '@/schemas/footer';
 import { fetchGiftCardWidgetSectionData } from '@/schemas/giftCardWidget';
 import { fetchNavigationData } from '@/schemas/navigation';
+import { fetchBlogsSectionData } from '@/schemas/blogs';
 
 const client = createClient({
     apiVersion: process.env.SANITY_STUDIO_API_VERSION,
@@ -33,12 +34,10 @@ interface PageParams {
 export default async function BlogIdPage({ params }: PageParams) {
     const { blogId, locale } = await params;
 
-    const [navigation, blog, footer, giftCardWidget] = await Promise.all([
-        fetchNavigationData(client, locale, 'lt'),
-        fetchBlogSectionData(client, blogId, locale, 'lt'),
-        fetchFooterSectionData(client, locale, 'lt'),
-        fetchGiftCardWidgetSectionData(client, locale, 'lt'),
-    ]);
+    const blog = await fetchBlogSectionData(client, blogId, locale, 'lt')
+    const giftCardWidget = await fetchGiftCardWidgetSectionData(client, locale, 'lt')
+    const navigation = await fetchNavigationData(client, locale, 'lt')
+    const footer = await fetchFooterSectionData(client, locale, 'lt')
 
     if (!blog) {
         return <div className="text-center py-20">Blog post not found.</div>;

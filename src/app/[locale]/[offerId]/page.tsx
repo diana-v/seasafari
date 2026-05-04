@@ -68,11 +68,9 @@ export default async function OfferPage({ params }: PageParams) {
         notFound();
     }
 
-    const [navigation, offer, footer] = await Promise.all([
-        fetchNavigationData(client, locale, 'lt'),
-        fetchOfferSectionData(client, offerId, locale, 'lt'),
-        fetchFooterSectionData(client, locale, 'lt'),
-    ]);
+    const navigation = await fetchNavigationData(client, locale, 'lt')
+    const offer = await fetchOfferSectionData(client, offerId, locale, 'lt')
+    const footer= await fetchFooterSectionData(client, locale, 'lt')
 
     const localisedString = languages[locale as LocaleType] || languages['lt'];
 

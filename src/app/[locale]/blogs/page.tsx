@@ -31,12 +31,10 @@ interface PageParams {
 export default async function BlogsPage({ params }: PageParams) {
     const { locale } = await params;
 
-    const [navigation, blogs, footer, giftCardWidget] = await Promise.all([
-        fetchNavigationData(client, locale, 'lt'),
-        fetchBlogsSectionData(client, locale, 'lt'),
-        fetchFooterSectionData(client, locale, 'lt'),
-        fetchGiftCardWidgetSectionData(client, locale, 'lt'),
-    ]);
+    const blogs = await fetchBlogsSectionData(client, locale, 'lt')
+    const giftCardWidget = await fetchGiftCardWidgetSectionData(client, locale, 'lt')
+    const navigation = await fetchNavigationData(client, locale, 'lt')
+    const footer = await fetchFooterSectionData(client, locale, 'lt')
 
     const { cards, description, slug, title } = blogs ?? {};
     const localisedString = languages[locale as LocaleType] || languages['lt'];
