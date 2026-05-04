@@ -31,11 +31,8 @@ export const metadata: Metadata = {
 export default async function PaymentFailedPage({ params }: PageProps) {
     const { locale } = await params;
 
-    // Parallel fetching for shared UI components
-    const [navigation, footer] = await Promise.all([
-        fetchNavigationData(client, locale, 'lt'),
-        fetchFooterSectionData(client, locale, 'lt'),
-    ]);
+    const navigation = await fetchNavigationData(client, locale, 'lt')
+    const footer = await fetchFooterSectionData(client, locale, 'lt')
 
     const localisedString = languages[locale as LocaleType] || languages['lt'];
     const contactEmail = process.env.NEXT_PUBLIC_RESEND_FROM_EMAIL;

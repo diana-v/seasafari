@@ -28,12 +28,10 @@ interface PageParams {
 export default async function FaqPage({ params }: PageParams) {
     const { locale } = await params;
 
-    const [navigation, faq, footer, giftCardWidget] = await Promise.all([
-        fetchNavigationData(client, locale, 'lt'),
-        fetchFAQSectionData(client, locale, 'lt'),
-        fetchFooterSectionData(client, locale, 'lt'),
-        fetchGiftCardWidgetSectionData(client, locale, 'lt'),
-    ]);
+    const navigation = await fetchNavigationData(client, locale, 'lt')
+    const footer = await fetchFooterSectionData(client, locale, 'lt')
+    const faq = await fetchFAQSectionData(client, locale, 'lt')
+    const giftCardWidget = await fetchGiftCardWidgetSectionData(client, locale, 'lt')
 
     const { description, faq: items, title } = faq ?? {};
 
