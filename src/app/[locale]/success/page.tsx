@@ -60,10 +60,8 @@ export default async function PaymentSuccessPage({ params, searchParams }: PageP
 
     const order = existingOrder[0];
 
-    const [navigation, footer] = await Promise.all([
-        fetchNavigationData(client, locale, 'lt'),
-        fetchFooterSectionData(client, locale, 'lt'),
-    ]);
+    const navigation = await fetchNavigationData(client, locale, 'lt')
+    const footer = await fetchFooterSectionData(client, locale, 'lt')
 
     const pdfStream = await generatePdfDoc({
         count: (order.orderAmount / 25).toString(),

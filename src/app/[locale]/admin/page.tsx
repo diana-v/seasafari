@@ -8,6 +8,9 @@ import { orders, Status } from '@/server/db/schema';
 import { checkAdminAuth } from '@/utils/checkAdminAuth';
 
 import AdminClient from './AdminClient';
+import { fetchBlogsSectionData } from '@/schemas/blogs';
+import { fetchGiftCardWidgetSectionData } from '@/schemas/giftCardWidget';
+import { fetchFooterSectionData } from '@/schemas/footer';
 
 const client = createClient({
     apiVersion: process.env.SANITY_STUDIO_API_VERSION,
@@ -24,13 +27,13 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
 
     if (!isAuthenticated) redirect(`/${locale}/login`);
 
-    const [navigation, initialOrders] = await Promise.all([
-        fetchNavigationData(client, locale, 'lt'),
+    const navigation = await fetchNavigationData(client, locale, 'lt')
+
+    const initialOrders = await
         db.instance.query.orders.findMany({
             orderBy: asc(orders.orderRef),
             where: (order) => eq(order.status, Status.CREATED),
         })
-    ]);
 
     // eslint-disable-next-line unicorn/prefer-structured-clone
     const formattedOrders = JSON.parse(JSON.stringify(initialOrders));

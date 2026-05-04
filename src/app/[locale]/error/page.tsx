@@ -33,10 +33,8 @@ export default async function PaymentErrorPage({ params, searchParams }: PagePro
     const { locale } = await params;
     const { errorCode } = await searchParams;
 
-    const [navigation, footer] = await Promise.all([
-        fetchNavigationData(client, locale, 'lt'),
-        fetchFooterSectionData(client, locale, 'lt'),
-    ]);
+    const navigation = await fetchNavigationData(client, locale, 'lt')
+    const footer = await fetchFooterSectionData(client, locale, 'lt')
 
     const localisedString = languages[locale as LocaleType] || languages['lt'];
 

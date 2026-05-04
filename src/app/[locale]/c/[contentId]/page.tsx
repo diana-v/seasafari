@@ -11,6 +11,8 @@ import { fetchContentSectionData } from '@/schemas/content';
 import { fetchFooterSectionData } from '@/schemas/footer';
 import { fetchGiftCardWidgetSectionData } from '@/schemas/giftCardWidget';
 import { fetchNavigationData } from '@/schemas/navigation';
+import { fetchBlogSectionData } from '@/schemas/blog';
+import { fetchBlogsSectionData } from '@/schemas/blogs';
 
 const client = createClient({
     apiVersion: process.env.SANITY_STUDIO_API_VERSION,
@@ -31,12 +33,10 @@ interface PageParams {
 export default async function ContentPage({ params }: PageParams) {
     const { contentId, locale } = await params;
 
-    const [navigation, content, footer, giftCardWidget] = await Promise.all([
-        fetchNavigationData(client, locale, 'lt'),
-        fetchContentSectionData(client, contentId, locale, 'lt'),
-        fetchFooterSectionData(client, locale, 'lt'),
-        fetchGiftCardWidgetSectionData(client, locale, 'lt'),
-    ]);
+    const content = await fetchContentSectionData(client, contentId, locale, 'lt')
+    const giftCardWidget = await fetchGiftCardWidgetSectionData(client, locale, 'lt')
+    const navigation = await fetchNavigationData(client, locale, 'lt')
+    const footer = await fetchFooterSectionData(client, locale, 'lt')
 
     if (!content) {
         return (
