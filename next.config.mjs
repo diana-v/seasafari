@@ -23,6 +23,11 @@ const nextConfig = {
     async redirects() {
         return [
             {
+                source: '/',
+                destination: '/lt',
+                permanent: true,
+            },
+            {
                 source: '/studio',
                 destination: `/studio/${process.env.NEXT_PUBLIC_SANITY_DATASET}/structure`,
                 permanent: true,
