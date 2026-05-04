@@ -21,18 +21,7 @@ export default async function RootLayout({
     const { locale } = await params;
 
     return (
-        <html className={inter.variable} lang={locale}>
-            <head>
-                <meta content="default" name="apple-mobile-web-app-status-bar-style" />
-                <meta content="yes" name="mobile-web-app-capable" />
-                <meta content="#FFFFFF" name="theme-color" />
-                <link href="/icons/favicon.ico" rel="icon" sizes="any" />
-                <link href="/icons/apple-touch-icon-180x180.png" rel="apple-touch-icon" sizes="180x180" />
-                <link href="/icons/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png" />
-                <link href="/icons/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png" />
-                <link href="/icons/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png" />
-                <link href="/manifest.json" rel="manifest" />
-            </head>
+        <div className={inter.variable} data-locale={locale}>
             <body className="modal">
                 <ClientInitContainer />
 
@@ -73,6 +62,6 @@ export default async function RootLayout({
 
                 <div id="modal" />
             </body>
-        </html>
+        </div>
     );
 }

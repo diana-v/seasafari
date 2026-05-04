@@ -105,8 +105,10 @@ export default async function OfferPage({ params }: PageParams) {
                                     root: 'h-full',
                                 }}
                                 fill
+                                height={256}
                                 loading="eager"
                                 src={offer.image}
+                                width={1024}
                             />
                         )}
                     </div>
