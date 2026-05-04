@@ -1,6 +1,7 @@
 import { createClient } from '@sanity/client';
 import { Metadata } from 'next';
 import * as React from 'react';
+import { Suspense } from 'react';
 
 import { Widget } from '@/components/Widget/WidgetComponent';
 import { FooterContainer } from '@/containers/Footer/FooterContainer';
@@ -14,7 +15,9 @@ import { fetchNavigationData } from '@/schemas/navigation';
 const client = createClient({
     apiVersion: process.env.SANITY_STUDIO_API_VERSION,
     dataset: process.env.SANITY_STUDIO_DATASET,
+    maxRetries: 3,
     projectId: process.env.SANITY_STUDIO_PROJECT_ID,
+    retryDelay: (attempt) => attempt * 1000,
     useCdn: true,
 });
 
@@ -36,11 +39,13 @@ export default async function FaqPage({ params }: PageParams) {
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-50">
-            <NavigationContainer
-                isSimple
-                logo={navigation?.logo}
-                phone={navigation?.phone}
-            />
+            <Suspense fallback={<div className="h-24" />}>
+                <NavigationContainer
+                    isSimple
+                    logo={navigation?.logo}
+                    phone={navigation?.phone}
+                />
+            </Suspense>
 
             <main className="container max-w-7xl flex-grow mx-auto px-4 py-8 md:py-16 lg:py-24 flex flex-col items-center gap-6 md:gap-8 lg:gap-10">
                 <FaqLayout

@@ -1,15 +1,21 @@
 import { Inter } from 'next/font/google';
+import { notFound } from 'next/navigation';
 import Script from 'next/script';
 
-import ClientInitContainer from '@/containers/ClientInit/ClientInitContainer';
-
 import '../../styles/globals.css';
+import ClientInitContainer from '@/containers/ClientInit/ClientInitContainer';
 
 const inter = Inter({
     display: 'swap',
     subsets: ['latin'],
     variable: '--font-inter',
 });
+
+export async function generateStaticParams() {
+    return [{ locale: 'en' }, { locale: 'lt' }, { locale: 'ru' }];
+}
+
+export const dynamicParams = false;
 
 export default async function RootLayout({
      children,
@@ -20,8 +26,14 @@ export default async function RootLayout({
 }) {
     const { locale } = await params;
 
+    const supportedLocales = ['en', 'lt', 'ru'];
+
+    if (!supportedLocales.includes(locale)) {
+        notFound();
+    }
+
     return (
-        <div className={inter.variable} data-locale={locale}>
+        <html className={inter.variable} data-locale={locale}>
             <body className="modal">
                 <ClientInitContainer />
 
@@ -62,6 +74,6 @@ export default async function RootLayout({
 
                 <div id="modal" />
             </body>
-        </div>
+        </html>
     );
 }
