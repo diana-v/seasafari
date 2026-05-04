@@ -3,7 +3,7 @@
 import { Scanner } from '@yudiel/react-qr-scanner';
 import cn from 'clsx';
 import * as React from 'react';
-import { useCallback } from 'react';
+import { Suspense, useCallback } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
 import { AlertComponent, AlertType } from '@/components/Alert/AlertComponent';
@@ -186,7 +186,9 @@ export default function AdminClient({ initialOrders, lang, navigation }: AdminCl
 
     return (
         <>
-            <NavigationContainer isAuthenticated isSimple logo={navigation?.logo} phone={navigation?.phone} />
+            <Suspense fallback={<div className="h-24" />}>
+                <NavigationContainer isAuthenticated isSimple logo={navigation?.logo} phone={navigation?.phone} />
+            </Suspense>
             <div className="bg-gray-50 py-8 md:py-16 lg:py-24 min-h-screen">
                 <div className="xl:container mx-auto p-4 flex flex-col gap-4">
                     {alert.message && <AlertComponent color={alert.type} message={alert.message} />}

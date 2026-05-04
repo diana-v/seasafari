@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 import { Widget } from '@/components/Widget/WidgetComponent';
 import { FooterContainer } from '@/containers/Footer/FooterContainer';
@@ -65,7 +65,9 @@ export default function HomeClient({
     return (
         <>
             <div className="h-[100vh]">
-                <NavigationContainer logo={navigation?.logo} phone={navigation?.phone} />
+                <Suspense fallback={<div className="h-24" />}>
+                    <NavigationContainer logo={navigation?.logo} phone={navigation?.phone} />
+                </Suspense>
                 <HomeLayout
                     cta={home?.cta}
                     heroMedia={home?.heroMedia}

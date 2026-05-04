@@ -1,6 +1,7 @@
 import { createClient } from '@sanity/client';
 import { Metadata } from 'next';
 import * as React from 'react';
+import { Suspense } from 'react';
 
 import { IconComponent } from '@/components/Icon/IconComponent';
 import { RichTextComponent } from '@/components/RichText/RichTextComponent';
@@ -15,7 +16,9 @@ import { languages, LocaleType } from '@/translations/offer';
 const client = createClient({
     apiVersion: process.env.SANITY_STUDIO_API_VERSION,
     dataset: process.env.SANITY_STUDIO_DATASET,
+    maxRetries: 3,
     projectId: process.env.SANITY_STUDIO_PROJECT_ID,
+    retryDelay: (attempt) => attempt * 1000,
     useCdn: true,
 });
 
@@ -63,11 +66,13 @@ export default async function OfferPage({ params }: PageParams) {
 
     return (
         <div className="flex-grow bg-gray-50 min-h-screen" id={offer?.slug ?? ''}>
-            <NavigationContainer
-                isSimple
-                logo={navigation?.logo}
-                phone={navigation?.phone}
-            />
+            <Suspense fallback={<div className="h-24" />}>
+                <NavigationContainer
+                    isSimple
+                    logo={navigation?.logo}
+                    phone={navigation?.phone}
+                />
+            </Suspense>
 
             <div className="xl:container max-w-7xl min-h-[calc(100vh-130px)] mx-auto px-4 py-8 md:py-16 lg:py-24 flex flex-col flex-wrap gap-2 md:gap-4 lg:gap-6">
                 <div className="flex flex-col-reverse lg:flex-row gap-4 lg:gap-8">

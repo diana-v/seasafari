@@ -1,6 +1,7 @@
 import { createClient } from '@sanity/client';
 import { Metadata } from 'next';
 import * as React from 'react';
+import { Suspense } from 'react';
 
 import { CardComponent, CardType } from '@/components/Card/CardComponent';
 import { Widget } from '@/components/Widget/WidgetComponent';
@@ -15,7 +16,9 @@ import { languages, LocaleType } from '@/translations/blog';
 const client = createClient({
     apiVersion: process.env.SANITY_STUDIO_API_VERSION,
     dataset: process.env.SANITY_STUDIO_DATASET,
+    maxRetries: 3,
     projectId: process.env.SANITY_STUDIO_PROJECT_ID,
+    retryDelay: (attempt) => attempt * 1000,
     useCdn: true,
 });
 
@@ -40,11 +43,13 @@ export default async function BlogsPage({ params }: PageParams) {
 
     return (
         <div className="flex-grow bg-gray-50 min-h-screen" id={slug ?? ''}>
-            <NavigationContainer
-                isSimple
-                logo={navigation?.logo}
-                phone={navigation?.phone}
-            />
+            <Suspense fallback={<div className="h-24" />}>
+                <NavigationContainer
+                    isSimple
+                    logo={navigation?.logo}
+                    phone={navigation?.phone}
+                />
+            </Suspense>
 
             <div className="xl:container min-h-[calc(100vh-130px)] mx-auto px-4 py-8 md:py-16 lg:py-24 flex flex-col flex-wrap gap-6 md:gap-8 lg:gap-10">
                 {(title || description) && (

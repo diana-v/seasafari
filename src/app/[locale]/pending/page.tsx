@@ -1,6 +1,7 @@
 import { createClient } from '@sanity/client';
 import { Metadata } from 'next';
 import * as React from 'react';
+import { Suspense } from 'react';
 
 import { FooterContainer } from '@/containers/Footer/FooterContainer';
 import { NavigationContainer } from '@/containers/Navigation/NavigationContainer';
@@ -12,7 +13,9 @@ import PaymentPendingClient from './PaymentPendingClient';
 const client = createClient({
     apiVersion: process.env.SANITY_STUDIO_API_VERSION,
     dataset: process.env.SANITY_STUDIO_DATASET,
+    maxRetries: 3,
     projectId: process.env.SANITY_STUDIO_PROJECT_ID,
+    retryDelay: (attempt) => attempt * 1000,
     useCdn: true,
 });
 
@@ -35,13 +38,17 @@ export default async function PaymentPendingPage({ params }: PageProps) {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <NavigationContainer
-                isSimple
-                logo={navigation?.logo}
-                phone={navigation?.phone}
-            />
+            <Suspense fallback={<div className="h-24" />}>
+                <NavigationContainer
+                    isSimple
+                    logo={navigation?.logo}
+                    phone={navigation?.phone}
+                />
+            </Suspense>
 
-            <PaymentPendingClient locale={locale} />
+            <Suspense fallback={<div className="min-h-[calc(100vh-130px)]" />}>
+                <PaymentPendingClient locale={locale} />
+            </Suspense>
 
             <FooterContainer common={footer?.common} faq={footer?.faq} />
         </div>

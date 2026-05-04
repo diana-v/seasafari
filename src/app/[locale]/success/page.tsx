@@ -4,6 +4,7 @@ import { cookies as nextCookies } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import * as React from 'react';
+import { Suspense } from 'react';
 
 import { IconComponent } from '@/components/Icon/IconComponent';
 import { ClearPaymentContainer } from '@/containers/ClearPayment/ClearPaymentContainer';
@@ -21,7 +22,9 @@ import PrintButton from './PrintButton';
 const client = createClient({
     apiVersion: process.env.SANITY_STUDIO_API_VERSION,
     dataset: process.env.SANITY_STUDIO_DATASET,
+    maxRetries: 3,
     projectId: process.env.SANITY_STUDIO_PROJECT_ID,
+    retryDelay: (attempt) => attempt * 1000,
     useCdn: true,
 });
 
@@ -87,7 +90,9 @@ export default async function PaymentSuccessPage({ params, searchParams }: PageP
     return (
         <div className="flex flex-col min-h-screen">
             <ClearPaymentContainer />
-            <NavigationContainer isSimple logo={navigation?.logo} phone={navigation?.phone} />
+            <Suspense fallback={<div className="h-24" />}>
+                <NavigationContainer isSimple logo={navigation?.logo} phone={navigation?.phone} />
+            </Suspense>
             <div className="xl:container mx-auto min-h-[calc(100vh-130px)] flex flex-col">
                 <div className="self-end m-8">
                     <PrintButton pdfBase64={pdfBase64} />
