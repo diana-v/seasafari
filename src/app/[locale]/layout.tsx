@@ -1,8 +1,10 @@
+import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { notFound } from 'next/navigation';
-import Script from 'next/script';
 
 import '../../styles/globals.css';
+import Script from 'next/script';
+
 import ClientInitContainer from '@/containers/ClientInit/ClientInitContainer';
 
 const inter = Inter({
@@ -10,6 +12,29 @@ const inter = Inter({
     subsets: ['latin'],
     variable: '--font-inter',
 });
+
+export const metadata: Metadata = {
+    appleWebApp: {
+        capable: true,
+        statusBarStyle: 'default',
+    },
+
+    icons: {
+        apple: '/icons/apple-touch-icon-180x180.png',
+        icon: [
+            '/icons/favicon-32x32.png',
+            '/icons/favicon-16x16.png',
+            '/icons/favicon-96x96.png',
+        ],
+        shortcut: '/favicon.ico',
+    },
+
+    manifest: '/manifest.json',
+
+    other: {
+        'mobile-web-app-capable': 'yes',
+    }
+};
 
 export async function generateStaticParams() {
     return [{ locale: 'en' }, { locale: 'lt' }, { locale: 'ru' }];
