@@ -1,5 +1,6 @@
 import { createClient } from '@sanity/client';
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import * as React from 'react';
 import { Suspense } from 'react';
 
@@ -29,8 +30,15 @@ interface PageParams {
     }>;
 }
 
+const supportedLocales = new Set(['en', 'lt', 'ru']);
+
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
     const { locale, offerId } = await params;
+
+    if (!supportedLocales.has(locale) || offerId.includes('.')) {
+        notFound();
+    }
+
     const offer = await fetchOfferSectionData(client, offerId, locale, 'lt');
 
     return {
@@ -55,6 +63,10 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
 
 export default async function OfferPage({ params }: PageParams) {
     const { locale, offerId } = await params;
+
+    if (!supportedLocales.has(locale) || offerId.includes('.')) {
+        notFound();
+    }
 
     const [navigation, offer, footer] = await Promise.all([
         fetchNavigationData(client, locale, 'lt'),
