@@ -20,7 +20,7 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
     const { locale } = await params;
     const isAuthenticated = await checkAdminAuth()
 
-    if (!isAuthenticated) redirect('/login');
+    if (!isAuthenticated) redirect(`/${locale}/login`);
 
     const [navigation, initialOrders] = await Promise.all([
         fetchNavigationData(client, locale, 'lt'),

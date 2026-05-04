@@ -5,19 +5,7 @@ import { Suspense } from 'react';
 
 import HomeClientContainer from '@/containers/HomeClient/HomeClientContainer';
 import ReviewsServer from '@/containers/ReviewsServer/ReviewsServerContainer';
-import { AboutSectionResponse, fetchAboutSectionData } from '@/schemas/about';
-import { fetchAllHomeSectionData } from '@/schemas/all';
-import { BlogsSectionResponse, fetchBlogsSectionData } from '@/schemas/blogs';
-import { ContactSectionResponse, fetchContactSectionData } from '@/schemas/contact';
-import { fetchFooterSectionData, FooterSectionResponse } from '@/schemas/footer';
-import { fetchGallerySectionData, GallerySectionResponse } from '@/schemas/gallery';
-import { fetchGiftCardSectionData, GiftCardSectionResponse } from '@/schemas/giftCard';
-import { fetchGiftCardWidgetSectionData, GiftCardWidgetResponse } from '@/schemas/giftCardWidget';
-import { fetchHomeSectionData, HomeSectionResponse } from '@/schemas/home';
-import { fetchNavigationData, NavigationSectionResponse } from '@/schemas/navigation';
-import { fetchOffersSectionData, OffersSectionResponse } from '@/schemas/offers';
-import { fetchPartnersSectionData, PartnersSectionResponse } from '@/schemas/partners';
-import { fetchReviewsSectionData, ReviewsSectionResponse } from '@/schemas/reviews';
+import { fetchAllHomeSectionData } from '@/schemas/allHome';
 
 const client = createClient({
     apiVersion: process.env.SANITY_STUDIO_API_VERSION,
@@ -29,10 +17,6 @@ const client = createClient({
 interface PageParams {
     params: Promise<{ locale: string }>;
 }
-
-export const revalidate = 86_400; // 1 day
-
-export const dynamic = 'force-static';
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
     const { locale } = await params;
