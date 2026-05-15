@@ -33,10 +33,10 @@ interface PageParams {
 export default async function ContentPage({ params }: PageParams) {
     const { contentId, locale } = await params;
 
-    const content = await fetchContentSectionData(client, contentId, locale, 'lt')
-    const giftCardWidget = await fetchGiftCardWidgetSectionData(client, locale, 'lt')
-    const navigation = await fetchNavigationData(client, locale, 'lt')
-    const footer = await fetchFooterSectionData(client, locale, 'lt')
+    const content = await fetchContentSectionData(contentId, locale, 'lt')
+    const giftCardWidget = await fetchGiftCardWidgetSectionData(locale, 'lt')
+    const navigation = await fetchNavigationData(locale, 'lt')
+    const footer = await fetchFooterSectionData(locale, 'lt')
 
     if (!content) {
         return (
@@ -82,7 +82,7 @@ export default async function ContentPage({ params }: PageParams) {
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
     const { contentId, locale } = await params;
-    const content = await fetchContentSectionData(client, contentId, locale, 'lt');
+    const content = await fetchContentSectionData(contentId, locale, 'lt');
 
     return {
         title: `${content?.label ?? ''} | SeaSafari`,

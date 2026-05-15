@@ -1,4 +1,6 @@
-import { SanityClient } from '@sanity/client';
+import { cache } from 'react';
+
+import { client } from '@/lib/sanity';
 
 export interface GalleryCard {
     image: string;
@@ -9,12 +11,10 @@ export interface GallerySectionResponse {
     cards: GalleryCard[];
 }
 
-export const fetchGallerySectionData = (
-    client: SanityClient,
-    locale = 'lt',
-    defaultLocale = 'lt'
-): Promise<GallerySectionResponse> =>
-    client.fetch(
+export const fetchGallerySectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<GallerySectionResponse> => {
+    console.log(`[Cache Miss] Fetching Gallery Data for: ${locale}`);
+
+    return await client.fetch(
         `
     *[_type == "gallery"]{
         "cards": cards[] {
@@ -30,4 +30,5 @@ export const fetchGallerySectionData = (
                 tags: ['gallery']
             }
         }
-    );
+    )
+})

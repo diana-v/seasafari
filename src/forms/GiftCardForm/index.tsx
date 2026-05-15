@@ -143,6 +143,7 @@ export const GiftCardForm: React.FC<GiftCardFormProps> = ({ options }) => {
                                     aria-label={localisedString.privacyPolicy}
                                     className="underline underline-offset-4"
                                     href="/c/privatumo-politika"
+                                    prefetch={false}
                                     target="_blank"
                                 >
                                     {localisedString.privacyPolicy}{' '}

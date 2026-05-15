@@ -1,5 +1,6 @@
-import { SanityClient } from '@sanity/client';
+import { cache } from 'react';
 
+import { client } from '@/lib/sanity';
 import { AboutSectionResponse } from '@/schemas/about';
 import { BlogsSectionResponse } from '@/schemas/blogs';
 import { ContactSectionResponse } from '@/schemas/contact';
@@ -28,13 +29,11 @@ export interface AllHomeSectionResponse {
     reviews: ReviewsSectionResponse;
 }
 
-export const fetchAllHomeSectionData = (
-    client: SanityClient,
-    locale = 'lt',
-    defaultLocale = 'lt'
-): Promise<AllHomeSectionResponse> =>
-    client.fetch(
-    `{
+export const fetchAllHomeSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<AllHomeSectionResponse> => {
+    console.log(`[Cache Miss] Fetching Home Data for: ${locale}`);
+
+    return await client.fetch(
+        `{
         "about": *[_type == "about"]{
             "title": coalesce(title.[$locale], title.[$defaultLocale], "Missing translation"),
             "image": image.asset->url,
@@ -157,12 +156,13 @@ export const fetchAllHomeSectionData = (
             "title": coalesce(title.[$locale], title.[$defaultLocale], "Missing translation"),
         }[0]
     }`,
-    { defaultLocale, locale },
-    {
-        cache: 'force-cache',
-        next: {
-            revalidate: 86_400,
-            tags: ['all_home']
+        { defaultLocale, locale },
+        {
+            cache: 'force-cache',
+            next: {
+                revalidate: 86_400,
+                tags: ['all_home']
+            }
         }
-    }
-);
+    )
+})

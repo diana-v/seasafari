@@ -47,6 +47,7 @@ export const BlogsLayout: React.FC<BlogsProps> = ({ cards, description, title })
                         aria-label={localisedString.showMore}
                         className="flex shrink-0 text-white bg-blue-900 rounded-full items-center gap-2 px-6 py-3"
                         href={`/${locale}/blogs`}
+                        prefetch={false}
                         scroll={true}
                     >
                         {localisedString.showMore}

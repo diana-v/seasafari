@@ -28,10 +28,10 @@ interface PageParams {
 export default async function FaqPage({ params }: PageParams) {
     const { locale } = await params;
 
-    const navigation = await fetchNavigationData(client, locale, 'lt')
-    const footer = await fetchFooterSectionData(client, locale, 'lt')
-    const faq = await fetchFAQSectionData(client, locale, 'lt')
-    const giftCardWidget = await fetchGiftCardWidgetSectionData(client, locale, 'lt')
+    const navigation = await fetchNavigationData(locale, 'lt')
+    const footer = await fetchFooterSectionData(locale, 'lt')
+    const faq = await fetchFAQSectionData(locale, 'lt')
+    const giftCardWidget = await fetchGiftCardWidgetSectionData(locale, 'lt')
 
     const { description, faq: items, title } = faq ?? {};
 
@@ -72,7 +72,7 @@ export default async function FaqPage({ params }: PageParams) {
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
     const { locale } = await params;
-    const faq = await fetchFAQSectionData(client, locale, 'lt');
+    const faq = await fetchFAQSectionData(locale, 'lt');
 
     return {
         description: '',

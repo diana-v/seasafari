@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
         notFound();
     }
 
-    const offer = await fetchOfferSectionData(client, offerId, locale, 'lt');
+    const offer = await fetchOfferSectionData(offerId, locale, 'lt');
 
     return {
         description: offer?.description,
@@ -68,9 +68,9 @@ export default async function OfferPage({ params }: PageParams) {
         notFound();
     }
 
-    const navigation = await fetchNavigationData(client, locale, 'lt')
-    const offer = await fetchOfferSectionData(client, offerId, locale, 'lt')
-    const footer= await fetchFooterSectionData(client, locale, 'lt')
+    const navigation = await fetchNavigationData(locale, 'lt')
+    const offer = await fetchOfferSectionData(offerId, locale, 'lt')
+    const footer= await fetchFooterSectionData(locale, 'lt')
 
     const localisedString = languages[locale as LocaleType] || languages['lt'];
 

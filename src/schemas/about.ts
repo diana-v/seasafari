@@ -1,5 +1,7 @@
 import { TypedObject } from '@portabletext/types';
-import { SanityClient } from '@sanity/client';
+import { cache } from 'react';
+
+import { client } from '@/lib/sanity';
 
 export interface AboutSectionResponse {
     benefits?: Benefit[];
@@ -14,12 +16,10 @@ export interface Benefit {
     title: string;
 }
 
-export const fetchAboutSectionData = (
-    client: SanityClient,
-    locale = 'lt',
-    defaultLocale = 'lt'
-): Promise<AboutSectionResponse> =>
-    client.fetch(
+export const fetchAboutSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<AboutSectionResponse> => {
+    console.log(`[Cache Miss] Fetching About Data for: ${locale}`);
+
+    return await client.fetch(
         `
     *[_type == "about"]{
         "title": coalesce(title.[$locale], title.[$defaultLocale], "Missing translation"),
@@ -39,4 +39,5 @@ export const fetchAboutSectionData = (
                 tags: ['about']
             }
         }
-    );
+    )
+})

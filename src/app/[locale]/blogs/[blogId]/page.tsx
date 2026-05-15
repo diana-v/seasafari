@@ -34,10 +34,10 @@ interface PageParams {
 export default async function BlogIdPage({ params }: PageParams) {
     const { blogId, locale } = await params;
 
-    const blog = await fetchBlogSectionData(client, blogId, locale, 'lt')
-    const giftCardWidget = await fetchGiftCardWidgetSectionData(client, locale, 'lt')
-    const navigation = await fetchNavigationData(client, locale, 'lt')
-    const footer = await fetchFooterSectionData(client, locale, 'lt')
+    const blog = await fetchBlogSectionData(blogId, locale, 'lt')
+    const giftCardWidget = await fetchGiftCardWidgetSectionData(locale, 'lt')
+    const navigation = await fetchNavigationData(locale, 'lt')
+    const footer = await fetchFooterSectionData(locale, 'lt')
 
     if (!blog) {
         return <div className="text-center py-20">Blog post not found.</div>;
@@ -95,7 +95,7 @@ export default async function BlogIdPage({ params }: PageParams) {
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
     const { blogId, locale } = await params;
-    const blog = await fetchBlogSectionData(client, blogId, locale, 'lt');
+    const blog = await fetchBlogSectionData(blogId, locale, 'lt');
 
     if (!blog) return { title: 'Blog Not Found | SeaSafari' };
 

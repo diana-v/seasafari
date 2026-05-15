@@ -1,4 +1,6 @@
-import { SanityClient } from '@sanity/client';
+import { cache } from 'react';
+
+import { client } from '@/lib/sanity';
 
 export interface BlogCardResponse {
     _createdAt: string;
@@ -17,12 +19,10 @@ export interface BlogsSectionResponse {
     title: string;
 }
 
-export const fetchBlogsSectionData = (
-    client: SanityClient,
-    locale = 'lt',
-    defaultLocale = 'lt'
-): Promise<BlogsSectionResponse> =>
-    client.fetch(
+export const fetchBlogsSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<BlogsSectionResponse> => {
+    console.log(`[Cache Miss] Fetching Blogs Data for: ${locale}`);
+
+    return await client.fetch(
         `
     *[_type == "blogs"] {
         "slug": slug.current,
@@ -46,4 +46,5 @@ export const fetchBlogsSectionData = (
                 tags: ['blogs']
             }
         }
-    );
+    )
+})
