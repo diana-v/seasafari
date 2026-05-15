@@ -33,8 +33,8 @@ export default async function PaymentErrorPage({ params, searchParams }: PagePro
     const { locale } = await params;
     const { errorCode } = await searchParams;
 
-    const navigation = await fetchNavigationData(client, locale, 'lt')
-    const footer = await fetchFooterSectionData(client, locale, 'lt')
+    const navigation = await fetchNavigationData(locale, 'lt')
+    const footer = await fetchFooterSectionData(locale, 'lt')
 
     const localisedString = languages[locale as LocaleType] || languages['lt'];
 
@@ -65,6 +65,7 @@ export default async function PaymentErrorPage({ params, searchParams }: PagePro
                             aria-label={localisedString.link}
                             className="text-lg font-medium underline underline-offset-8 hover:text-blue-900 transition-colors z-10"
                             href={`/${locale}`}
+                            prefetch={false}
                         >
                             {localisedString.link}
                         </Link>
@@ -73,13 +74,14 @@ export default async function PaymentErrorPage({ params, searchParams }: PagePro
                     <div className="max-w-2xl mt-8 text-gray-500 z-10 leading-relaxed">
                         <p>
                             {localisedString.disclaimerQuestion}{' '}
-                            <Link className="text-gray-900 font-semibold underline underline-offset-4 hover:text-blue-900" href={`/${locale}/#kontaktai`}>
+                            <Link className="text-gray-900 font-semibold underline underline-offset-4 hover:text-blue-900" href={`/${locale}/#kontaktai`} prefetch={false}>
                                 {localisedString.disclaimerSubmitForm}
                             </Link>
                             {' '}{localisedString.disclaimerOr}{' '}
                             <Link
                                 className="text-gray-900 font-semibold underline underline-offset-4 hover:text-blue-900"
                                 href={`mailto:${process.env.NEXT_PUBLIC_RESEND_FROM_EMAIL}`}
+                                prefetch={false}
                             >
                                 {localisedString.disclaimerSendEmail}
                             </Link>

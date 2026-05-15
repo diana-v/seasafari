@@ -42,6 +42,7 @@ export const ContactLayout: React.FC<ContactProps> = ({ description, formTitle, 
                             aria-label={localisedString.contactUs}
                             className="flex items-center gap-2 px-6 py-3 border border-blue-900 rounded-full text-blue-900 hover:bg-blue-900 hover:text-white transition-colors duration-200 w-fit"
                             href={`tel:${phone}`}
+                            prefetch={false}
                         >
                             {localisedString.contactUs}
                             <IconComponent className="h-2.5 w-3" name="arrowRightUp" />

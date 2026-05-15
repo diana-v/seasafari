@@ -1,5 +1,7 @@
 import { TypedObject } from '@portabletext/types';
-import { SanityClient } from '@sanity/client';
+import { cache } from 'react';
+
+import { client } from '@/lib/sanity';
 
 export interface CommonSectionResponse {
     address: string;
@@ -28,12 +30,10 @@ export interface SocialLink {
     platform: string;
 }
 
-export const fetchCommonData = (
-    client: SanityClient,
-    locale = 'lt',
-    defaultLocale = 'lt'
-): Promise<CommonSectionResponse> =>
-    client.fetch(
+export const fetchCommonData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<CommonSectionResponse> => {
+    console.log(`[Cache Miss] Fetching Common Data for: ${locale}`);
+
+    return await client.fetch(
         `
     *[_type == "common"]{
         "logo": logo.asset->url,
@@ -63,4 +63,5 @@ export const fetchCommonData = (
                 tags: ['common']
             }
         }
-    );
+    )
+})

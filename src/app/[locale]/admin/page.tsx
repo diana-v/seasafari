@@ -27,7 +27,7 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
 
     if (!isAuthenticated) redirect(`/${locale}/login`);
 
-    const navigation = await fetchNavigationData(client, locale, 'lt')
+    const navigation = await fetchNavigationData(locale, 'lt')
 
     const initialOrders = await
         db.instance.query.orders.findMany({

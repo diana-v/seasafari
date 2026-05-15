@@ -31,10 +31,10 @@ interface PageParams {
 export default async function BlogsPage({ params }: PageParams) {
     const { locale } = await params;
 
-    const blogs = await fetchBlogsSectionData(client, locale, 'lt')
-    const giftCardWidget = await fetchGiftCardWidgetSectionData(client, locale, 'lt')
-    const navigation = await fetchNavigationData(client, locale, 'lt')
-    const footer = await fetchFooterSectionData(client, locale, 'lt')
+    const blogs = await fetchBlogsSectionData(locale, 'lt')
+    const giftCardWidget = await fetchGiftCardWidgetSectionData(locale, 'lt')
+    const navigation = await fetchNavigationData(locale, 'lt')
+    const footer = await fetchFooterSectionData(locale, 'lt')
 
     const { cards, description, slug, title } = blogs ?? {};
     const localisedString = languages[locale as LocaleType] || languages['lt'];
@@ -95,7 +95,7 @@ export default async function BlogsPage({ params }: PageParams) {
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
     const { locale } = await params;
-    const blogs = await fetchBlogsSectionData(client, locale, 'lt');
+    const blogs = await fetchBlogsSectionData(locale, 'lt');
     const { cards, description, slug, title } = blogs ?? {};
 
     return {

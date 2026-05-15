@@ -1,4 +1,6 @@
-import { SanityClient } from '@sanity/client';
+import { cache } from 'react';
+
+import { client } from '@/lib/sanity';
 
 export interface PartnerLogo {
     image: string;
@@ -10,12 +12,10 @@ export interface PartnersSectionResponse {
     title: string;
 }
 
-export const fetchPartnersSectionData = (
-    client: SanityClient,
-    locale = 'lt',
-    defaultLocale = 'lt'
-): Promise<PartnersSectionResponse> =>
-    client.fetch(
+export const fetchPartnersSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<PartnersSectionResponse> => {
+    console.log(`[Cache Miss] Fetching Partners Data for: ${locale}`);
+
+    return await client.fetch(
         `
     *[_type == "partners"]{
         "title": coalesce(title.[$locale], title.[$defaultLocale], "Missing translation"),
@@ -32,4 +32,5 @@ export const fetchPartnersSectionData = (
                 tags: ['partners']
             }
         }
-    );
+    )
+})

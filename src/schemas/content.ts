@@ -1,5 +1,7 @@
 import { TypedObject } from '@portabletext/types';
-import { SanityClient } from '@sanity/client';
+import { cache } from 'react';
+
+import { client } from '@/lib/sanity';
 
 export interface ContentSectionResponse {
     content: TypedObject | TypedObject[];
@@ -7,13 +9,10 @@ export interface ContentSectionResponse {
     slug: string;
 }
 
-export const fetchContentSectionData = (
-    client: SanityClient,
-    contentId: string | string[],
-    locale = 'lt',
-    defaultLocale = 'lt'
-): Promise<ContentSectionResponse> =>
-    client.fetch(
+export const fetchContentSectionData = cache(async (contentId: string | string[], locale = 'lt', defaultLocale = 'lt'): Promise<ContentSectionResponse> => {
+    console.log(`[Cache Miss] Fetching Content Data for: ${locale}`);
+
+    return await client.fetch(
         `
     *[_type == "footer" && slug.current == $contentId]{
         "slug": slug.current,
@@ -28,4 +27,5 @@ export const fetchContentSectionData = (
                 tags: ['content', typeof contentId === 'string' ? contentId : 'footer-content']
             }
         }
-    );
+    )
+})

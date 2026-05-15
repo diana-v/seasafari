@@ -1,4 +1,6 @@
-import { SanityClient } from '@sanity/client';
+import { cache } from 'react';
+
+import { client } from '@/lib/sanity';
 
 export interface NavigationProps {
     logo: string;
@@ -10,13 +12,10 @@ export interface NavigationSectionResponse {
     phone: string;
 }
 
+export const fetchNavigationData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<NavigationProps> => {
+    console.log(`[Cache Miss] Fetching Navigation Data for: ${locale}`);
 
-export const fetchNavigationData = (
-    client: SanityClient,
-    locale = 'lt',
-    defaultLocale = 'lt'
-): Promise<NavigationProps> =>
-    client.fetch(
+    return await client.fetch(
         `
     *[_type == "common"]{
         "logo": logo.asset->url,
@@ -30,4 +29,5 @@ export const fetchNavigationData = (
                 tags: ['navigation', 'common']
             }
         }
-    );
+    )
+})

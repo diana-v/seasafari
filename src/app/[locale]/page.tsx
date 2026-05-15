@@ -1,4 +1,3 @@
-import { createClient } from '@sanity/client';
 import { Metadata } from 'next';
 import * as React from 'react';
 import { Suspense } from 'react';
@@ -7,22 +6,13 @@ import HomeClientContainer from '@/containers/HomeClient/HomeClientContainer';
 import ReviewsServer from '@/containers/ReviewsServer/ReviewsServerContainer';
 import { fetchAllHomeSectionData } from '@/schemas/allHome';
 
-const client = createClient({
-    apiVersion: process.env.SANITY_STUDIO_API_VERSION,
-    dataset: process.env.SANITY_STUDIO_DATASET,
-    maxRetries: 3,
-    projectId: process.env.SANITY_STUDIO_PROJECT_ID,
-    retryDelay: (attempt) => attempt * 1000,
-    useCdn: true,
-});
-
 interface PageParams {
     params: Promise<{ locale: string }>;
 }
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
     const { locale } = await params;
-    const data = await fetchAllHomeSectionData(client, locale, 'lt');
+    const data = await fetchAllHomeSectionData(locale, 'lt');
     const home = data.home;
 
     const title = "Sea-Safari Lietuva | Nepamirštami įspūdžiai Jums";
@@ -53,7 +43,7 @@ export default async function HomePage({ params }: PageParams) {
 
     const { about, blogs, contact, footer, gallery, giftCard,
         giftCardWidget, home, navigation, offers, partners, reviews
-    } = await fetchAllHomeSectionData(client, locale, 'lt')
+    } = await fetchAllHomeSectionData(locale, 'lt')
 
     return (
         <HomeClientContainer

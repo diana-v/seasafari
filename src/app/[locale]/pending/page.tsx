@@ -31,8 +31,8 @@ export const metadata: Metadata = {
 export default async function PaymentPendingPage({ params }: PageProps) {
     const { locale } = await params;
 
-    const navigation = await fetchNavigationData(client, locale, 'lt')
-    const footer = await fetchFooterSectionData(client, locale, 'lt')
+    const navigation = await fetchNavigationData(locale, 'lt')
+    const footer = await fetchFooterSectionData(locale, 'lt')
 
     return (
         <div className="flex flex-col min-h-screen">

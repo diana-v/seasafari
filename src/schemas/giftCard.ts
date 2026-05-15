@@ -1,5 +1,7 @@
 import { TypedObject } from '@portabletext/types';
-import { SanityClient } from '@sanity/client';
+import { cache } from 'react';
+
+import { client } from '@/lib/sanity';
 
 export interface GiftCardBullet {
     text: string;
@@ -18,12 +20,10 @@ export interface GiftCardSectionResponse {
     title: string;
 }
 
-export const fetchGiftCardSectionData = (
-    client: SanityClient,
-    locale = 'lt',
-    defaultLocale = 'lt'
-): Promise<GiftCardSectionResponse> =>
-    client.fetch(
+export const fetchGiftCardSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<GiftCardSectionResponse> => {
+    console.log(`[Cache Miss] Fetching Gift Card Data for: ${locale}`);
+
+    return await client.fetch(
         `
     *[_type == "giftCard"]{
         "title": coalesce(title.[$locale], title.[$defaultLocale], "Missing translation"),
@@ -45,4 +45,5 @@ export const fetchGiftCardSectionData = (
                 tags: ['giftCard']
             }
         }
-    );
+    )
+})
