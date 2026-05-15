@@ -1,5 +1,7 @@
 import { TypedObject } from '@portabletext/types';
-import { SanityClient } from '@sanity/client';
+import { cache } from 'react';
+
+import { client } from '@/lib/sanity';
 
 export interface BlogSectionResponse {
     _createdAt: string;
@@ -11,13 +13,10 @@ export interface BlogSectionResponse {
     title: string;
 }
 
-export const fetchBlogSectionData = (
-    client: SanityClient,
-    blogId: string | string[],
-    locale = 'lt',
-    defaultLocale = 'lt'
-): Promise<BlogSectionResponse> =>
-    client.fetch(
+export const fetchBlogSectionData = cache(async (blogId: string | string[], locale = 'lt', defaultLocale = 'lt'): Promise<BlogSectionResponse> => {
+    console.log(`[Cache Miss] Fetching Blog Data for: ${locale}`);
+
+    return await client.fetch(
         `
     *[_type == "blog" && slug.current == $blogId]{
         "slug": slug.current,
@@ -36,4 +35,5 @@ export const fetchBlogSectionData = (
                 tags: ['blog', typeof blogId === 'string' ? blogId : 'list']
             }
         }
-    );
+    )
+})

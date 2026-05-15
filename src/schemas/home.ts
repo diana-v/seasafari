@@ -1,4 +1,6 @@
-import { SanityClient } from '@sanity/client';
+import { cache } from 'react';
+
+import { client } from '@/lib/sanity';
 
 export interface HeroMedia {
     desktopContent?: 'image' | 'video' | undefined;
@@ -20,12 +22,10 @@ export interface HomeSectionResponse {
     videoWebm?: string;
 }
 
-export const fetchHomeSectionData = (
-    client: SanityClient,
-    locale = 'lt',
-    defaultLocale = 'lt'
-): Promise<HomeSectionResponse> =>
-    client.fetch(
+export const fetchHomeSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<HomeSectionResponse> => {
+    console.log(`[Cache Miss] Fetching Home Data for: ${locale}`);
+
+    return await client.fetch(
         `
     *[_type == "home"]{
         "videoWebm": videoWebm.asset->url,
@@ -50,4 +50,5 @@ export const fetchHomeSectionData = (
                 tags: ['home']
             }
         }
-    );
+    )
+})

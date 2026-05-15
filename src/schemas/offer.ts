@@ -1,5 +1,7 @@
 import { TypedObject } from '@portabletext/types';
-import { SanityClient } from '@sanity/client';
+import { cache } from 'react';
+
+import { client } from '@/lib/sanity';
 
 export interface OfferCard {
     icon: string;
@@ -26,13 +28,10 @@ export interface OfferSectionResponse {
     title: string;
 }
 
-export const fetchOfferSectionData = (
-    client: SanityClient,
-    offerId: string | string[],
-    locale = 'lt',
-    defaultLocale = 'lt'
-): Promise<OfferSectionResponse> =>
-    client.fetch(
+export const fetchOfferSectionData = cache(async (offerId: string | string[], locale = 'lt', defaultLocale = 'lt'): Promise<OfferSectionResponse> => {
+    console.log(`[Cache Miss] Fetching Offer Data for: ${locale}`);
+
+    return await client.fetch(
         `
     *[_type == "offer" && slug.current == $offerId]{
         "slug": slug.current,
@@ -62,4 +61,5 @@ export const fetchOfferSectionData = (
                 tags: ['offer', typeof offerId === 'string' ? offerId : 'detail']
             }
         }
-    );
+    )
+})

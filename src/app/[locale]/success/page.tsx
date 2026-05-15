@@ -60,8 +60,8 @@ export default async function PaymentSuccessPage({ params, searchParams }: PageP
 
     const order = existingOrder[0];
 
-    const navigation = await fetchNavigationData(client, locale, 'lt')
-    const footer = await fetchFooterSectionData(client, locale, 'lt')
+    const navigation = await fetchNavigationData(locale, 'lt')
+    const footer = await fetchFooterSectionData(locale, 'lt')
 
     const pdfStream = await generatePdfDoc({
         count: (order.orderAmount / 25).toString(),
@@ -109,19 +109,20 @@ export default async function PaymentSuccessPage({ params, searchParams }: PageP
                             {localisedString.giftCardEmail}
                             <span className="!text-black font-bold m-0 mx-1">{order.orderEmail}</span>
                         </p>
-                        <Link className="underline underline-offset-4" href={`/${locale}`}>
+                        <Link className="underline underline-offset-4" href={`/${locale}`} prefetch={false}>
                             {localisedString.link}
                         </Link>
                     </div>
                     <p className="text-gray-400">
                         {localisedString.disclaimerQuestion}
-                        <Link className="underline underline-offset-4" href={`/${locale}/#kontaktai`}>
+                        <Link className="underline underline-offset-4" href={`/${locale}/#kontaktai`} prefetch={false}>
                             {localisedString.disclaimerSubmitForm}
                         </Link>
                         {localisedString.disclaimerOr}{' '}
                         <Link
                             className="underline underline-offset-4"
                             href={`mailto:${process.env.NEXT_PUBLIC_RESEND_FROM_EMAIL}`}
+                            prefetch={false}
                         >
                             {localisedString.disclaimerSendEmail}
                         </Link>

@@ -31,8 +31,8 @@ export const metadata: Metadata = {
 export default async function PaymentFailedPage({ params }: PageProps) {
     const { locale } = await params;
 
-    const navigation = await fetchNavigationData(client, locale, 'lt')
-    const footer = await fetchFooterSectionData(client, locale, 'lt')
+    const navigation = await fetchNavigationData(locale, 'lt')
+    const footer = await fetchFooterSectionData(locale, 'lt')
 
     const localisedString = languages[locale as LocaleType] || languages['lt'];
     const contactEmail = process.env.NEXT_PUBLIC_RESEND_FROM_EMAIL;
@@ -60,6 +60,7 @@ export default async function PaymentFailedPage({ params }: PageProps) {
                     <Link
                         className="mt-6 px-10 py-4 bg-black text-white rounded-full font-bold hover:bg-gray-800 transform hover:scale-105 transition-all shadow-lg"
                         href={`/${locale}`}
+                        prefetch={false}
                     >
                         {localisedString.link}
                     </Link>
@@ -70,6 +71,7 @@ export default async function PaymentFailedPage({ params }: PageProps) {
                             <Link
                                 className="text-gray-900 font-medium underline underline-offset-4 hover:text-red-600 transition-colors"
                                 href={`mailto:${contactEmail}`}
+                                prefetch={false}
                             >
                                 {contactEmail}
                             </Link>

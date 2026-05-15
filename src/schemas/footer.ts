@@ -1,4 +1,6 @@
-import { SanityClient } from '@sanity/client';
+import { cache } from 'react';
+
+import { client } from '@/lib/sanity';
 
 export interface FooterCommon {
     address: string;
@@ -32,12 +34,10 @@ export interface FooterSectionResponse {
     faq: FooterFAQ;
 }
 
-export const fetchFooterSectionData = (
-    client: SanityClient,
-    locale = 'lt',
-    defaultLocale = 'lt'
-): Promise<FooterSectionResponse> =>
-    client.fetch(
+export const fetchFooterSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<FooterSectionResponse> => {
+    console.log(`[Cache Miss] Fetching Footer Data for: ${locale}`);
+
+    return await client.fetch(
         `
     *[_type == "footer"] {
       "common": *[_type == "common"] {
@@ -74,4 +74,5 @@ export const fetchFooterSectionData = (
                 tags: ['footer', 'common', 'faq']
             }
         }
-    );
+    )
+})

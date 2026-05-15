@@ -98,6 +98,7 @@ export const FooterContainer: React.FC<FooterProps> = ({ common, faq }) => {
                                     aria-label={localisedStringCommon.privacyPolicy}
                                     className="hover:text-white transition-colors"
                                     href={`/${locale}/c/${privacyPolicy?.slug}`}
+                                    prefetch={false}
                                     scroll={true}
                                 >
                                     {localisedStringCommon.privacyPolicy}
@@ -108,6 +109,7 @@ export const FooterContainer: React.FC<FooterProps> = ({ common, faq }) => {
                                     aria-label={localisedStringCommon.purchaseRules}
                                     className="hover:text-white transition-colors"
                                     href={`/${locale}/c/${purchaseRules?.slug}`}
+                                    prefetch={false}
                                     scroll={true}
                                 >
                                     {localisedStringCommon.purchaseRules}
@@ -119,6 +121,7 @@ export const FooterContainer: React.FC<FooterProps> = ({ common, faq }) => {
                                         aria-label={faq.title}
                                         className="hover:text-white transition-colors"
                                         href={`/${locale}/faq`}
+                                        prefetch={false}
                                         scroll={true}
                                     >
                                         {faq.title}

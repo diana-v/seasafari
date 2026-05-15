@@ -87,7 +87,7 @@ export const NavigationContainer: React.FC<NavigationProps> = ({ isAuthenticated
             })}
             ref={menuRef}
         >
-            <Link aria-label="SeaSafari" className="flex gap-8" href={`/${locale}`}>
+            <Link aria-label="SeaSafari" className="flex gap-8" href={`/${locale}`} prefetch={false}>
                 {logo ? (
                     <ImageContainer
                         classNames={{

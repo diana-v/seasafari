@@ -1,4 +1,6 @@
-import { SanityClient } from '@sanity/client';
+import { cache } from 'react';
+
+import { client } from '@/lib/sanity';
 
 export interface GiftCardWidgetResponse {
     image: string;
@@ -6,12 +8,10 @@ export interface GiftCardWidgetResponse {
     title: string;
 }
 
-export const fetchGiftCardWidgetSectionData = (
-    client: SanityClient,
-    locale = 'lt',
-    defaultLocale = 'lt'
-): Promise<GiftCardWidgetResponse> =>
-    client.fetch(
+export const fetchGiftCardWidgetSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<GiftCardWidgetResponse> => {
+    console.log(`[Cache Miss] Fetching Gift Card Widget Data for: ${locale}`);
+
+    return await client.fetch(
         `
     *[_type == "giftCardWidget"]{
         "title": coalesce(title.[$locale], title.[$defaultLocale], "Missing translation"),
@@ -26,4 +26,5 @@ export const fetchGiftCardWidgetSectionData = (
                 tags: ['giftCardWidget']
             }
         }
-    );
+    )
+})

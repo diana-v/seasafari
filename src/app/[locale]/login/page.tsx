@@ -29,7 +29,7 @@ export default async function LoginPage({ params }: PageParams) {
         redirect(`/${locale}/admin`);
     }
 
-    const navigation = await fetchNavigationData(client, locale, 'lt');
+    const navigation = await fetchNavigationData(locale, 'lt');
 
     return (
         <div className="flex flex-col min-h-screen bg-white">
