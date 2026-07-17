@@ -1,4 +1,3 @@
-import { createClient } from '@sanity/client';
 import { eq } from 'drizzle-orm';
 import { cookies as nextCookies } from 'next/headers';
 import Link from 'next/link';
@@ -18,15 +17,6 @@ import { generatePdfDoc } from '@/templates/payment-success';
 import { languages, LocaleType } from '@/translations/success';
 
 import PrintButton from './PrintButton';
-
-const client = createClient({
-    apiVersion: process.env.SANITY_STUDIO_API_VERSION,
-    dataset: process.env.SANITY_STUDIO_DATASET,
-    maxRetries: 3,
-    projectId: process.env.SANITY_STUDIO_PROJECT_ID,
-    retryDelay: (attempt) => attempt * 1000,
-    useCdn: true,
-});
 
 interface PageProps {
     params: Promise<{ locale: string }>;

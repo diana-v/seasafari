@@ -1,4 +1,3 @@
-import { createClient } from '@sanity/client';
 import { Metadata } from 'next';
 import * as React from 'react';
 import { Suspense } from 'react';
@@ -10,19 +9,12 @@ import { FooterContainer } from '@/containers/Footer/FooterContainer';
 import { ImageContainer } from '@/containers/Image/ImageContainer';
 import { NavigationContainer } from '@/containers/Navigation/NavigationContainer';
 import { fetchBlogSectionData } from '@/schemas/blog';
+import { fetchBlogsSectionData } from '@/schemas/blogs';
 import { fetchFooterSectionData } from '@/schemas/footer';
 import { fetchGiftCardWidgetSectionData } from '@/schemas/giftCardWidget';
 import { fetchNavigationData } from '@/schemas/navigation';
-import { fetchBlogsSectionData } from '@/schemas/blogs';
 
-const client = createClient({
-    apiVersion: process.env.SANITY_STUDIO_API_VERSION,
-    dataset: process.env.SANITY_STUDIO_DATASET,
-    maxRetries: 3,
-    projectId: process.env.SANITY_STUDIO_PROJECT_ID,
-    retryDelay: (attempt) => attempt * 1000,
-    useCdn: true,
-});
+export const revalidate = 86_400;
 
 interface PageParams {
     params: Promise<{
@@ -30,6 +22,8 @@ interface PageParams {
         locale: string;
     }>;
 }
+
+const supportedLocales = ['en', 'lt', 'ru'];
 
 export default async function BlogIdPage({ params }: PageParams) {
     const { blogId, locale } = await params;
@@ -117,4 +111,12 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
             title: blog?.title,
         },
     };
+}
+
+export async function generateStaticParams() {
+    const blogs = await fetchBlogsSectionData('lt', 'lt');
+
+    return supportedLocales.flatMap(locale =>
+        (blogs?.cards ?? []).map(blog => ({ blogId: blog.slug, locale }))
+    );
 }
