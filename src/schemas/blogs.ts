@@ -42,7 +42,7 @@ export const fetchBlogsSectionData = cache(async (locale = 'lt', defaultLocale =
         { defaultLocale, locale },
         {
             next: {
-                revalidate: 60,
+                revalidate: 86_400,
                 tags: ['blogs']
             }
         }

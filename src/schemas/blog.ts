@@ -31,7 +31,7 @@ export const fetchBlogSectionData = cache(async (blogId: string | string[], loca
         { blogId, defaultLocale, locale },
         {
             next: {
-                revalidate: 60,
+                revalidate: 86_400,
                 tags: ['blog', typeof blogId === 'string' ? blogId : 'list']
             }
         }
