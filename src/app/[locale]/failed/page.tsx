@@ -1,4 +1,3 @@
-import { createClient } from '@sanity/client';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import * as React from 'react';
@@ -9,15 +8,6 @@ import { NavigationContainer } from '@/containers/Navigation/NavigationContainer
 import { fetchFooterSectionData } from '@/schemas/footer';
 import { fetchNavigationData } from '@/schemas/navigation';
 import { languages, LocaleType } from '@/translations/failed';
-
-const client = createClient({
-    apiVersion: process.env.SANITY_STUDIO_API_VERSION,
-    dataset: process.env.SANITY_STUDIO_DATASET,
-    maxRetries: 3,
-    projectId: process.env.SANITY_STUDIO_PROJECT_ID,
-    retryDelay: (attempt) => attempt * 1000,
-    useCdn: true,
-});
 
 interface PageProps {
     params: Promise<{ locale: string }>;

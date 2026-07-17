@@ -1,4 +1,3 @@
-import { createClient } from '@sanity/client';
 import { asc, eq } from 'drizzle-orm';
 import { redirect } from 'next/navigation';
 
@@ -8,18 +7,6 @@ import { orders, Status } from '@/server/db/schema';
 import { checkAdminAuth } from '@/utils/checkAdminAuth';
 
 import AdminClient from './AdminClient';
-import { fetchBlogsSectionData } from '@/schemas/blogs';
-import { fetchGiftCardWidgetSectionData } from '@/schemas/giftCardWidget';
-import { fetchFooterSectionData } from '@/schemas/footer';
-
-const client = createClient({
-    apiVersion: process.env.SANITY_STUDIO_API_VERSION,
-    dataset: process.env.SANITY_STUDIO_DATASET,
-    maxRetries: 3,
-    projectId: process.env.SANITY_STUDIO_PROJECT_ID,
-    retryDelay: (attempt) => attempt * 1000,
-    useCdn: true,
-});
 
 export default async function AdminPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;

@@ -1,4 +1,3 @@
-import { createClient } from '@sanity/client';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import * as React from 'react';
@@ -12,16 +11,10 @@ import { NavigationContainer } from '@/containers/Navigation/NavigationContainer
 import { fetchFooterSectionData } from '@/schemas/footer';
 import { fetchNavigationData } from '@/schemas/navigation';
 import { fetchOfferSectionData } from '@/schemas/offer';
+import { fetchOffersSectionData } from '@/schemas/offers';
 import { languages, LocaleType } from '@/translations/offer';
 
-const client = createClient({
-    apiVersion: process.env.SANITY_STUDIO_API_VERSION,
-    dataset: process.env.SANITY_STUDIO_DATASET,
-    maxRetries: 3,
-    projectId: process.env.SANITY_STUDIO_PROJECT_ID,
-    retryDelay: (attempt) => attempt * 1000,
-    useCdn: true,
-});
+export const revalidate = 86_400;
 
 interface PageParams {
     params: Promise<{
@@ -30,12 +23,12 @@ interface PageParams {
     }>;
 }
 
-const supportedLocales = new Set(['en', 'lt', 'ru']);
+const supportedLocales = ['en', 'lt', 'ru'];
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
     const { locale, offerId } = await params;
 
-    if (!supportedLocales.has(locale) || offerId.includes('.')) {
+    if (!supportedLocales.includes(locale) || offerId.includes('.')) {
         notFound();
     }
 
@@ -61,16 +54,24 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
     };
 }
 
+export async function generateStaticParams() {
+    const offers = await fetchOffersSectionData('lt', 'lt');
+
+    return supportedLocales.flatMap(locale =>
+        (offers?.cards ?? []).map(offer => ({ locale, offerId: offer.slug }))
+    );
+}
+
 export default async function OfferPage({ params }: PageParams) {
     const { locale, offerId } = await params;
 
-    if (!supportedLocales.has(locale) || offerId.includes('.')) {
+    if (!supportedLocales.includes(locale) || offerId.includes('.')) {
         notFound();
     }
 
     const navigation = await fetchNavigationData(locale, 'lt')
     const offer = await fetchOfferSectionData(offerId, locale, 'lt')
-    const footer= await fetchFooterSectionData(locale, 'lt')
+    const footer = await fetchFooterSectionData(locale, 'lt')
 
     const localisedString = languages[locale as LocaleType] || languages['lt'];
 
