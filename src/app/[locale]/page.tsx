@@ -6,6 +6,10 @@ import HomeClientContainer from '@/containers/HomeClient/HomeClientContainer';
 import ReviewsServer from '@/containers/ReviewsServer/ReviewsServerContainer';
 import { fetchAllHomeSectionData } from '@/schemas/allHome';
 
+export const revalidate = 86_400;
+
+export const dynamic = 'force-static';
+
 interface PageParams {
     params: Promise<{ locale: string }>;
 }

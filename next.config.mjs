@@ -21,12 +21,6 @@ const nextConfig = {
         ],
         minimumCacheTTL: 60 * 60 * 24,
     },
-    experimental: {
-        staleTimes: {
-            dynamic: 30,
-            static: 300
-        }
-    },
     async redirects() {
         return [
             {
