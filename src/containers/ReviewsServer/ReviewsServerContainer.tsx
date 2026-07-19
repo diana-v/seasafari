@@ -19,7 +19,7 @@ export default async function ReviewsServer({ title }: Props) {
             `https://mybusiness.googleapis.com/v4/accounts/${process.env.GOOGLE_BUSINESS_ID}/locations/${process.env.GOOGLE_LOCATION_ID}/reviews`,
             {
                 headers: { Authorization: `Bearer ${token}` },
-                next: { revalidate: 86_400 }
+                next: { revalidate: 604_800 }
             }
         );
 
