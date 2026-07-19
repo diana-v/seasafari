@@ -7,7 +7,6 @@ export interface ReviewsSectionResponse {
 }
 
 export const fetchReviewsSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<ReviewsSectionResponse> => {
-    console.log(`[Cache Miss] Fetching Reviews Data for: ${locale}`);
 
     return await client.fetch(
         `

@@ -35,7 +35,6 @@ export interface FooterSectionResponse {
 }
 
 export const fetchFooterSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<FooterSectionResponse> => {
-    console.log(`[Cache Miss] Fetching Footer Data for: ${locale}`);
 
     return await client.fetch(
         `

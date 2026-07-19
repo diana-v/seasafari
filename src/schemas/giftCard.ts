@@ -21,7 +21,6 @@ export interface GiftCardSectionResponse {
 }
 
 export const fetchGiftCardSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<GiftCardSectionResponse> => {
-    console.log(`[Cache Miss] Fetching Gift Card Data for: ${locale}`);
 
     return await client.fetch(
         `

@@ -13,7 +13,6 @@ export interface PartnersSectionResponse {
 }
 
 export const fetchPartnersSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<PartnersSectionResponse> => {
-    console.log(`[Cache Miss] Fetching Partners Data for: ${locale}`);
 
     return await client.fetch(
         `

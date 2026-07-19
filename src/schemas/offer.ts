@@ -29,7 +29,6 @@ export interface OfferSectionResponse {
 }
 
 export const fetchOfferSectionData = cache(async (offerId: string | string[], locale = 'lt', defaultLocale = 'lt'): Promise<OfferSectionResponse> => {
-    console.log(`[Cache Miss] Fetching Offer Data for: ${locale}`);
 
     return await client.fetch(
         `
