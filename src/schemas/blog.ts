@@ -14,7 +14,6 @@ export interface BlogSectionResponse {
 }
 
 export const fetchBlogSectionData = cache(async (blogId: string | string[], locale = 'lt', defaultLocale = 'lt'): Promise<BlogSectionResponse> => {
-    console.log(`[Cache Miss] Fetching Blog Data for: ${locale}`);
 
     return await client.fetch(
         `

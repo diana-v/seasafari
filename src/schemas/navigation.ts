@@ -13,7 +13,6 @@ export interface NavigationSectionResponse {
 }
 
 export const fetchNavigationData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<NavigationProps> => {
-    console.log(`[Cache Miss] Fetching Navigation Data for: ${locale}`);
 
     return await client.fetch(
         `
