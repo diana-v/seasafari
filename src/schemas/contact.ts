@@ -11,7 +11,6 @@ export interface ContactSectionResponse {
 }
 
 export const fetchContactSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<ContactSectionResponse> => {
-    console.log(`[Cache Miss] Fetching Contact Data for: ${locale}`);
 
     return await client.fetch(
         `

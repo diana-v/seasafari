@@ -31,7 +31,6 @@ export interface SocialLink {
 }
 
 export const fetchCommonData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<CommonSectionResponse> => {
-    console.log(`[Cache Miss] Fetching Common Data for: ${locale}`);
 
     return await client.fetch(
         `

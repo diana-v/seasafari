@@ -12,7 +12,6 @@ export interface GallerySectionResponse {
 }
 
 export const fetchGallerySectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<GallerySectionResponse> => {
-    console.log(`[Cache Miss] Fetching Gallery Data for: ${locale}`);
 
     return await client.fetch(
         `

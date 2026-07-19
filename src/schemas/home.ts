@@ -23,7 +23,6 @@ export interface HomeSectionResponse {
 }
 
 export const fetchHomeSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<HomeSectionResponse> => {
-    console.log(`[Cache Miss] Fetching Home Data for: ${locale}`);
 
     return await client.fetch(
         `

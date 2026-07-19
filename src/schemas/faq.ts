@@ -15,7 +15,6 @@ export interface FAQSectionResponse {
 }
 
 export const fetchFAQSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<FAQSectionResponse> => {
-    console.log(`[Cache Miss] Fetching FAQ Data for: ${locale}`);
 
     return await client.fetch(
         `

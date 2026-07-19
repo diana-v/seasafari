@@ -17,7 +17,6 @@ export interface Benefit {
 }
 
 export const fetchAboutSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<AboutSectionResponse> => {
-    console.log(`[Cache Miss] Fetching About Data for: ${locale}`);
 
     return await client.fetch(
         `

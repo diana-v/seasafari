@@ -10,7 +10,6 @@ export interface ContentSectionResponse {
 }
 
 export const fetchContentSectionData = cache(async (contentId: string | string[], locale = 'lt', defaultLocale = 'lt'): Promise<ContentSectionResponse> => {
-    console.log(`[Cache Miss] Fetching Content Data for: ${locale}`);
 
     return await client.fetch(
         `
