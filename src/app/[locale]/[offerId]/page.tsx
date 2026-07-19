@@ -11,10 +11,7 @@ import { NavigationContainer } from '@/containers/Navigation/NavigationContainer
 import { fetchFooterSectionData } from '@/schemas/footer';
 import { fetchNavigationData } from '@/schemas/navigation';
 import { fetchOfferSectionData } from '@/schemas/offer';
-import { fetchOffersSectionData } from '@/schemas/offers';
 import { languages, LocaleType } from '@/translations/offer';
-
-export const revalidate = 86_400;
 
 interface PageParams {
     params: Promise<{
@@ -23,12 +20,16 @@ interface PageParams {
     }>;
 }
 
-const supportedLocales = ['en', 'lt', 'ru'];
+export const dynamicParams = true;
+
+export const revalidate = 604_800;
+
+const supportedLocales = new Set(['en', 'lt', 'ru']);
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
     const { locale, offerId } = await params;
 
-    if (!supportedLocales.includes(locale) || offerId.includes('.')) {
+    if (!supportedLocales.has(locale) || offerId.includes('.')) {
         notFound();
     }
 
@@ -54,18 +55,10 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
     };
 }
 
-export async function generateStaticParams() {
-    const offers = await fetchOffersSectionData('lt', 'lt');
-
-    return supportedLocales.flatMap(locale =>
-        (offers?.cards ?? []).map(offer => ({ locale, offerId: offer.slug }))
-    );
-}
-
 export default async function OfferPage({ params }: PageParams) {
     const { locale, offerId } = await params;
 
-    if (!supportedLocales.includes(locale) || offerId.includes('.')) {
+    if (!supportedLocales.has(locale) || offerId.includes('.')) {
         notFound();
     }
 

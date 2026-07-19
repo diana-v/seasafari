@@ -21,11 +21,13 @@ const nextConfig = {
         ],
         minimumCacheTTL: 60 * 60 * 24,
     },
-    experimental: {
-        staleTimes: {
-            dynamic: 30,
-            static: 300
-        }
+    async rewrites() {
+        return [
+            {
+                source: '/cdn/:path*',
+                destination: 'https://cdn.sanity.io/:path*',
+            },
+        ];
     },
     async redirects() {
         return [

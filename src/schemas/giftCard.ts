@@ -41,7 +41,7 @@ export const fetchGiftCardSectionData = cache(async (locale = 'lt', defaultLocal
         { defaultLocale, locale },
         {
             next: {
-                revalidate: 3600,
+                revalidate: 604_800,
                 tags: ['giftCard']
             }
         }

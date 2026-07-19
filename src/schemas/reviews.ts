@@ -18,7 +18,7 @@ export const fetchReviewsSectionData = cache(async (locale = 'lt', defaultLocale
         { defaultLocale, locale },
         {
             next: {
-                revalidate: 3600,
+                revalidate: 604_800,
                 tags: ['reviews']
             }
         }
