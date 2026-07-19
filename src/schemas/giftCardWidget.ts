@@ -22,7 +22,7 @@ export const fetchGiftCardWidgetSectionData = cache(async (locale = 'lt', defaul
         { defaultLocale, locale },
         {
             next: {
-                revalidate: 3600,
+                revalidate: 604_800,
                 tags: ['giftCardWidget']
             }
         }

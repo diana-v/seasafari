@@ -57,7 +57,7 @@ export const fetchOfferSectionData = cache(async (offerId: string | string[], lo
         { defaultLocale, locale, offerId },
         {
             next: {
-                revalidate: 86_400,
+                revalidate: 604_800,
                 tags: ['offer', typeof offerId === 'string' ? offerId : 'detail']
             }
         }

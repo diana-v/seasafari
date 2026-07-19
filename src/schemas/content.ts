@@ -23,7 +23,7 @@ export const fetchContentSectionData = cache(async (contentId: string | string[]
         { contentId, defaultLocale, locale },
         {
             next: {
-                revalidate: 3600,
+                revalidate: 604_800,
                 tags: ['content', typeof contentId === 'string' ? contentId : 'footer-content']
             }
         }
