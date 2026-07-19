@@ -9,12 +9,9 @@ import { FooterContainer } from '@/containers/Footer/FooterContainer';
 import { ImageContainer } from '@/containers/Image/ImageContainer';
 import { NavigationContainer } from '@/containers/Navigation/NavigationContainer';
 import { fetchBlogSectionData } from '@/schemas/blog';
-import { fetchBlogsSectionData } from '@/schemas/blogs';
 import { fetchFooterSectionData } from '@/schemas/footer';
 import { fetchGiftCardWidgetSectionData } from '@/schemas/giftCardWidget';
 import { fetchNavigationData } from '@/schemas/navigation';
-
-export const revalidate = 86_400;
 
 interface PageParams {
     params: Promise<{
@@ -23,7 +20,9 @@ interface PageParams {
     }>;
 }
 
-const supportedLocales = ['en', 'lt', 'ru'];
+export const dynamicParams = true;
+
+export const revalidate = 604_800;
 
 export default async function BlogIdPage({ params }: PageParams) {
     const { blogId, locale } = await params;
@@ -113,10 +112,3 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
     };
 }
 
-export async function generateStaticParams() {
-    const blogs = await fetchBlogsSectionData('lt', 'lt');
-
-    return supportedLocales.flatMap(locale =>
-        (blogs?.cards ?? []).map(blog => ({ blogId: blog.slug, locale }))
-    );
-}

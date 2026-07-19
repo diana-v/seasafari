@@ -170,17 +170,24 @@ test.describe('Admin panel', () => {
     });
 
     test('QR scan rejects expired order', async ({ page }) => {
-        const orderRow = page.locator('[data-testid$="-row"]').first();
+        const rows = page.locator('[data-testid$="-row"]');
+        const count = await rows.count();
 
-        const orderRef = await orderRow.locator('td').first().textContent();
+        let orderRef = null;
+        let validTo = null;
 
-        if (!orderRef) throw new Error('No order found');
+        for (let i = 0; i < count; i++) {
+            const row = rows.nth(i);
+            const dateText = await row.locator('td').nth(4).textContent();
 
-        const validToText = await orderRow.locator('td').nth(4).textContent();
+            if (dateText && new Date(dateText) < new Date()) {
+                orderRef = await row.locator('td').first().textContent();
+                validTo = new Date(dateText);
+                break;
+            }
+        }
 
-        if (!validToText) throw new Error('Missing validTo');
-
-        const validTo = new Date(validToText);
+        if (!orderRef || !validTo) throw new Error('No expired order found in DB');
 
         const token = createGiftCardToken(orderRef, validTo);
 

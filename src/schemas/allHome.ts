@@ -160,7 +160,7 @@ export const fetchAllHomeSectionData = cache(async (locale = 'lt', defaultLocale
         {
             cache: 'force-cache',
             next: {
-                revalidate: 86_400,
+                revalidate: 604_800,
                 tags: ['all_home']
             }
         }
