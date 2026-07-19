@@ -7,6 +7,7 @@ import * as React from 'react';
 import { IconComponent } from '@/components/Icon/IconComponent';
 import { ImageContainer } from '@/containers/Image/ImageContainer';
 import { languages, LocaleType } from '@/translations/common';
+import { proxyCdnUrl } from '@/utils/proxyCdnUrl';
 
 export interface HomeProps {
     cta?: {
@@ -34,21 +35,22 @@ export const HomeLayout: React.FC<HomeProps> = ({ cta, heroMedia, image, subtitl
 
     return (
         <div className="absolute top-0 h-screen w-full">
-            <video
-                autoPlay
-                className={cn('h-screen w-full object-cover', {
-                    hidden: mobileContent !== 'video',
-                    'md:block': desktopContent === 'video',
-                    'md:hidden': desktopContent !== 'video',
-                })}
-                loop
-                muted
-                playsInline
-                preload="metadata"
-            >
-                <source src={videoMp4} type="video/mp4" />
-                <source src={videoWebm} type="video/webm" />
-            </video>
+            {(mobileContent === 'video' || desktopContent === 'video') && (
+                <video
+                    autoPlay
+                    className={cn('h-screen w-full object-cover', {
+                        hidden: mobileContent !== 'video',
+                        'md:block': desktopContent === 'video',
+                        'md:hidden': desktopContent !== 'video',
+                    })}
+                    loop
+                    muted
+                    playsInline
+                >
+                    <source src={proxyCdnUrl(videoMp4)} type="video/mp4" />
+                    <source src={proxyCdnUrl(videoWebm)} type="video/webm" />
+                </video>
+            )}
             <ImageContainer
                 classNames={{
                     image: cn('h-screen w-full object-cover', {
