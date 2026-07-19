@@ -29,8 +29,6 @@ export const metadata: Metadata = {
         shortcut: '/favicon.ico',
     },
 
-    manifest: '/manifest.json',
-
     other: {
         'mobile-web-app-capable': 'yes',
     }
