@@ -19,7 +19,7 @@ const nextConfig = {
             { protocol: 'https', hostname: 'cdn.sanity.io' },
             { protocol: 'https', hostname: 'lh3.googleusercontent.com' }
         ],
-        minimumCacheTTL: 60 * 60 * 24,
+        minimumCacheTTL: 60 * 60 * 24 * 7,
     },
     async redirects() {
         return [
