@@ -7,7 +7,6 @@ import * as React from 'react';
 import { IconComponent } from '@/components/Icon/IconComponent';
 import { ImageContainer } from '@/containers/Image/ImageContainer';
 import { languages, LocaleType } from '@/translations/common';
-import { proxyCdnUrl } from '@/utils/proxyCdnUrl';
 
 export interface HomeProps {
     cta?: {
@@ -47,8 +46,8 @@ export const HomeLayout: React.FC<HomeProps> = ({ cta, heroMedia, image, subtitl
                     muted
                     playsInline
                 >
-                    <source src={proxyCdnUrl(videoMp4)} type="video/mp4" />
-                    <source src={proxyCdnUrl(videoWebm)} type="video/webm" />
+                    <source src={videoWebm} type="video/webm" />
+                    <source src={videoMp4} type="video/mp4" />
                 </video>
             )}
             <ImageContainer
