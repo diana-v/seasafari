@@ -58,7 +58,7 @@ export const fetchCommonData = cache(async (locale = 'lt', defaultLocale = 'lt')
         { defaultLocale, locale },
         {
             next: {
-                revalidate: 3600,
+                revalidate: 604_800,
                 tags: ['common']
             }
         }
