@@ -21,14 +21,6 @@ const nextConfig = {
         ],
         minimumCacheTTL: 60 * 60 * 24,
     },
-    async rewrites() {
-        return [
-            {
-                source: '/cdn/:path*',
-                destination: 'https://cdn.sanity.io/:path*',
-            },
-        ];
-    },
     async redirects() {
         return [
             {

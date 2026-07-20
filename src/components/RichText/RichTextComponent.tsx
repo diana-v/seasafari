@@ -6,7 +6,6 @@ import * as React from 'react';
 import { ImageContainer } from '@/containers/Image/ImageContainer';
 import { getFileUrl } from '@/utils/getFileUrl';
 import { getImageUrl } from '@/utils/getImageUrl';
-import { proxyCdnUrl } from '@/utils/proxyCdnUrl';
 
 interface ComponentProps {
     classNames?: {
@@ -18,7 +17,7 @@ interface ComponentProps {
 const components: PortableTextComponents = {
     types: {
         file: ({ value }) => {
-            const videoUrl = proxyCdnUrl(getFileUrl(value?.asset?._ref));
+            const videoUrl = getFileUrl(value?.asset?._ref);
             const position = value?.position;
 
             if (!videoUrl) return null;
