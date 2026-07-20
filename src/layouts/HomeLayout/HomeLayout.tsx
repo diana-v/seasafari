@@ -46,8 +46,8 @@ export const HomeLayout: React.FC<HomeProps> = ({ cta, heroMedia, image, subtitl
                     muted
                     playsInline
                 >
-                    <source src={videoMp4} type="video/mp4" />
                     <source src={videoWebm} type="video/webm" />
+                    <source src={videoMp4} type="video/mp4" />
                 </video>
             )}
             <ImageContainer
