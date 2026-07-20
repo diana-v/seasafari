@@ -5,6 +5,7 @@ import Image, { ImageProps } from 'next/image';
 import * as React from 'react';
 
 import { imagePlaceHolder } from '@/lib/imagePlaceHolder';
+import { proxyCdnUrl } from '@/utils/proxyCdnUrl';
 
 export interface ImageContainerProps extends Partial<ImageProps> {
     classNames?: {
@@ -15,7 +16,7 @@ export interface ImageContainerProps extends Partial<ImageProps> {
 }
 
 const sanityLoader = ({ quality, src, width }: { quality?: number; src: string; width: number; }) => {
-    return `${src}?w=${width}&q=${quality || 80}&auto=format`;
+    return `${proxyCdnUrl(src) ?? src}?w=${width}&q=${quality || 80}&auto=format`;
 };
 
 export const ImageContainer: React.FC<ImageContainerProps> = ({ alt, className, classNames, hasPlaceholder = true, src, ...restProps }) => {
