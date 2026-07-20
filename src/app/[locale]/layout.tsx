@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/next';
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { notFound } from 'next/navigation';
@@ -93,6 +94,7 @@ export default async function RootLayout({
 
                 <div id="app-root">
                     {children}
+                    <Analytics />
                 </div>
 
                 <div id="modal" />
