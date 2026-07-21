@@ -31,6 +31,7 @@ export const Widget: React.FC<WidgetProps> = ({ className, image, isVisible = tr
                         classNames={{ image: 'w-16 h-8', root: 'h-full' }}
                         hasPlaceholder={false}
                         height={32}
+                        sizes="64px"
                         src={image}
                         width={32}
                     />

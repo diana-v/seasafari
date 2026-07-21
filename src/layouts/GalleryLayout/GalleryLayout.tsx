@@ -54,6 +54,7 @@ export const GalleryLayout: React.FC<GalleryProps> = ({ cards }) => {
                                                         root: 'h-full',
                                                     }}
                                                     height={500}
+                                                    sizes="(max-width: 768px) 100vw, 500px"
                                                     src={card.image}
                                                     width={500}
                                                 />
@@ -67,6 +68,7 @@ export const GalleryLayout: React.FC<GalleryProps> = ({ cards }) => {
                                                     root: 'h-full',
                                                 }}
                                                 height={500}
+                                                sizes="(max-width: 768px) 100vw, 500px"
                                                 src={card.image}
                                                 width={500}
                                             />

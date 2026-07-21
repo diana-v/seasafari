@@ -54,6 +54,7 @@ export default async function BlogIdPage({ params }: PageParams) {
                             root: 'h-full',
                         }}
                         height={450}
+                        sizes="(max-width: 1280px) 100vw, 1280px"
                         src={blog.image}
                         width={1500}
                     />

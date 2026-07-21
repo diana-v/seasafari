@@ -116,6 +116,7 @@ export default async function OfferPage({ params }: PageParams) {
                                 fill
                                 height={256}
                                 loading="eager"
+                                sizes="(max-width: 1024px) 100vw, (max-width: 1280px) 33vw, 427px"
                                 src={offer.image}
                                 width={1024}
                             />
@@ -137,6 +138,7 @@ export default async function OfferPage({ params }: PageParams) {
                                                 classNames={{ image: 'w-6 h-6' }}
                                                 hasPlaceholder={false}
                                                 height={40}
+                                                sizes="40px"
                                                 src={card.icon}
                                                 width={40}
                                             />
