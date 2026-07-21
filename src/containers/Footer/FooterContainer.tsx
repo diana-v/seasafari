@@ -59,6 +59,7 @@ export const FooterContainer: React.FC<FooterProps> = ({ common, faq }) => {
                             <ImageContainer
                                 classNames={{ image: 'w-[100px] h-[50px]', root: 'h-full' }}
                                 height={50}
+                                sizes="100px"
                                 src={logo}
                                 width={100}
                             />
@@ -81,6 +82,7 @@ export const FooterContainer: React.FC<FooterProps> = ({ common, faq }) => {
                                             classNames={{ image: 'w-5 h-5', root: 'w-5 h-5' }}
                                             hasPlaceholder={false}
                                             height={20}
+                                            sizes="20px"
                                             src={social.icon}
                                             width={20}
                                         />

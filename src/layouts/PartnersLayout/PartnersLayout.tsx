@@ -65,6 +65,7 @@ export const PartnersLayout: React.FC<PartnersProps> = ({ logos, title }) => {
                                         root: 'h-[100px] md:w-[100px]',
                                     }}
                                     height={100}
+                                    sizes="(max-width: 768px) 100vw, 100px"
                                     src={logo.image}
                                     width={100}
                                 />

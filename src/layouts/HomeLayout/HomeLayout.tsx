@@ -60,6 +60,7 @@ export const HomeLayout: React.FC<HomeProps> = ({ cta, heroMedia, image, subtitl
                     root: 'h-full',
                 }}
                 height={750}
+                sizes="100vw"
                 src={image}
                 width={1500}
             />

@@ -24,6 +24,7 @@ export const AboutLayout: React.FC<AboutProps> = ({ benefits, description, image
                     <ImageContainer
                         classNames={{ image: 'rounded-3xl shadow-sm object-cover w-full h-full', root: 'h-full' }}
                         height={600}
+                        sizes="(max-width: 1280px) 100vw, 40vw"
                         src={image}
                         width={600}
                     />
@@ -48,6 +49,7 @@ export const AboutLayout: React.FC<AboutProps> = ({ benefits, description, image
                                             }}
                                             hasPlaceholder={false}
                                             height={16}
+                                            sizes="16px"
                                             src={benefit.image}
                                             width={16}
                                         />
