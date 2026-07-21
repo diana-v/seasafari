@@ -98,6 +98,7 @@ export const NavigationContainer: React.FC<NavigationProps> = ({ isAuthenticated
                             root: 'h-full',
                         }}
                         height={80}
+                        sizes="(max-width: 1024px) 100px, 160px"
                         src={logo}
                         width={180}
                     />

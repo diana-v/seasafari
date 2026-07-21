@@ -48,6 +48,7 @@ export const GiftCardLayout: React.FC<GiftcardProps> = ({ bullets, description, 
                             alt={title}
                             classNames={{ image: 'object-cover w-full h-full', root: 'h-full' }}
                             height={580}
+                            sizes="(max-width: 640px) 100vw, 50vw"
                             src={image}
                             width={752}
                         />

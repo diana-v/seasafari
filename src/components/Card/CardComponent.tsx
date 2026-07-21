@@ -70,6 +70,7 @@ const ImageCard = ({
                             root: 'h-full w-full md:w-auto flex-1',
                         }}
                         height={300}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 450px"
                         src={image}
                         width={450}
                     />
@@ -110,6 +111,7 @@ const IconCard = ({ classNames, icon, image, onClick, title, ...rest }: Partial<
                 <ImageContainer
                     classNames={{ image: classNames?.icon, root: 'h-full' }}
                     height={60}
+                    sizes="60px"
                     src={icon}
                     width={60}
                 />
@@ -149,6 +151,7 @@ const ReviewCard = ({
                                     root: 'h-full',
                                 }}
                                 height={64}
+                                sizes="64px"
                                 src={image}
                                 width={64}
                             />
@@ -207,6 +210,7 @@ const BlogCard = ({ classNames, createdAt, description, image, linkTitle, linkUr
                         root: 'h-full',
                     }}
                     height={500}
+                    sizes="(max-width: 1280px) 100vw, 256px"
                     src={image}
                     width={500}
                 />

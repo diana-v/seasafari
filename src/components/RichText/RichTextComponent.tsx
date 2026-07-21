@@ -64,6 +64,7 @@ const components: PortableTextComponents = {
                             root: 'h-full',
                         }}
                         height={250}
+                        sizes="(max-width: 768px) 100vw, 50vw"
                         src={imageUrl}
                         width={1500}
                     />
