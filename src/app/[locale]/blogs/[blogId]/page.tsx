@@ -20,7 +20,15 @@ interface PageParams {
     }>;
 }
 
-export default async function BlogIdPage({ params }: PageParams) {
+export default function BlogIdPage({ params }: PageParams) {
+    return (
+        <Suspense>
+            <BlogIdPageContent params={params} />
+        </Suspense>
+    );
+}
+
+async function BlogIdPageContent({ params }: PageParams) {
     const { blogId, locale } = await params;
 
     const blog = await fetchBlogSectionData(blogId, locale, 'lt')

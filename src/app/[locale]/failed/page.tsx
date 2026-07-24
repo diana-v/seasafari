@@ -18,7 +18,15 @@ export const metadata: Metadata = {
     title: 'Payment Failed | SeaSafari',
 };
 
-export default async function PaymentFailedPage({ params }: PageProps) {
+export default function PaymentFailedPage({ params }: PageProps) {
+    return (
+        <Suspense>
+            <PaymentFailedContent params={params} />
+        </Suspense>
+    );
+}
+
+async function PaymentFailedContent({ params }: PageProps) {
     const { locale } = await params;
 
     const navigation = await fetchNavigationData(locale, 'lt')

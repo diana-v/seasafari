@@ -15,7 +15,15 @@ interface PageParams {
     params: Promise<{ locale: string }>;
 }
 
-export default async function FaqPage({ params }: PageParams) {
+export default function FaqPage({ params }: PageParams) {
+    return (
+        <Suspense>
+            <FaqPageContent params={params} />
+        </Suspense>
+    );
+}
+
+async function FaqPageContent({ params }: PageParams) {
     const { locale } = await params;
 
     const navigation = await fetchNavigationData(locale, 'lt')

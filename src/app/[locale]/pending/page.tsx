@@ -18,7 +18,15 @@ export const metadata: Metadata = {
     title: 'Payment Pending | SeaSafari',
 };
 
-export default async function PaymentPendingPage({ params }: PageProps) {
+export default function PaymentPendingPage({ params }: PageProps) {
+    return (
+        <Suspense>
+            <PaymentPendingContent params={params} />
+        </Suspense>
+    );
+}
+
+async function PaymentPendingContent({ params }: PageProps) {
     const { locale } = await params;
 
     const navigation = await fetchNavigationData(locale, 'lt')
