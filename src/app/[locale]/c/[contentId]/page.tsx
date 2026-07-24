@@ -13,8 +13,6 @@ import { fetchNavigationData } from '@/schemas/navigation';
 
 export const dynamicParams = true;
 
-export const revalidate = 604_800;
-
 interface PageParams {
     params: Promise<{
         contentId: string;
