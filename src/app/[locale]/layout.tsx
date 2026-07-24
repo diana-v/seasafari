@@ -39,8 +39,6 @@ export async function generateStaticParams() {
     return [{ locale: 'en' }, { locale: 'lt' }, { locale: 'ru' }];
 }
 
-export const dynamicParams = false;
-
 export default async function RootLayout({
      children,
      params,

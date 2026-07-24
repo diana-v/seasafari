@@ -20,8 +20,6 @@ interface PageParams {
     }>;
 }
 
-export const dynamicParams = true;
-
 const supportedLocales = new Set(['en', 'lt', 'ru']);
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
