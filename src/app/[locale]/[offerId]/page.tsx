@@ -117,7 +117,6 @@ async function OfferPageContent({ params }: PageParams) {
                                     image: 'rounded-3xl object-cover',
                                     root: 'h-full',
                                 }}
-                                fill
                                 height={256}
                                 loading="eager"
                                 sizes="(max-width: 1024px) 100vw, (max-width: 1280px) 33vw, 427px"
