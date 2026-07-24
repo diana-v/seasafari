@@ -6,8 +6,6 @@ import { generatePdfDoc } from '@/templates/payment-success';
 import { languages, LocaleType } from '@/translations/success';
 import { getTemplate } from '@/utils/getTemplate';
 
-export const runtime = 'nodejs';
-
 const resend = new Resend(process.env.RESEND_API_KEY ?? '');
 
 export async function POST(req: Request) {
