@@ -1,5 +1,6 @@
+'use cache';
 import { TypedObject } from '@portabletext/types';
-import { cache } from 'react';
+import { cacheLife, cacheTag } from 'next/cache';
 
 import { client } from '@/lib/sanity';
 
@@ -16,7 +17,9 @@ export interface Benefit {
     title: string;
 }
 
-export const fetchAboutSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<AboutSectionResponse> => {
+export async function fetchAboutSectionData(locale = 'lt', defaultLocale = 'lt'): Promise<AboutSectionResponse> {
+    cacheTag('about');
+    cacheLife('weeks');
 
     return await client.fetch(
         `
@@ -31,12 +34,6 @@ export const fetchAboutSectionData = cache(async (locale = 'lt', defaultLocale =
         }
     }[0]
 `,
-        { defaultLocale, locale },
-        {
-            next: {
-                revalidate: 604_800,
-                tags: ['about']
-            }
-        }
+        { defaultLocale, locale }
     )
-})
+}

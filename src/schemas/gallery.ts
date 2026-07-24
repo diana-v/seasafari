@@ -1,4 +1,5 @@
-import { cache } from 'react';
+'use cache';
+import { cacheLife, cacheTag } from 'next/cache';
 
 import { client } from '@/lib/sanity';
 
@@ -11,7 +12,9 @@ export interface GallerySectionResponse {
     cards: GalleryCard[];
 }
 
-export const fetchGallerySectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<GallerySectionResponse> => {
+export async function fetchGallerySectionData(locale = 'lt', defaultLocale = 'lt'): Promise<GallerySectionResponse> {
+    cacheTag('gallery');
+    cacheLife('weeks');
 
     return await client.fetch(
         `
@@ -22,12 +25,6 @@ export const fetchGallerySectionData = cache(async (locale = 'lt', defaultLocale
         },
     }[0]
 `,
-        { defaultLocale, locale },
-        {
-            next: {
-                revalidate: 604_800,
-                tags: ['gallery']
-            }
-        }
+        { defaultLocale, locale }
     )
-})
+}
