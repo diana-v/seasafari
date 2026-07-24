@@ -9,6 +9,7 @@ const withPWA = withPWAInit({
 
 const nextConfig = {
     reactStrictMode: true,
+    cacheComponents: true,
     allowedDevOrigins: [
         new URL(domain).host,
         '127.0.0.1',
