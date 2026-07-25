@@ -16,7 +16,9 @@ export async function GET(req: Request) {
     const localisedString =
         languages[locale as LocaleType] ?? languages.en;
 
-    if (!checkAdminAuth()) {
+    const res = await checkAdminAuth()
+
+    if (!res) {
         return NextResponse.redirect(new URL('/', req.url), 302);
     }
 
