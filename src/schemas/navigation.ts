@@ -1,4 +1,5 @@
-import { cache } from 'react';
+'use cache';
+import { cacheLife, cacheTag } from 'next/cache';
 
 import { client } from '@/lib/sanity';
 
@@ -12,7 +13,9 @@ export interface NavigationSectionResponse {
     phone: string;
 }
 
-export const fetchNavigationData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<NavigationProps> => {
+export async function fetchNavigationData(locale = 'lt', defaultLocale = 'lt'): Promise<NavigationProps> {
+    cacheTag('navigation', 'common');
+    cacheLife('weeks');
 
     return await client.fetch(
         `
@@ -21,12 +24,6 @@ export const fetchNavigationData = cache(async (locale = 'lt', defaultLocale = '
         phone
     }[0]
 `,
-        { defaultLocale, locale },
-        {
-            next: {
-                revalidate: 604_800,
-                tags: ['navigation', 'common']
-            }
-        }
+        { defaultLocale, locale }
     )
-})
+}

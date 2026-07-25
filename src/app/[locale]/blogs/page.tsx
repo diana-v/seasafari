@@ -12,15 +12,21 @@ import { fetchGiftCardWidgetSectionData } from '@/schemas/giftCardWidget';
 import { fetchNavigationData } from '@/schemas/navigation';
 import { languages, LocaleType } from '@/translations/blog';
 
-export const revalidate = 604_800;
-
 interface PageParams {
     params: Promise<{
         locale: string;
     }>;
 }
 
-export default async function BlogsPage({ params }: PageParams) {
+export default function BlogsPage({ params }: PageParams) {
+    return (
+        <Suspense>
+            <BlogsPageContent params={params} />
+        </Suspense>
+    );
+}
+
+async function BlogsPageContent({ params }: PageParams) {
     const { locale } = await params;
 
     const blogs = await fetchBlogsSectionData(locale, 'lt')

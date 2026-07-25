@@ -1,5 +1,6 @@
 import { asc, eq } from 'drizzle-orm';
 import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
 
 import { fetchNavigationData } from '@/schemas/navigation';
 import { db } from '@/server/db';
@@ -8,7 +9,15 @@ import { checkAdminAuth } from '@/utils/checkAdminAuth';
 
 import AdminClient from './AdminClient';
 
-export default async function AdminPage({ params }: { params: Promise<{ locale: string }> }) {
+export default function AdminPage({ params }: { params: Promise<{ locale: string }> }) {
+    return (
+        <Suspense>
+            <AdminPageContent params={params} />
+        </Suspense>
+    );
+}
+
+async function AdminPageContent({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     const isAuthenticated = await checkAdminAuth()
 

@@ -19,7 +19,15 @@ export const metadata: Metadata = {
     title: 'Payment Error | SeaSafari',
 };
 
-export default async function PaymentErrorPage({ params, searchParams }: PageProps) {
+export default function PaymentErrorPage({ params, searchParams }: PageProps) {
+    return (
+        <Suspense>
+            <PaymentErrorContent params={params} searchParams={searchParams} />
+        </Suspense>
+    );
+}
+
+async function PaymentErrorContent({ params, searchParams }: PageProps) {
     const { locale } = await params;
     const { errorCode } = await searchParams;
 

@@ -1,4 +1,5 @@
-import { cache } from 'react';
+'use cache';
+import { cacheLife, cacheTag } from 'next/cache';
 
 import { client } from '@/lib/sanity';
 
@@ -19,7 +20,9 @@ export interface BlogsSectionResponse {
     title: string;
 }
 
-export const fetchBlogsSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<BlogsSectionResponse> => {
+export async function fetchBlogsSectionData(locale = 'lt', defaultLocale = 'lt'): Promise<BlogsSectionResponse> {
+    cacheTag('blogs');
+    cacheLife('weeks');
 
     return await client.fetch(
         `
@@ -38,12 +41,6 @@ export const fetchBlogsSectionData = cache(async (locale = 'lt', defaultLocale =
         } | order(orderRank)
     }[0]
 `,
-        { defaultLocale, locale },
-        {
-            next: {
-                revalidate: 604_800,
-                tags: ['blogs']
-            }
-        }
+        { defaultLocale, locale }
     )
-})
+}

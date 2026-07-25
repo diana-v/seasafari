@@ -1,4 +1,5 @@
-import { cache } from 'react';
+'use cache';
+import { cacheLife, cacheTag } from 'next/cache';
 
 import { client } from '@/lib/sanity';
 
@@ -34,7 +35,9 @@ export interface FooterSectionResponse {
     faq: FooterFAQ;
 }
 
-export const fetchFooterSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<FooterSectionResponse> => {
+export async function fetchFooterSectionData(locale = 'lt', defaultLocale = 'lt'): Promise<FooterSectionResponse> {
+    cacheTag('footer', 'common', 'faq');
+    cacheLife('weeks');
 
     return await client.fetch(
         `
@@ -66,12 +69,6 @@ export const fetchFooterSectionData = cache(async (locale = 'lt', defaultLocale 
       }[0],
     }[0]
 `,
-        { defaultLocale, locale },
-        {
-            next: {
-                revalidate: 604_800,
-                tags: ['footer', 'common', 'faq']
-            }
-        }
+        { defaultLocale, locale }
     )
-})
+}
