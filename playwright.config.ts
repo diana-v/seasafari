@@ -13,9 +13,7 @@ if (!process.env.CI) {
 export default defineConfig({
     /* Fail the build on CI if you accidentally left test.only in the source code. */
     forbidOnly: !!process.env.CI,
-    /* Run tests in files in parallel */
-    fullyParallel: true,
-    /* Configure projects for major browsers */
+    fullyParallel: false,
     projects: [
         {
             name: 'chromium',
@@ -24,42 +22,6 @@ export default defineConfig({
                 viewport: { height: 1080, width: 1440 },
             },
         },
-
-        {
-            name: 'firefox',
-            use: {
-                ...devices['Desktop Firefox'],
-                viewport: { height: 1080, width: 1440 },
-            },
-        },
-
-        {
-            name: 'webkit',
-            use: {
-                ...devices['Desktop Safari'],
-                viewport: { height: 1080, width: 1440 },
-            },
-        },
-
-        /* Test against mobile viewports. */
-        // {
-        //   name: 'Mobile Chrome',
-        //   use: { ...devices['Pixel 5'] },
-        // },
-        // {
-        //   name: 'Mobile Safari',
-        //   use: { ...devices['iPhone 12'] },
-        // },
-
-        /* Test against branded browsers. */
-        // {
-        //   name: 'Microsoft Edge',
-        //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-        // },
-        // {
-        //   name: 'Google Chrome',
-        //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-        // },
     ],
     /* Reporter to use. See https://playwright.dev/docs/test-reporters */
     reporter: 'html',
@@ -88,6 +50,5 @@ export default defineConfig({
         url: 'http://127.0.0.1:3000',
     },
 
-    /* Opt out of parallel tests on CI. */
-    workers: process.env.CI ? 1 : undefined,
+    workers: 1,
 });

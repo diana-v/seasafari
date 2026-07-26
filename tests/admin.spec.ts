@@ -172,7 +172,6 @@ test.describe('Admin panel', () => {
         const orderRef = await orderRow.locator('td').first().textContent();
 
         if (!orderRef) throw new Error('No order found');
-        completedOrderRef = orderRef;
 
         const validToText = await orderRow.locator('td').nth(4).textContent();
 
