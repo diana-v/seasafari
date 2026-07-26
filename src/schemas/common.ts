@@ -1,5 +1,6 @@
+'use cache';
 import { TypedObject } from '@portabletext/types';
-import { cache } from 'react';
+import { cacheLife, cacheTag } from 'next/cache';
 
 import { client } from '@/lib/sanity';
 
@@ -30,7 +31,9 @@ export interface SocialLink {
     platform: string;
 }
 
-export const fetchCommonData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<CommonSectionResponse> => {
+export async function fetchCommonData(locale = 'lt', defaultLocale = 'lt'): Promise<CommonSectionResponse> {
+    cacheTag('common');
+    cacheLife('weeks');
 
     return await client.fetch(
         `
@@ -55,12 +58,6 @@ export const fetchCommonData = cache(async (locale = 'lt', defaultLocale = 'lt')
          }
     }[0]
 `,
-        { defaultLocale, locale },
-        {
-            next: {
-                revalidate: 604_800,
-                tags: ['common']
-            }
-        }
+        { defaultLocale, locale }
     )
-})
+}

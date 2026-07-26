@@ -2,23 +2,23 @@ import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook';
 import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
-export const runtime = 'nodejs';
 
 const TYPE_TO_TAGS: Record<string, string[]> = {
-    about:          ['about'],
-    blog:           ['blog'],
-    blogs:          ['blogs'],
-    common:         ['navigation', 'common', 'footer'],
-    contact:        ['contact'],
-    faq:            ['faq', 'footer'],
-    footer:         ['footer', 'content'],
-    gallery:        ['gallery'],
-    giftCard:       ['giftCard'],
-    giftCardWidget: ['giftCardWidget'],
-    home:           ['home'],
-    offers:         ['offers'],
-    partners:       ['partners'],
-    reviews:        ['reviews'],
+    about:          ['about', 'all_home'],
+    blog:           ['blog', 'blogs', 'all_home'],
+    blogs:          ['blogs', 'all_home'],
+    common:         ['navigation', 'common', 'footer', 'contact', 'all_home'],
+    contact:        ['contact', 'all_home'],
+    faq:            ['faq', 'footer', 'all_home'],
+    footer:         ['footer', 'content', 'all_home'],
+    gallery:        ['gallery', 'all_home'],
+    giftCard:       ['giftCard', 'all_home'],
+    giftCardWidget: ['giftCardWidget', 'all_home'],
+    home:           ['home', 'all_home'],
+    offer:          ['offer',  'offers', 'all_home'],
+    offers:         ['offers', 'all_home'],
+    partners:       ['partners', 'all_home'],
+    reviews:        ['reviews', 'all_home'],
 };
 
 export async function POST(req: NextRequest) {

@@ -6,8 +6,6 @@ import HomeClientContainer from '@/containers/HomeClient/HomeClientContainer';
 import ReviewsServer from '@/containers/ReviewsServer/ReviewsServerContainer';
 import { fetchAllHomeSectionData } from '@/schemas/allHome';
 
-export const revalidate = 604_800;
-
 interface PageParams {
     params: Promise<{ locale: string }>;
 }
@@ -40,7 +38,15 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
     };
 }
 
-export default async function HomePage({ params }: PageParams) {
+export default function HomePage({ params }: PageParams) {
+    return (
+        <Suspense>
+            <HomePageContent params={params} />
+        </Suspense>
+    );
+}
+
+async function HomePageContent({ params }: PageParams) {
     const { locale } = await params;
 
     const { about, blogs, contact, footer, gallery, giftCard,

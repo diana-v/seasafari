@@ -11,10 +11,6 @@ import { fetchFooterSectionData } from '@/schemas/footer';
 import { fetchGiftCardWidgetSectionData } from '@/schemas/giftCardWidget';
 import { fetchNavigationData } from '@/schemas/navigation';
 
-export const dynamicParams = true;
-
-export const revalidate = 604_800;
-
 interface PageParams {
     params: Promise<{
         contentId: string;
@@ -22,7 +18,15 @@ interface PageParams {
     }>;
 }
 
-export default async function ContentPage({ params }: PageParams) {
+export default function ContentPage({ params }: PageParams) {
+    return (
+        <Suspense>
+            <ContentPageContent params={params} />
+        </Suspense>
+    );
+}
+
+async function ContentPageContent({ params }: PageParams) {
     const { contentId, locale } = await params;
 
     const content = await fetchContentSectionData(contentId, locale, 'lt')

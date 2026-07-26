@@ -20,11 +20,15 @@ interface PageParams {
     }>;
 }
 
-export const dynamicParams = true;
+export default function BlogIdPage({ params }: PageParams) {
+    return (
+        <Suspense>
+            <BlogIdPageContent params={params} />
+        </Suspense>
+    );
+}
 
-export const revalidate = 604_800;
-
-export default async function BlogIdPage({ params }: PageParams) {
+async function BlogIdPageContent({ params }: PageParams) {
     const { blogId, locale } = await params;
 
     const blog = await fetchBlogSectionData(blogId, locale, 'lt')
