@@ -7,5 +7,6 @@ export async function loginAsAdmin(page: Page, user: string, pass: string) {
     await page.getByTestId('password-input').fill(pass);
 
     await page.getByTestId('login-button').click();
+    await page.waitForURL('**/lt/admin');
     await page.getByTestId('search-input').waitFor({ state: 'visible' });
 }
