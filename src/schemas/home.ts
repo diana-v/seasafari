@@ -18,8 +18,6 @@ export interface HomeSectionResponse {
     image?: string;
     subtitle?: string;
     title: string;
-    videoMp4?: string;
-    videoWebm?: string;
 }
 
 export const fetchHomeSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<HomeSectionResponse> => {
@@ -27,8 +25,6 @@ export const fetchHomeSectionData = cache(async (locale = 'lt', defaultLocale = 
     return await client.fetch(
         `
     *[_type == "home"]{
-        "videoWebm": videoWebm.asset->url,
-        "videoMp4": videoMp4.asset->url,
         "image": image.asset->url,
         "heroMedia": {
             "desktopContent": heroMedia.desktopContent,

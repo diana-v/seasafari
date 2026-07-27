@@ -114,8 +114,6 @@ export const fetchAllHomeSectionData = cache(async (locale = 'lt', defaultLocale
             link,
         }[0],
         "home": *[_type == "home"]{
-            "videoWebm": videoWebm.asset->url,
-            "videoMp4": videoMp4.asset->url,
             "image": image.asset->url,
             "heroMedia": {
                 "desktopContent": heroMedia.desktopContent,

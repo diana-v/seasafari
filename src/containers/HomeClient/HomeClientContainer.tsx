@@ -74,8 +74,6 @@ export default function HomeClient({
                     image={home?.image}
                     subtitle={home?.subtitle}
                     title={home?.title}
-                    videoMp4={home?.videoMp4}
-                    videoWebm={home?.videoWebm}
                 />
             </div>
 

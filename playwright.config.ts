@@ -13,8 +13,6 @@ if (!process.env.CI) {
 export default defineConfig({
     /* Fail the build on CI if you accidentally left test.only in the source code. */
     forbidOnly: !!process.env.CI,
-    /* Run tests in files in parallel */
-    fullyParallel: true,
     /* Configure projects for major browsers */
     projects: [
         {

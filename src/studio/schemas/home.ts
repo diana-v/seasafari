@@ -32,21 +32,12 @@ export default defineType({
             type: 'object',
         }),
         defineField({
-            name: 'videoWebm',
-            title: 'Video webm',
-            type: 'file',
-        }),
-        defineField({
-            name: 'videoMp4',
-            title: 'Video mp4',
-            type: 'file',
-        }),
-        defineField({
             name: 'image',
             title: 'Image',
             type: 'file',
         }),
         defineField({
+            description: 'Choose what to show in the hero section. Selecting "Video" will use the locally hosted video file (/videos/1080-video-background.webm + .mp4) — no video upload needed here.',
             fields: [
                 defineField({
                     name: 'desktopContent',
@@ -55,7 +46,7 @@ export default defineType({
                         layout: 'radio',
                         list: [
                             { title: 'Image', value: 'image' },
-                            { title: 'Video', value: 'video' },
+                            { title: 'Video (local file)', value: 'video' },
                         ],
                     },
                     title: 'Desktop Content Type',
@@ -68,7 +59,7 @@ export default defineType({
                         layout: 'radio',
                         list: [
                             { title: 'Image', value: 'image' },
-                            { title: 'Video', value: 'video' },
+                            { title: 'Video (local file)', value: 'video' },
                         ],
                     },
                     title: 'Mobile Content Type',
