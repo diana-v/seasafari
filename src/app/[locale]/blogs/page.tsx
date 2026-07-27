@@ -12,6 +12,8 @@ import { fetchGiftCardWidgetSectionData } from '@/schemas/giftCardWidget';
 import { fetchNavigationData } from '@/schemas/navigation';
 import { languages, LocaleType } from '@/translations/blog';
 
+export const revalidate = 604_800;
+
 interface PageParams {
     params: Promise<{
         locale: string;

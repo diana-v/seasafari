@@ -22,6 +22,8 @@ interface PageParams {
 
 export const dynamicParams = true;
 
+export const revalidate = 604_800;
+
 export default async function BlogIdPage({ params }: PageParams) {
     const { blogId, locale } = await params;
 

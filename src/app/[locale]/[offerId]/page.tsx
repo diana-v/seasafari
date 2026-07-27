@@ -22,6 +22,8 @@ interface PageParams {
 
 export const dynamicParams = true;
 
+export const revalidate = 604_800;
+
 const supportedLocales = new Set(['en', 'lt', 'ru']);
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
