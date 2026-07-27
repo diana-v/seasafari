@@ -7,6 +7,8 @@ import { languages, LocaleType } from '@/translations/admin';
 import { checkAdminAuth } from '@/utils/checkAdminAuth';
 import { verifyGiftCardToken } from '@/utils/jwt';
 
+export const runtime = 'nodejs';
+
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
 
@@ -16,9 +18,7 @@ export async function GET(req: Request) {
     const localisedString =
         languages[locale as LocaleType] ?? languages.en;
 
-    const res = await checkAdminAuth()
-
-    if (!res) {
+    if (!checkAdminAuth()) {
         return NextResponse.redirect(new URL('/', req.url), 302);
     }
 

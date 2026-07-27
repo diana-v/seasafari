@@ -1,5 +1,4 @@
-'use cache';
-import { cacheLife, cacheTag } from 'next/cache';
+import { cache } from 'react';
 
 import { client } from '@/lib/sanity';
 
@@ -19,19 +18,13 @@ export interface HomeSectionResponse {
     image?: string;
     subtitle?: string;
     title: string;
-    videoMp4?: string;
-    videoWebm?: string;
 }
 
-export async function fetchHomeSectionData(locale = 'lt', defaultLocale = 'lt'): Promise<HomeSectionResponse> {
-    cacheTag('home');
-    cacheLife('weeks');
+export const fetchHomeSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<HomeSectionResponse> => {
 
     return await client.fetch(
         `
     *[_type == "home"]{
-        "videoWebm": videoWebm.asset->url,
-        "videoMp4": videoMp4.asset->url,
         "image": image.asset->url,
         "heroMedia": {
             "desktopContent": heroMedia.desktopContent,
@@ -45,6 +38,12 @@ export async function fetchHomeSectionData(locale = 'lt', defaultLocale = 'lt'):
         }
     }[0]
 `,
-        { defaultLocale, locale }
+        { defaultLocale, locale },
+        {
+            next: {
+                revalidate: 604_800,
+                tags: ['home']
+            }
+        }
     )
-}
+})

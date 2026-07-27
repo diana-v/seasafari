@@ -1,5 +1,4 @@
-'use cache';
-import { cacheLife, cacheTag } from 'next/cache';
+import { cache } from 'react';
 
 import { client } from '@/lib/sanity';
 
@@ -9,9 +8,7 @@ export interface GiftCardWidgetResponse {
     title: string;
 }
 
-export async function fetchGiftCardWidgetSectionData(locale = 'lt', defaultLocale = 'lt'): Promise<GiftCardWidgetResponse> {
-    cacheTag('giftCardWidget');
-    cacheLife('weeks');
+export const fetchGiftCardWidgetSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<GiftCardWidgetResponse> => {
 
     return await client.fetch(
         `
@@ -21,6 +18,12 @@ export async function fetchGiftCardWidgetSectionData(locale = 'lt', defaultLocal
         link,
     }[0]
 `,
-        { defaultLocale, locale }
+        { defaultLocale, locale },
+        {
+            next: {
+                revalidate: 604_800,
+                tags: ['giftCardWidget']
+            }
+        }
     )
-}
+})

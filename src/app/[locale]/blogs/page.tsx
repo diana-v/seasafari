@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import * as React from 'react';
 import { Suspense } from 'react';
 
@@ -12,22 +13,20 @@ import { fetchGiftCardWidgetSectionData } from '@/schemas/giftCardWidget';
 import { fetchNavigationData } from '@/schemas/navigation';
 import { languages, LocaleType } from '@/translations/blog';
 
+export const revalidate = 604_800;
+
 interface PageParams {
     params: Promise<{
         locale: string;
     }>;
 }
 
-export default function BlogsPage({ params }: PageParams) {
-    return (
-        <Suspense>
-            <BlogsPageContent params={params} />
-        </Suspense>
-    );
-}
+const supportedLocales = new Set(['en', 'lt', 'ru']);
 
-async function BlogsPageContent({ params }: PageParams) {
+export default async function BlogsPage({ params }: PageParams) {
     const { locale } = await params;
+
+    if (!supportedLocales.has(locale)) notFound();
 
     const blogs = await fetchBlogsSectionData(locale, 'lt')
     const giftCardWidget = await fetchGiftCardWidgetSectionData(locale, 'lt')
@@ -93,6 +92,9 @@ async function BlogsPageContent({ params }: PageParams) {
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
     const { locale } = await params;
+
+    if (!supportedLocales.has(locale)) notFound();
+
     const blogs = await fetchBlogsSectionData(locale, 'lt');
     const { cards, description, slug, title } = blogs ?? {};
 

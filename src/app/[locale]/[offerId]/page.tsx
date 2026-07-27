@@ -20,6 +20,10 @@ interface PageParams {
     }>;
 }
 
+export const dynamicParams = true;
+
+export const revalidate = 604_800;
+
 const supportedLocales = new Set(['en', 'lt', 'ru']);
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
@@ -51,15 +55,7 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
     };
 }
 
-export default function OfferPage({ params }: PageParams) {
-    return (
-        <Suspense>
-            <OfferPageContent params={params} />
-        </Suspense>
-    );
-}
-
-async function OfferPageContent({ params }: PageParams) {
+export default async function OfferPage({ params }: PageParams) {
     const { locale, offerId } = await params;
 
     if (!supportedLocales.has(locale) || offerId.includes('.')) {

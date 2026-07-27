@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import * as React from 'react';
 import { Suspense } from 'react';
 
@@ -20,16 +21,16 @@ interface PageParams {
     }>;
 }
 
-export default function BlogIdPage({ params }: PageParams) {
-    return (
-        <Suspense>
-            <BlogIdPageContent params={params} />
-        </Suspense>
-    );
-}
+export const dynamicParams = true;
 
-async function BlogIdPageContent({ params }: PageParams) {
+export const revalidate = 604_800;
+
+const supportedLocales = new Set(['en', 'lt', 'ru']);
+
+export default async function BlogIdPage({ params }: PageParams) {
     const { blogId, locale } = await params;
+
+    if (!supportedLocales.has(locale) || blogId.includes('.')) notFound();
 
     const blog = await fetchBlogSectionData(blogId, locale, 'lt')
     const giftCardWidget = await fetchGiftCardWidgetSectionData(locale, 'lt')
@@ -93,6 +94,9 @@ async function BlogIdPageContent({ params }: PageParams) {
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
     const { blogId, locale } = await params;
+
+    if (!supportedLocales.has(locale) || blogId.includes('.')) notFound();
+
     const blog = await fetchBlogSectionData(blogId, locale, 'lt');
 
     if (!blog) return { title: 'Blog Not Found | SeaSafari' };

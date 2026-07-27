@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import * as React from 'react';
 import { Suspense } from 'react';
 
@@ -6,12 +7,19 @@ import HomeClientContainer from '@/containers/HomeClient/HomeClientContainer';
 import ReviewsServer from '@/containers/ReviewsServer/ReviewsServerContainer';
 import { fetchAllHomeSectionData } from '@/schemas/allHome';
 
+export const revalidate = 604_800;
+
 interface PageParams {
     params: Promise<{ locale: string }>;
 }
 
+const supportedLocales = new Set(['en', 'lt', 'ru']);
+
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
     const { locale } = await params;
+
+    if (!supportedLocales.has(locale)) notFound();
+
     const data = await fetchAllHomeSectionData(locale, 'lt');
     const home = data.home;
 
@@ -38,16 +46,10 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
     };
 }
 
-export default function HomePage({ params }: PageParams) {
-    return (
-        <Suspense>
-            <HomePageContent params={params} />
-        </Suspense>
-    );
-}
-
-async function HomePageContent({ params }: PageParams) {
+export default async function HomePage({ params }: PageParams) {
     const { locale } = await params;
+
+    if (!supportedLocales.has(locale)) notFound();
 
     const { about, blogs, contact, footer, gallery, giftCard,
         giftCardWidget, home, navigation, offers, partners, reviews

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import * as React from 'react';
 import { Suspense } from 'react';
 
@@ -11,20 +12,18 @@ import { fetchFooterSectionData } from '@/schemas/footer';
 import { fetchGiftCardWidgetSectionData } from '@/schemas/giftCardWidget';
 import { fetchNavigationData } from '@/schemas/navigation';
 
+export const revalidate = 604_800;
+
 interface PageParams {
     params: Promise<{ locale: string }>;
 }
 
-export default function FaqPage({ params }: PageParams) {
-    return (
-        <Suspense>
-            <FaqPageContent params={params} />
-        </Suspense>
-    );
-}
+const supportedLocales = new Set(['en', 'lt', 'ru']);
 
-async function FaqPageContent({ params }: PageParams) {
+export default async function FaqPage({ params }: PageParams) {
     const { locale } = await params;
+
+    if (!supportedLocales.has(locale)) notFound();
 
     const navigation = await fetchNavigationData(locale, 'lt')
     const footer = await fetchFooterSectionData(locale, 'lt')
@@ -70,6 +69,9 @@ async function FaqPageContent({ params }: PageParams) {
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
     const { locale } = await params;
+
+    if (!supportedLocales.has(locale)) notFound();
+
     const faq = await fetchFAQSectionData(locale, 'lt');
 
     return {

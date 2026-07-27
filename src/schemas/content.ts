@@ -1,6 +1,5 @@
-'use cache';
 import { TypedObject } from '@portabletext/types';
-import { cacheLife, cacheTag } from 'next/cache';
+import { cache } from 'react';
 
 import { client } from '@/lib/sanity';
 
@@ -10,9 +9,7 @@ export interface ContentSectionResponse {
     slug: string;
 }
 
-export async function fetchContentSectionData(contentId: string | string[], locale = 'lt', defaultLocale = 'lt'): Promise<ContentSectionResponse> {
-    cacheTag('content', typeof contentId === 'string' ? contentId : 'footer-content');
-    cacheLife('weeks');
+export const fetchContentSectionData = cache(async (contentId: string | string[], locale = 'lt', defaultLocale = 'lt'): Promise<ContentSectionResponse> => {
 
     return await client.fetch(
         `
@@ -22,6 +19,12 @@ export async function fetchContentSectionData(contentId: string | string[], loca
         "content": coalesce(content.[$locale], content.[$defaultLocale]),
     }[0]
 `,
-        { contentId, defaultLocale, locale }
+        { contentId, defaultLocale, locale },
+        {
+            next: {
+                revalidate: 604_800,
+                tags: ['content', typeof contentId === 'string' ? contentId : 'footer-content']
+            }
+        }
     )
-}
+})

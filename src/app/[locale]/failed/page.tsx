@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import * as React from 'react';
 import { Suspense } from 'react';
 
@@ -18,16 +19,12 @@ export const metadata: Metadata = {
     title: 'Payment Failed | SeaSafari',
 };
 
-export default function PaymentFailedPage({ params }: PageProps) {
-    return (
-        <Suspense>
-            <PaymentFailedContent params={params} />
-        </Suspense>
-    );
-}
+const supportedLocales = new Set(['en', 'lt', 'ru']);
 
-async function PaymentFailedContent({ params }: PageProps) {
+export default async function PaymentFailedPage({ params }: PageProps) {
     const { locale } = await params;
+
+    if (!supportedLocales.has(locale)) notFound();
 
     const navigation = await fetchNavigationData(locale, 'lt')
     const footer = await fetchFooterSectionData(locale, 'lt')

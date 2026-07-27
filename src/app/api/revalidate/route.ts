@@ -2,6 +2,7 @@ import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook';
 import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
+export const runtime = 'nodejs';
 
 const TYPE_TO_TAGS: Record<string, string[]> = {
     about:          ['about', 'all_home'],
