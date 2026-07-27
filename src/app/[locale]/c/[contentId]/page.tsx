@@ -11,6 +11,8 @@ import { fetchFooterSectionData } from '@/schemas/footer';
 import { fetchGiftCardWidgetSectionData } from '@/schemas/giftCardWidget';
 import { fetchNavigationData } from '@/schemas/navigation';
 
+export const dynamicParams = true;
+
 interface PageParams {
     params: Promise<{
         contentId: string;
