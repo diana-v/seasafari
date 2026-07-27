@@ -1,5 +1,5 @@
 import { asc, eq } from 'drizzle-orm';
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 import { fetchNavigationData } from '@/schemas/navigation';
 import { db } from '@/server/db';
@@ -8,8 +8,13 @@ import { checkAdminAuth } from '@/utils/checkAdminAuth';
 
 import AdminClient from './AdminClient';
 
+const supportedLocales = new Set(['en', 'lt', 'ru']);
+
 export default async function AdminPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
+
+    if (!supportedLocales.has(locale)) notFound();
+
     const isAuthenticated = await checkAdminAuth()
 
     if (!isAuthenticated) redirect(`/${locale}/login`);

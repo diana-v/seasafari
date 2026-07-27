@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import * as React from 'react';
 import { Suspense } from 'react';
 
@@ -12,8 +13,13 @@ interface PageParams {
     params: Promise<{ locale: string }>;
 }
 
+const supportedLocales = new Set(['en', 'lt', 'ru']);
+
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
     const { locale } = await params;
+
+    if (!supportedLocales.has(locale)) notFound();
+
     const data = await fetchAllHomeSectionData(locale, 'lt');
     const home = data.home;
 
@@ -42,6 +48,8 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
 
 export default async function HomePage({ params }: PageParams) {
     const { locale } = await params;
+
+    if (!supportedLocales.has(locale)) notFound();
 
     const { about, blogs, contact, footer, gallery, giftCard,
         giftCardWidget, home, navigation, offers, partners, reviews

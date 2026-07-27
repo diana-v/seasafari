@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm';
 import { cookies as nextCookies } from 'next/headers';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import * as React from 'react';
 import { Suspense } from 'react';
 
@@ -25,9 +25,13 @@ interface PageProps {
 
 export const dynamic = 'force-dynamic';
 
+const supportedLocales = new Set(['en', 'lt', 'ru']);
+
 export default async function PaymentSuccessPage({ params, searchParams }: PageProps) {
     const { locale } = await params;
     const { ref } = await searchParams;
+
+    if (!supportedLocales.has(locale)) notFound();
 
     const cookieStore = await nextCookies();
     const secureRef = cookieStore.get('paymentRef')?.value;

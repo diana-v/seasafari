@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import * as React from 'react';
 import { Suspense } from 'react';
 
@@ -22,8 +23,12 @@ interface PageParams {
     }>;
 }
 
+const supportedLocales = new Set(['en', 'lt', 'ru']);
+
 export default async function ContentPage({ params }: PageParams) {
     const { contentId, locale } = await params;
+
+    if (!supportedLocales.has(locale) || contentId.includes('.')) notFound();
 
     const content = await fetchContentSectionData(contentId, locale, 'lt')
     const giftCardWidget = await fetchGiftCardWidgetSectionData(locale, 'lt')
@@ -74,6 +79,9 @@ export default async function ContentPage({ params }: PageParams) {
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
     const { contentId, locale } = await params;
+
+    if (!supportedLocales.has(locale) || contentId.includes('.')) notFound();
+
     const content = await fetchContentSectionData(contentId, locale, 'lt');
 
     return {

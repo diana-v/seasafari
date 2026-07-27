@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import * as React from 'react';
 import { Suspense } from 'react';
 
@@ -17,8 +18,12 @@ interface PageParams {
     params: Promise<{ locale: string }>;
 }
 
+const supportedLocales = new Set(['en', 'lt', 'ru']);
+
 export default async function FaqPage({ params }: PageParams) {
     const { locale } = await params;
+
+    if (!supportedLocales.has(locale)) notFound();
 
     const navigation = await fetchNavigationData(locale, 'lt')
     const footer = await fetchFooterSectionData(locale, 'lt')
@@ -64,6 +69,9 @@ export default async function FaqPage({ params }: PageParams) {
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
     const { locale } = await params;
+
+    if (!supportedLocales.has(locale)) notFound();
+
     const faq = await fetchFAQSectionData(locale, 'lt');
 
     return {

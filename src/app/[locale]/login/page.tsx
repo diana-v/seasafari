@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import * as React from 'react';
 import { Suspense } from 'react';
 
@@ -11,8 +11,13 @@ interface PageParams {
     params: Promise<{ locale: string }>;
 }
 
+const supportedLocales = new Set(['en', 'lt', 'ru']);
+
 export default async function LoginPage({ params }: PageParams) {
     const { locale } = await params;
+
+    if (!supportedLocales.has(locale)) notFound();
+
     const isAuthenticated = await checkAdminAuth();
 
     if (isAuthenticated) {
