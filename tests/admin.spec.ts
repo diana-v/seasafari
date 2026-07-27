@@ -87,6 +87,12 @@ test.describe('Admin panel', () => {
 
         await expect(updatedRow).toBeVisible();
         await expect(updatedRow.locator('input[type="checkbox"]')).toBeChecked();
+
+        await updatedRow.locator('input[type="checkbox"]').click();
+        await page.waitForResponse(res =>
+            res.url().includes('/api/order-update') &&
+            res.status() === 200
+        );
     });
 
     test('can sort orders', async ({ page }) => {
@@ -167,6 +173,12 @@ test.describe('Admin panel', () => {
         await expect(
             page.locator(`[data-testid="${orderRef}-row"] input[type="checkbox"]`)
         ).toBeChecked();
+
+        await page.locator(`[data-testid="${orderRef}-row"] input[type="checkbox"]`).click();
+        await page.waitForResponse(res =>
+            res.url().includes('/api/order-update') &&
+            res.status() === 200
+        );
     });
 
     test('QR scan rejects expired order', async ({ page }) => {
