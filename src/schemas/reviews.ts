@@ -1,5 +1,4 @@
-'use cache';
-import { cacheLife, cacheTag } from 'next/cache';
+import { cache } from 'react';
 
 import { client } from '@/lib/sanity';
 
@@ -7,9 +6,7 @@ export interface ReviewsSectionResponse {
     title: string;
 }
 
-export async function fetchReviewsSectionData(locale = 'lt', defaultLocale = 'lt'): Promise<ReviewsSectionResponse> {
-    cacheTag('reviews');
-    cacheLife('weeks');
+export const fetchReviewsSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<ReviewsSectionResponse> => {
 
     return await client.fetch(
         `
@@ -17,6 +14,12 @@ export async function fetchReviewsSectionData(locale = 'lt', defaultLocale = 'lt
         "title": coalesce(title.[$locale], title.[$defaultLocale], "Missing translation"),
     }[0]
 `,
-        { defaultLocale, locale }
+        { defaultLocale, locale },
+        {
+            next: {
+                revalidate: 604_800,
+                tags: ['reviews']
+            }
+        }
     )
-}
+})

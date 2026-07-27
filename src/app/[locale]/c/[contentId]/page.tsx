@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import * as React from 'react';
 import { Suspense } from 'react';
 
@@ -11,6 +12,10 @@ import { fetchFooterSectionData } from '@/schemas/footer';
 import { fetchGiftCardWidgetSectionData } from '@/schemas/giftCardWidget';
 import { fetchNavigationData } from '@/schemas/navigation';
 
+export const dynamicParams = true;
+
+export const revalidate = 604_800;
+
 interface PageParams {
     params: Promise<{
         contentId: string;
@@ -18,16 +23,12 @@ interface PageParams {
     }>;
 }
 
-export default function ContentPage({ params }: PageParams) {
-    return (
-        <Suspense>
-            <ContentPageContent params={params} />
-        </Suspense>
-    );
-}
+const supportedLocales = new Set(['en', 'lt', 'ru']);
 
-async function ContentPageContent({ params }: PageParams) {
+export default async function ContentPage({ params }: PageParams) {
     const { contentId, locale } = await params;
+
+    if (!supportedLocales.has(locale) || contentId.includes('.')) notFound();
 
     const content = await fetchContentSectionData(contentId, locale, 'lt')
     const giftCardWidget = await fetchGiftCardWidgetSectionData(locale, 'lt')
@@ -78,6 +79,9 @@ async function ContentPageContent({ params }: PageParams) {
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
     const { contentId, locale } = await params;
+
+    if (!supportedLocales.has(locale) || contentId.includes('.')) notFound();
+
     const content = await fetchContentSectionData(contentId, locale, 'lt');
 
     return {

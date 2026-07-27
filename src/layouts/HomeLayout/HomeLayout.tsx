@@ -20,11 +20,9 @@ export interface HomeProps {
     image?: string;
     subtitle?: string;
     title?: string;
-    videoMp4?: string;
-    videoWebm?: string;
 }
 
-export const HomeLayout: React.FC<HomeProps> = ({ cta, heroMedia, image, subtitle, title, videoMp4, videoWebm }) => {
+export const HomeLayout: React.FC<HomeProps> = ({ cta, heroMedia, image, subtitle, title }) => {
     const params = useParams();
     const locale = params.locale as string;
     const defaultLocale = 'lt';
@@ -46,8 +44,8 @@ export const HomeLayout: React.FC<HomeProps> = ({ cta, heroMedia, image, subtitl
                     muted
                     playsInline
                 >
-                    <source src={videoWebm} type="video/webm" />
-                    <source src={videoMp4} type="video/mp4" />
+                    <source src="/videos/1080-video-background.webm" type="video/webm" />
+                    <source src="/videos/1080-video-background.mp4" type="video/mp4" />
                 </video>
             )}
             <ImageContainer

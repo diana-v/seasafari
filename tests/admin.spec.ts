@@ -9,8 +9,6 @@ import { loginAsAdmin } from './helpers/loginAsAdmin';
 const USER = process.env.BASIC_AUTH_USER ?? '';
 const PASS = process.env.BASIC_AUTH_PASSWORD ?? '';
 
-let completedOrderRef: null | string = null;
-
 test.describe('Admin login', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/');
@@ -40,36 +38,6 @@ test.describe('Admin panel', () => {
         await page.goto('/');
         await acceptCookies(page);
         await loginAsAdmin(page, USER, PASS);
-    });
-
-    test.afterEach(async ({ page }) => {
-        if (!completedOrderRef) return;
-
-        const ref = completedOrderRef;
-
-        completedOrderRef = null;
-
-        const filterCheckbox = page.getByTestId('filter-checkbox');
-
-        if (!(await filterCheckbox.isChecked())) {
-            const sortDone = page.waitForResponse(res =>
-                res.url().includes('/api/order-sort') && res.ok()
-            );
-
-            await filterCheckbox.click();
-            await sortDone;
-        }
-
-        const rowCheckbox = page.locator(`[data-testid="${ref}-row"] input[type="checkbox"]`);
-
-        if (await rowCheckbox.isChecked()) {
-            const updateDone = page.waitForResponse(res =>
-                res.url().includes('/api/order-update') && res.ok()
-            );
-
-            await rowCheckbox.click();
-            await updateDone;
-        }
     });
 
     test('admin page loads orders table', async ({ page }) => {
@@ -102,8 +70,6 @@ test.describe('Admin panel', () => {
 
         const orderRef = await nonCompletedRow.locator('td').first().textContent();
 
-        completedOrderRef = orderRef;
-
         await nonCompletedRow.locator('input[type="checkbox"]').click()
 
         await page.waitForResponse(res =>
@@ -121,6 +87,12 @@ test.describe('Admin panel', () => {
 
         await expect(updatedRow).toBeVisible();
         await expect(updatedRow.locator('input[type="checkbox"]')).toBeChecked();
+
+        await updatedRow.locator('input[type="checkbox"]').click();
+        await page.waitForResponse(res =>
+            res.url().includes('/api/order-update') &&
+            res.status() === 200
+        );
     });
 
     test('can sort orders', async ({ page }) => {
@@ -201,6 +173,12 @@ test.describe('Admin panel', () => {
         await expect(
             page.locator(`[data-testid="${orderRef}-row"] input[type="checkbox"]`)
         ).toBeChecked();
+
+        await page.locator(`[data-testid="${orderRef}-row"] input[type="checkbox"]`).click();
+        await page.waitForResponse(res =>
+            res.url().includes('/api/order-update') &&
+            res.status() === 200
+        );
     });
 
     test('QR scan rejects expired order', async ({ page }) => {

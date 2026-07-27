@@ -1,6 +1,3 @@
-'use cache';
-
-import { cacheLife, cacheTag } from 'next/cache';
 import { OAuth2Client } from 'google-auth-library';
 
 import { ReviewsLayout } from '@/layouts/ReviewsLayout/ReviewsLayout';
@@ -10,9 +7,6 @@ interface Props {
 }
 
 export default async function ReviewsServer({ title }: Props) {
-    cacheTag('reviews');
-    cacheLife('weeks');
-
     let reviewsData = null;
 
     try {
@@ -23,7 +17,10 @@ export default async function ReviewsServer({ title }: Props) {
 
         const response = await fetch(
             `https://mybusiness.googleapis.com/v4/accounts/${process.env.GOOGLE_BUSINESS_ID}/locations/${process.env.GOOGLE_LOCATION_ID}/reviews`,
-            { headers: { Authorization: `Bearer ${token}` } }
+            {
+                headers: { Authorization: `Bearer ${token}` },
+                next: { revalidate: 604_800 }
+            }
         );
 
         if (response.ok) {

@@ -1,5 +1,4 @@
-'use cache';
-import { cacheLife, cacheTag } from 'next/cache';
+import { cache } from 'react';
 
 import { client } from '@/lib/sanity';
 import { AboutSectionResponse } from '@/schemas/about';
@@ -30,9 +29,7 @@ export interface AllHomeSectionResponse {
     reviews: ReviewsSectionResponse;
 }
 
-export async function fetchAllHomeSectionData(locale = 'lt', defaultLocale = 'lt'): Promise<AllHomeSectionResponse> {
-    cacheTag('all_home');
-    cacheLife('weeks');
+export const fetchAllHomeSectionData = cache(async (locale = 'lt', defaultLocale = 'lt'): Promise<AllHomeSectionResponse> => {
 
     return await client.fetch(
         `{
@@ -117,8 +114,6 @@ export async function fetchAllHomeSectionData(locale = 'lt', defaultLocale = 'lt
             link,
         }[0],
         "home": *[_type == "home"]{
-            "videoWebm": videoWebm.asset->url,
-            "videoMp4": videoMp4.asset->url,
             "image": image.asset->url,
             "heroMedia": {
                 "desktopContent": heroMedia.desktopContent,
@@ -158,6 +153,13 @@ export async function fetchAllHomeSectionData(locale = 'lt', defaultLocale = 'lt
             "title": coalesce(title.[$locale], title.[$defaultLocale], "Missing translation"),
         }[0]
     }`,
-        { defaultLocale, locale }
+        { defaultLocale, locale },
+        {
+            cache: 'force-cache',
+            next: {
+                revalidate: 604_800,
+                tags: ['all_home']
+            }
+        }
     )
-}
+})
