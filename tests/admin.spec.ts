@@ -52,24 +52,16 @@ test.describe('Admin panel', () => {
         const filterCheckbox = page.getByTestId('filter-checkbox');
 
         if (!(await filterCheckbox.isChecked())) {
-            const sortDone = page.waitForResponse(res =>
+            await filterCheckbox.click();
+            await page.waitForResponse(res =>
                 res.url().includes('/api/order-sort') && res.ok()
             );
-
-            await filterCheckbox.click();
-            await sortDone;
         }
 
-        const rowCheckbox = page.locator(`[data-testid="${ref}-row"] input[type="checkbox"]`);
-
-        if (await rowCheckbox.isChecked()) {
-            const updateDone = page.waitForResponse(res =>
-                res.url().includes('/api/order-update') && res.ok()
-            );
-
-            await rowCheckbox.click();
-            await updateDone;
-        }
+        await page.locator(`[data-testid="${ref}-row"] input[type="checkbox"]`).uncheck();
+        await page.waitForResponse(res =>
+            res.url().includes('/api/order-update') && res.ok()
+        );
     });
 
     test('admin page loads orders table', async ({ page }) => {
