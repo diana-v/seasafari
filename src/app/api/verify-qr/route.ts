@@ -7,6 +7,8 @@ import { languages, LocaleType } from '@/translations/admin';
 import { checkAdminAuth } from '@/utils/checkAdminAuth';
 import { verifyGiftCardToken } from '@/utils/jwt';
 
+export const runtime = 'nodejs';
+
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
 
