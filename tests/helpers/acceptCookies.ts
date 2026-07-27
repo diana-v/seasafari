@@ -9,11 +9,4 @@ export async function acceptCookies(page: Page) {
 
         await expect(backdrop).toBeHidden();
     }
-
-    // Persist the accepted state across all subsequent page.goto() calls in this
-    // context. WebKit does not always carry localStorage between hard navigations,
-    // so without this the consent banner reappears and blocks interactive elements.
-    await page.context().addInitScript(() => {
-        localStorage.setItem('cookieConsentCookieBanner_InitialChoice', '1');
-    });
 }

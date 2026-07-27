@@ -9,8 +9,6 @@ import { loginAsAdmin } from './helpers/loginAsAdmin';
 const USER = process.env.BASIC_AUTH_USER ?? '';
 const PASS = process.env.BASIC_AUTH_PASSWORD ?? '';
 
-let completedOrderRef: null | string = null;
-
 test.describe('Admin login', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/');
@@ -42,28 +40,6 @@ test.describe('Admin panel', () => {
         await loginAsAdmin(page, USER, PASS);
     });
 
-    test.afterEach(async ({ page }) => {
-        if (!completedOrderRef) return;
-
-        const ref = completedOrderRef;
-
-        completedOrderRef = null;
-
-        const filterCheckbox = page.getByTestId('filter-checkbox');
-
-        if (!(await filterCheckbox.isChecked())) {
-            await filterCheckbox.click();
-            await page.waitForResponse(res =>
-                res.url().includes('/api/order-sort') && res.ok()
-            );
-        }
-
-        await page.locator(`[data-testid="${ref}-row"] input[type="checkbox"]`).uncheck();
-        await page.waitForResponse(res =>
-            res.url().includes('/api/order-update') && res.ok()
-        );
-    });
-
     test('admin page loads orders table', async ({ page }) => {
         await expect(page.locator('table')).toBeVisible();
         await expect(page.getByTestId('search-input')).toBeVisible();
@@ -93,8 +69,6 @@ test.describe('Admin panel', () => {
         await expect(nonCompletedRow).toBeVisible();
 
         const orderRef = await nonCompletedRow.locator('td').first().textContent();
-
-        completedOrderRef = orderRef;
 
         await nonCompletedRow.locator('input[type="checkbox"]').click()
 
@@ -164,7 +138,6 @@ test.describe('Admin panel', () => {
         const orderRef = await orderRow.locator('td').first().textContent();
 
         if (!orderRef) throw new Error('No order found');
-        completedOrderRef = orderRef;
 
         const validToText = await orderRow.locator('td').nth(4).textContent();
 

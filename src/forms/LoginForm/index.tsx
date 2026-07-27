@@ -50,7 +50,7 @@ const LoginForm = () => {
             }
 
             if (res.status === 200) {
-                router.push(`/${locale ?? defaultLocale}/admin`);
+                router.refresh();
 
                 return;
             }
