@@ -11,6 +11,8 @@ interface PageParams {
     params: Promise<{ locale: string }>;
 }
 
+export const dynamic = 'force-dynamic';
+
 const supportedLocales = new Set(['en', 'lt', 'ru']);
 
 export default async function LoginPage({ params }: PageParams) {

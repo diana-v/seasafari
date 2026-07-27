@@ -8,6 +8,8 @@ import { checkAdminAuth } from '@/utils/checkAdminAuth';
 
 import AdminClient from './AdminClient';
 
+export const dynamic = 'force-dynamic';
+
 const supportedLocales = new Set(['en', 'lt', 'ru']);
 
 export default async function AdminPage({ params }: { params: Promise<{ locale: string }> }) {
