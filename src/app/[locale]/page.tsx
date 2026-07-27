@@ -38,15 +38,7 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
     };
 }
 
-export default function HomePage({ params }: PageParams) {
-    return (
-        <Suspense>
-            <HomePageContent params={params} />
-        </Suspense>
-    );
-}
-
-async function HomePageContent({ params }: PageParams) {
+export default async function HomePage({ params }: PageParams) {
     const { locale } = await params;
 
     const { about, blogs, contact, footer, gallery, giftCard,

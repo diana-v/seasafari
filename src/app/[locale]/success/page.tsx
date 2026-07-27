@@ -23,15 +23,9 @@ interface PageProps {
     searchParams: Promise<{ ref?: string }>;
 }
 
-export default function PaymentSuccessPage({ params, searchParams }: PageProps) {
-    return (
-        <Suspense>
-            <PaymentSuccessContent params={params} searchParams={searchParams} />
-        </Suspense>
-    );
-}
+export const dynamic = 'force-dynamic';
 
-async function PaymentSuccessContent({ params, searchParams }: PageProps) {
+export default async function PaymentSuccessPage({ params, searchParams }: PageProps) {
     const { locale } = await params;
     const { ref } = await searchParams;
 

@@ -18,15 +18,7 @@ interface PageParams {
     }>;
 }
 
-export default function ContentPage({ params }: PageParams) {
-    return (
-        <Suspense>
-            <ContentPageContent params={params} />
-        </Suspense>
-    );
-}
-
-async function ContentPageContent({ params }: PageParams) {
+export default async function ContentPage({ params }: PageParams) {
     const { contentId, locale } = await params;
 
     const content = await fetchContentSectionData(contentId, locale, 'lt')

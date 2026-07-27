@@ -11,15 +11,7 @@ interface PageParams {
     params: Promise<{ locale: string }>;
 }
 
-export default function LoginPage({ params }: PageParams) {
-    return (
-        <Suspense>
-            <LoginPageContent params={params} />
-        </Suspense>
-    );
-}
-
-async function LoginPageContent({ params }: PageParams) {
+export default async function LoginPage({ params }: PageParams) {
     const { locale } = await params;
     const isAuthenticated = await checkAdminAuth();
 
