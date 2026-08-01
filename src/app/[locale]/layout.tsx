@@ -15,11 +15,6 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-    appleWebApp: {
-        capable: true,
-        statusBarStyle: 'default',
-    },
-
     icons: {
         apple: '/icons/apple-touch-icon-180x180.png',
         icon: [
@@ -30,9 +25,6 @@ export const metadata: Metadata = {
         shortcut: '/favicon.ico',
     },
 
-    other: {
-        'mobile-web-app-capable': 'yes',
-    }
 };
 
 export async function generateStaticParams() {
