@@ -206,9 +206,9 @@ test.describe('Admin panel', () => {
         await page.getByTestId('scan-qr-button').click();
         await expect(page.getByTestId('qr-scanner')).toBeVisible();
 
-        await page.evaluate((t) => {
+        await page.evaluate(async (t) => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (globalThis as any).__testScan?.(`https://test.com?token=${t}`);
+            await (globalThis as any).__testScan?.(`https://test.com?token=${t}`);
         }, token);
 
         await expect(page.getByTestId('alert-error')).toBeVisible();
@@ -238,9 +238,9 @@ test.describe('Admin panel', () => {
         await page.getByTestId('scan-qr-button').click();
         await expect(page.getByTestId('qr-scanner')).toBeVisible();
 
-        await page.evaluate((t) => {
+        await page.evaluate(async (t) => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (globalThis as any).__testScan?.(`https://test.com?token=${t}`);
+            await (globalThis as any).__testScan?.(`https://test.com?token=${t}`);
         }, token);
 
         await expect(page.getByTestId('alert-error')).toBeVisible();
