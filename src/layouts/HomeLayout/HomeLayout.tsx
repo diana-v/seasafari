@@ -44,8 +44,8 @@ export const HomeLayout: React.FC<HomeProps> = ({ cta, heroMedia, image, subtitl
                     muted
                     playsInline
                 >
-                    <source src="/videos/1080-video-background.webm" type="video/webm" />
-                    <source src="/videos/1080-video-background.mp4" type="video/mp4" />
+                    <source src="https://res.cloudinary.com/xhc8r0hb/video/upload/v1786349106/1080-video-background.webm" type="video/webm" />
+                    <source src="https://res.cloudinary.com/xhc8r0hb/video/upload/v1786349450/1080-video-background-mp4.mp4" type="video/mp4" />
                 </video>
             )}
             <ImageContainer
