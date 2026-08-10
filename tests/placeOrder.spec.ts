@@ -28,8 +28,10 @@ test.describe('Order & Payment Lifecycle', () => {
         await page.getByTestId('gift-card-terms-checkbox').scrollIntoViewIfNeeded();
         await page.getByTestId('gift-card-terms-checkbox').check({ force: true, position: { x: 1, y: 1 } });
 
+        const paymentResponsePromise = page.waitForResponse('**/api/make-payment');
+
         await page.getByTestId('gift-card-submit-button').click();
-        await page.waitForResponse('**/api/make-payment');
+        await paymentResponsePromise;
 
         const jsonPayload = JSON.stringify({
             amount: "28.00",
@@ -52,13 +54,18 @@ test.describe('Order & Payment Lifecycle', () => {
         await loginAsAdmin(page, USER, PASS);
 
         const searchInput = page.getByTestId('search-input');
-
-        await searchInput.fill(capturedRef);
-        await page.waitForResponse(r => r.url().includes('order-sort'));
-
         const orderRow = page.getByTestId(`${capturedRef}-row`);
 
-        await expect(orderRow).toBeVisible();
+        // retry search until DB write propagates
+        await expect(async () => {
+            await searchInput.clear();
+            const sortResponsePromise = page.waitForResponse(r => r.url().includes('order-sort'), { timeout: 5000 });
+
+            await searchInput.fill(capturedRef);
+            await sortResponsePromise;
+            await expect(orderRow).toBeVisible();
+        }).toPass({ intervals: [2000], timeout: 15_000 });
+
         await expect(orderRow.locator('input[type="checkbox"]')).not.toBeChecked();
     });
 
@@ -76,22 +83,25 @@ test.describe('Order & Payment Lifecycle', () => {
         await page.getByTestId('gift-card-terms-checkbox').scrollIntoViewIfNeeded();
         await page.getByTestId('gift-card-terms-checkbox').check({ force: true, position: { x: 1, y: 1 } });
 
+        const paymentResponsePromise = page.waitForResponse('**/api/make-payment');
+
         await page.getByTestId('gift-card-submit-button').click();
-        await page.waitForResponse('**/api/make-payment');
+        await paymentResponsePromise;
 
         await page.goto('/lt/#gift-cards');
 
         await loginAsAdmin(page, USER, PASS);
 
         const searchInput = page.getByTestId('search-input');
+        const orderRow = page.getByTestId(`${capturedRef}-row`);
+
+        const sortResponsePromise = page.waitForResponse(r => r.url().includes('order-sort'));
 
         await searchInput.fill(capturedRef);
-        await page.waitForResponse(r => r.url().includes('order-sort'));
+        await sortResponsePromise;
 
         // ASSERTION: The row should NOT be visible because your order-sort
         // filters out Status.UNPAID
-        const orderRow = page.getByTestId(`${capturedRef}-row`);
-
         await expect(orderRow).not.toBeVisible();
     });
 
