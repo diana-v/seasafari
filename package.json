@@ -15,7 +15,9 @@
     "lint": "tsc --noEmit && npm run lint:js",
     "lint:js": "eslint src --fix",
     "test:e2e": "playwright test",
-    "test:e2e:watch": "playwright test --ui"
+    "test:e2e:watch": "playwright test --ui",
+    "worker:deploy": "cd worker && wrangler deploy",
+    "worker:dev": "cd worker && wrangler dev"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
@@ -90,7 +92,9 @@
     "stylelint-prettier": "^5.0.3",
     "tailwindcss": "^4.2.1",
     "ts-node": "^10.9.2",
-    "typescript-eslint": "^8.24.1"
+    "typescript-eslint": "^8.24.1",
+    "@cloudflare/workers-types": "^4.0.0",
+    "wrangler": "^3.0.0"
   },
   "overrides": {
     "react": "19.2.2",
