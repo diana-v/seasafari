@@ -25,7 +25,7 @@ test.describe('Order & Payment Lifecycle', () => {
 
         await page.goto('/lt#gift-cards');
         await page.getByTestId('gift-card-email-input').fill(testEmail);
-        await page.getByTestId('gift-card-terms-checkbox').scrollIntoViewIfNeeded();
+        await page.getByTestId('gift-card-terms-checkbox').evaluate(el => el.scrollIntoView({ behavior: 'instant', block: 'center' }));
         await page.getByTestId('gift-card-terms-checkbox').check({ force: true });
 
         await page.getByTestId('gift-card-submit-button').click();
@@ -73,7 +73,7 @@ test.describe('Order & Payment Lifecycle', () => {
 
         await page.goto('/lt#gift-cards');
         await page.getByTestId('gift-card-email-input').fill(testEmail);
-        await page.getByTestId('gift-card-terms-checkbox').scrollIntoViewIfNeeded();
+        await page.getByTestId('gift-card-terms-checkbox').evaluate(el => el.scrollIntoView({ behavior: 'instant', block: 'center' }));
         await page.getByTestId('gift-card-terms-checkbox').check({ force: true });
 
         await page.getByTestId('gift-card-submit-button').click();
