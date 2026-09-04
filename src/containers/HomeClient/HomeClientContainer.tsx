@@ -70,6 +70,7 @@ export default function HomeClient({
                 </Suspense>
                 <HomeLayout
                     cta={home?.cta}
+                    ctaSecondary={home?.ctaSecondary}
                     heroMedia={home?.heroMedia}
                     image={home?.image}
                     subtitle={home?.subtitle}

@@ -32,6 +32,23 @@ export default defineType({
             type: 'object',
         }),
         defineField({
+            fields: [
+                defineField({
+                    name: 'label',
+                    title: 'Label',
+                    type: 'localeString',
+                }),
+                defineField({
+                    name: 'link',
+                    title: 'Link',
+                    type: 'localeString',
+                }),
+            ],
+            name: 'ctaSecondary',
+            title: 'CTA Secondary',
+            type: 'object',
+        }),
+        defineField({
             name: 'image',
             title: 'Image',
             type: 'file',
