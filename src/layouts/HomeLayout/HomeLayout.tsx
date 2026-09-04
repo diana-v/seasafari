@@ -13,6 +13,10 @@ export interface HomeProps {
         label?: string;
         link?: string;
     };
+    ctaSecondary?: {
+        label?: string;
+        link?: string;
+    };
     heroMedia?: {
         desktopContent?: 'image' | 'video';
         mobileContent?: 'image' | 'video';
@@ -22,7 +26,7 @@ export interface HomeProps {
     title?: string;
 }
 
-export const HomeLayout: React.FC<HomeProps> = ({ cta, heroMedia, image, subtitle, title }) => {
+export const HomeLayout: React.FC<HomeProps> = ({ cta, ctaSecondary, heroMedia, image, subtitle, title }) => {
     const params = useParams();
     const locale = params.locale as string;
     const defaultLocale = 'lt';
@@ -70,14 +74,24 @@ export const HomeLayout: React.FC<HomeProps> = ({ cta, heroMedia, image, subtitl
                         {subtitle}
                     </div>
                 )}
-                {cta?.link && cta?.label && (
-                    <a
-                        className="mt-8 rounded bg-orange-500 px-10 py-3 text-sm md:text-lg lg:max-w-xl font-bold uppercase tracking-wider transition-transform hover:scale-105"
-                        href={cta.link}
-                    >
-                        {cta.label}
-                    </a>
-                )}
+                <div className="mt-8 lg:max-w-xl flex flex-wrap justify-center gap-4">
+                    {cta?.link && cta?.label && (
+                        <a
+                            className="rounded bg-orange-500 px-10 py-3 flex items-center text-sm md:text-lg min-w-56 font-bold uppercase tracking-wider transition-transform hover:scale-105"
+                            href={cta.link}
+                        >
+                            {cta.label}
+                        </a>
+                    )}
+                    {ctaSecondary?.link && ctaSecondary?.label && (
+                        <a
+                            className="rounded border-2 border-white px-10 py-3 flex items-center text-sm md:text-lg min-w-56 font-bold uppercase tracking-wider transition-transform hover:scale-105"
+                            href={ctaSecondary.link}
+                        >
+                            {ctaSecondary.label}
+                        </a>
+                    )}
+                </div>
             </div>
 
             <a

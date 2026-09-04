@@ -124,6 +124,10 @@ export const fetchAllHomeSectionData = cache(async (locale = 'lt', defaultLocale
             "cta": {
                 "link": coalesce(cta.link.[$locale], cta.link.[$defaultLocale]),
                 "label": coalesce(cta.label.[$locale], cta.label.[$defaultLocale]),
+            },
+            "ctaSecondary": {
+                "link": coalesce(ctaSecondary.link.[$locale], ctaSecondary.link.[$defaultLocale]),
+                "label": coalesce(ctaSecondary.label.[$locale], ctaSecondary.label.[$defaultLocale]),
             }
         }[0],
         "navigation": *[_type == "common"]{
